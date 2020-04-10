@@ -1,6 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var product = {
+	productId: {type: Schema.Types.ObjectId},
+	productQuantity: {type: Number},
+	gift: {type: Boolean, default: false},
+	giftMessage: {type: String, default: ""},
+	giftCharge: {type: Number, default: 2}
+}
+
 const CartSchema = new Schema({
   customerEmail: {
     type: String,
@@ -8,24 +16,19 @@ const CartSchema = new Schema({
   sellerName: {
     type: String
   },
-  productId: {
-    type: Schema.Types.ObjectId
-  },
-  productName: {
-    type: String
-  },
-  productPrice: {           
+  products: [product],
+  subTotal : {
     type: Number
   },
-  productQuantity: {
+  tax : {
     type: Number
   },
-  productTotal: {
+  totalAmount: {
     type: Number
   },
   cartStatus: {
     type: String,
-        enum: ["In Cart", "Saved For Later"]
+        enum: ["IN_CART", "SAVED_FOR_LATER"]
   }
 });
 
