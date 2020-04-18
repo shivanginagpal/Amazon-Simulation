@@ -27,7 +27,7 @@ const OrderSchema = new Schema({
     products: [productsSchema],
     orderStatus: {
         type: String,
-        enum: ["New", "Packing", "Out For Shipping", "Delivered", "Cancelled"]
+        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "DELIVERED", "CANCELLED"]
     },
     orderDate: {
         type: Date,
@@ -53,9 +53,19 @@ const OrderSchema = new Schema({
         type: String,
         required: true
     },
-    paymentInfoId: {
-        type: String,
-        required: true
+    paymentInfo: {
+        cardNumber: {
+            type : String,
+            required: true
+        },
+        cardExpiryDate:{
+            type: Date,
+            required: true
+        },
+        cardHolderName: {
+            type: String,
+            required: true
+        }
     }
 });
 
