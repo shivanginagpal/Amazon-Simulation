@@ -5,8 +5,6 @@ import Slideshow from './slideshow';
 import './LandingPage.css';
 
 class LandingPage extends Component {
-
-
     render(){
 
         return (
@@ -17,7 +15,6 @@ class LandingPage extends Component {
                 <div>
                     <Slideshow/>
                 </div>
-                
             </div>
         );
     }
