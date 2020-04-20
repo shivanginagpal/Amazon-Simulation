@@ -1,12 +1,20 @@
 import React,{Component} from 'react';
-import {NavLink} from 'react-router-dom';
-import cookie from 'react-cookies';
-import {Redirect} from 'react-router';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { logoutUser } from '../../actions/authAction';
+import { clearProfile } from '../../actions/profileAction';
 import logo from "./../../images/amazon-logo.jpg";
 import "./navbar.css";
 
 
 class Navbar extends Component {
+    handleLogout(e){
+        e.preventDefault();
+        this.props.logoutUser();
+        this.props.clearProfile();
+        window.location.href = '/';
+
+    }
     render(){
 
         return (
@@ -27,6 +35,9 @@ class Navbar extends Component {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="/signup">SignUp</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/" onClick={this.handleLogout.bind(this)}>Logout</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -54,5 +65,8 @@ class Navbar extends Component {
         );
     }
 }
+Navbar.propTypes = {
+    logoutUser: PropTypes.func.isRequired
+}
 
-export default Navbar;
+export default connect (null,{logoutUser,clearProfile})(Navbar);
