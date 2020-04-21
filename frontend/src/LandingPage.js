@@ -1,12 +1,10 @@
 import React,{Component} from 'react';
 import {Link} from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from './Components/Navbar/Navbar';
 import Slideshow from './slideshow';
 import './LandingPage.css';
 
 class LandingPage extends Component {
-
-
     render(){
 
         return (
@@ -17,7 +15,6 @@ class LandingPage extends Component {
                 <div>
                     <Slideshow/>
                 </div>
-                
             </div>
         );
     }

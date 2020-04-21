@@ -29,10 +29,6 @@ const SellerSchema = new Schema({
         type: String,
         default: ""
     },
-    sellerProfilePicture: {
-        type: String,
-        default: null
-    },
     productCategory: [ProductCategorySchema]
 
 });
