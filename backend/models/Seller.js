@@ -7,11 +7,11 @@ const SellerSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'user'
     },
-    sellerName: {
-        type: String,
-        required: true,
-        unique: true
-    },
+    // sellerName: {
+    //     type: String,
+    //     required: true,
+    //     unique: true
+    // },
     // sellerEmail: {
     //     type: String,
     //     required: true,
