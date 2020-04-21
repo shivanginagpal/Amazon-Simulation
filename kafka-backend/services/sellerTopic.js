@@ -11,6 +11,7 @@ exports.sellerService = function sellerService(msg, callback) {
     }
 };
 
+
 function addProduct(msg, callback) {
     let response = {};
     let err = {};
@@ -22,6 +23,7 @@ function addProduct(msg, callback) {
         console.log("product received");
         console.log(result);
 
+        // create new product category and add product 
         if (result.length === 0) {
             var newProductCategory = new ProductCategory({
                 productCategoryName: msg.body.productCategory,
@@ -64,6 +66,7 @@ function addProduct(msg, callback) {
             })
         }
         else {
+            // append to existing product category
             console.log("append to product category");
 
             var newProduct = {
@@ -85,7 +88,6 @@ function addProduct(msg, callback) {
                 })
                 .catch(error => {
                     console.log(error);
-                    //res.end("could not append to messages");
                     err.status = 411;
                     err.message = "could not append to product category";
                     err.data = error;

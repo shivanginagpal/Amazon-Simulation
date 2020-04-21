@@ -6,6 +6,10 @@ var kafka = require('../../kafka/client');
 const passportAuth = passport.authenticate('jwt', { session: false });
 
 
+// @route   POST api/addProduct
+// @desc    Post new product
+// @access  Private
+
 router.post("/addProduct",passportAuth,async function (req, res) {
     console.log("in add product route");
     console.log(req.body);
