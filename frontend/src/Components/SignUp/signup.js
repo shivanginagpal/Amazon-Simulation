@@ -57,12 +57,12 @@ class signup extends Component {
         }
         console.log(newUser);
 
-        this.props.registeruser(newUser);
+        this.props.registeruser(newUser,this.props.history);
     }
 
     render() {
         const { errors } = this.state;
-
+        
         return (
             <div>
                 <Navbar />
@@ -132,6 +132,7 @@ class signup extends Component {
                             <label className="custom-control-label" htmlFor="seller">Seller</label>
                         </div>
                         <button type="submit" class="login-signup">SIGN UP</button>
+                        <br />
                         <input type="checkbox" style={{ margin: "26px 30px" }} /> Remember me
                     <a href="#" style={{ textDecoration: "none", float: "right", marginRight: "34px", marginTop: "26px" }}>Forgot Password ?</a>
                     </div>

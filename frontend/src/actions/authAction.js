@@ -3,11 +3,11 @@ import jwt_decode from 'jwt-decode';
 import { GET_ERRORS, SET_CURRENT_USER } from './types';
 import setAuthToken from '../Components/SignUp/helperApis';
 
-export const registeruser = (userData,history) => dispatch => {
+export const registeruser = (userData, history) => dispatch => {
      axios.post('/signUpUser', userData)
       .then(res => history.push('/login'))
       .catch(err => {
-          console.log("Got an error",err);
+        console.log("Got an error",err);
         dispatch({
             type: GET_ERRORS,
             payload: err.response.data
