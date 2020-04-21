@@ -35,7 +35,9 @@ class signup extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log("in componentWillReceiveProps");
         if (nextProps.errors) {
+            console.log("received error");
             this.setState({ errors: nextProps.errors })
         }
     }
@@ -51,7 +53,7 @@ class signup extends Component {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
-            userType: this.state.userType
+            userType: this.state.userType,
         }
         console.log(newUser);
 
@@ -74,9 +76,42 @@ class signup extends Component {
                     </div>
 
                     <div class="container">
-                        <input type="text" placeholder="Enter Name or UserName" name="name" value={this.state.name} onChange={this.onChange} required />
-                        <input type="password" placeholder="Enter Password" name="password" value={this.state.password} onChange={this.onChange} required />
-                        <input type="email" placeholder="Enter email" name="email" value={this.state.email} onChange={this.onChange} required />
+                        <input type="text"
+                            className={classnames('form-control form-control-lg', {
+                                'is-invalid': errors.name
+                            })} 
+                            placeholder="Enter Name or UserName"
+                            name="name" value={this.state.name} 
+                            onChange={this.onChange} 
+                        />
+                        {errors.name && (
+                            <div className="invalid-feedback">{errors.name}</div>
+                        )}
+
+                        <input type="email" 
+                            className={classnames('form-control form-control-lg', {
+                                'is-invalid': errors.email
+                              })}
+                            placeholder="Enter email" 
+                            name="email" value={this.state.email} 
+                            onChange={this.onChange} 
+                        />
+                        {errors.email && (
+                            <div className="invalid-feedback">{errors.email}</div>
+                        )}
+
+                        <input type="password"
+                            className={classnames('form-control form-control-lg', {
+                                'is-invalid': errors.password
+                              })} 
+                            placeholder="Enter Password" 
+                            name="password" value={this.state.password} 
+                            onChange={this.onChange} 
+                        />
+                        {errors.password && (
+                            <div className="invalid-feedback">{errors.password}</div>
+                        )}
+
                         {/* <input type="text" placeholder="Enter phone number xxx-xxx-xxxx" name="phone" required/> */}
                         <div className={classnames('custom-control custom-radio custom-control-inline')} >
                             <input type="radio" className={classnames('custom-control-input', {

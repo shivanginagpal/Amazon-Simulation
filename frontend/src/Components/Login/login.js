@@ -31,6 +31,7 @@ class login extends Component {
     }
 
     componentWillReceiveProps(nextProps){
+      console.log("in componentWillReceiveProps");
       if(nextProps.auth.isAuthenticated){
         if(nextProps.auth.user.userType === 'customer')
           this.props.history.push('/customerHome');
@@ -59,6 +60,7 @@ class login extends Component {
 
     render(){
         const { errors } = this.state;
+
         return (
             <div>
                 <Navbar/>
@@ -73,8 +75,32 @@ class login extends Component {
                 </div>
 
                 <div class="container">
-                  <input type="text" placeholder="Enter Email" name="email" value={this.state.email} onChange={this.onChange} required/>
-                  <input type="password" placeholder="Enter Password" name="password" value={this.state.password} onChange={this.onChange} required/>
+                  <div className = "form-group">
+                  <input type="text" 
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.email
+                  })}
+                  placeholder="Enter Email" 
+                  name="email" 
+                  value={this.state.email} 
+                  onChange={this.onChange} />
+                  {errors.email && (
+                        <div className="invalid-feedback">{errors.email}</div>
+                             )}
+                    </div>
+                  <div className="form-group">
+                  <input type="password" 
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.password
+                  })}
+                  placeholder="Enter Password" 
+                  name="password" 
+                  value={this.state.password} 
+                  onChange={this.onChange} />
+                  {errors.password && (
+                        <div className="invalid-feedback">{errors.password}</div>
+                            )}
+                    </div>
                   <div className={classnames('custom-control custom-radio custom-control-inline')} >
                             <input type="radio" className={classnames('custom-control-input', {
                                 'is-invalid': errors.userType

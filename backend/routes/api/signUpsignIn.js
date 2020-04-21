@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 var kafka = require('../../kafka/client');
+const validate = require('../../validation/signupLogin')
 
 //Load SignUpSignIn Model
 router.get('/signUp', (req, res) => res.json({ msg: "Sign Up Sign In working fine" }));
@@ -10,7 +11,13 @@ router.get('/signUp', (req, res) => res.json({ msg: "Sign Up Sign In working fin
 router.post("/signUpUser", async function (req, res) {
   console.log(req.body);
   console.log("In signup user route");
-  console.log(req.body);
+  const { errors, isValid } = validate.validateSignUp(req.body);
+  console.log(isValid);
+  if (!isValid) {
+      console.log(errors);
+      return res.status(400).json(errors);
+  }
+
   kafka.make_request("signupLogin_topic", { "path": "userSignUp", "body": req.body }, function (err, results) {
     console.log("In make request call back");
     console.log(results);
@@ -34,6 +41,13 @@ router.post("/signUpUser", async function (req, res) {
 router.post("/signIn", async function (req, res) {
   console.log("in signIn route");
   console.log(req.body);
+  const { errors, isValid } = validate.validateLogin(req.body);
+  console.log(isValid);
+  if (!isValid) {
+      console.log(errors);
+      return res.status(400).json(errors);
+  }
+
   kafka.make_request("signupLogin_topic", { "path": "login", "body": req.body }, function (err, results) {
     console.log("in make request call back signUpLogin_topic");
     console.log(results);
