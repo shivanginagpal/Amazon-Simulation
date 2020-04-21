@@ -5,7 +5,6 @@ var UserSchema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
-    profilePicture: {type: String, default: null},
     userType: {type: String, required:true}
 },
 {

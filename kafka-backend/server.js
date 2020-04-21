@@ -2,6 +2,7 @@ var connection =  new require('./kafka/Connection');
 
 //topics files
 var signupLoginTopics = require('./services/signUpLogin_topic');
+var sellerProfileTopics = require('./services/sellerProfile_topic');
 
 
 const mongoose = require('mongoose');
@@ -42,6 +43,11 @@ function handleTopicRequest(topic_name,fname){
                     return;
                 });
                 break;
+            case 'sellerProfile_topic':
+                fname.sellerProfileService(data.data, function (err, res) {
+                    response(data, res, producer);
+                    return;
+                });
         }
         
     });
@@ -70,3 +76,4 @@ function response(data, res, producer) {
 //second argument is a function that will handle this topic request
 handleTopicRequest("signupLogin_topic",signupLoginTopics);
 //handleTopicRequest("customerProfile_topic",customerProfileTopics);
+handleTopicRequest("sellerProfile_topic",sellerProfileTopics);

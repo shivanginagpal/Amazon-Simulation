@@ -6,11 +6,12 @@ import setAuthToken from '../Components/SignUp/helperApis';
 export const registeruser = (userData,history) => dispatch => {
      axios.post('/signUpUser', userData)
       .then(res => history.push('/login'))
-      .catch(err => 
+      .catch(err => {
+          console.log("Got an error",err);
         dispatch({
             type: GET_ERRORS,
             payload: err.response.data
-        })
+            })}
         );
 };
 
