@@ -19,6 +19,7 @@ mongoose
 
 var signUpSignIn = require('./routes/api/signUpSignIn');
 var sellerProfile = require('./routes/api/sellerProfile');
+var sellerRoutes = require('./routes/api/sellerRoutes');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -51,6 +52,7 @@ app.use(passport.initialize());
 
 app.use('/',signUpSignIn);
 app.use('/',sellerProfile);
+app.use('/',sellerRoutes);
 
 app.get('/',(req,res) => res.send('Hello World!!'));
 
