@@ -17,7 +17,7 @@ function addProduct(msg, callback) {
     console.log("In seller topic service. Msg: ", msg);
 
     ProductCategory.find({
-        $and: [{ "productCategoryName": msg.body.productCategory }, { "sender": msg.user._id }]
+        $and: [{ "productCategoryName": msg.body.productCategory }, { "seller": msg.user._id }]
     }).select().then(async result => {
         console.log("product received");
         console.log(result);
@@ -25,7 +25,7 @@ function addProduct(msg, callback) {
         if (result.length === 0) {
             var newProductCategory = new ProductCategory({
                 productCategoryName: msg.body.productCategory,
-                sender: msg.user._id,
+                seller: msg.user._id,
             })
 
             newProductCategory.save(async (error, result1) => {
