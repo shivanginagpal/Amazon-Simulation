@@ -203,9 +203,6 @@ a:focus {
 	outline: none;
 }
 
-.row { display: block; }
-.tm-left-right-container { width: 100%; }
-
 .tm-blue-bg {
 	background-color: #007777;
 	color: white;
@@ -408,7 +405,7 @@ textarea:-ms-input-placeholder {
 }
 
 @media (min-width: 1500px) {
-	.container { width: 100%; }
+	.login-container { width: 100%; }
 	p { margin-bottom: 30px; }
 
 	.tm-gallery-container {

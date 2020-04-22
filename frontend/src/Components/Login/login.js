@@ -74,7 +74,7 @@ class login extends Component {
                   <h1 style={{textAlign:"center"}}>Welcome Back</h1>
                 </div>
 
-                <div class="container">
+                <div class="login-container">
                   <div className = "form-group">
                   <input type="text" 
                   className={classnames('form-control form-control-lg', {

@@ -75,7 +75,7 @@ class signup extends Component {
                         <h1 style={{ textAlign: "center" }}>Please fill the following details</h1>
                     </div>
 
-                    <div class="container">
+                    <div class="login-container">
                         <input type="text"
                             className={classnames('form-control form-control-lg', {
                                 'is-invalid': errors.name
