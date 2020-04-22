@@ -94,6 +94,54 @@ router.post('/addPaymentInfo', passportAuth, (req, res) => {
 }
 );
 
+router.post('/updateAddress', passportAuth, (req, res) => {
+    console.log(req.body);
+    console.log(req.user);
+
+    console.log("In update Customer Profile update Address API", req.user);
+    kafka.make_request("customerProfile_topic", { "path": "updateAddress", "user": req.user, "body": req.body }, function (err, results) {
+        console.log("In make request call back", results);
+        if (err) {
+            console.log("Inside err");
+            console.log(err);
+            return res.status(err.status).send(err.message);
+        } else {
+            console.log("Inside else", results);
+            if (results.status === 200) {
+                return res.status(results.status).send(results.data);
+            } else {
+                return res.status(results.status).send(results.errors);
+            }
+        }
+    }
+    );
+}
+);
+
+router.post('/updatePaymentInfo', passportAuth, (req, res) => {
+    console.log(req.body);
+    console.log(req.user);
+
+    console.log("In update Customer Profile update PaymentInfo API", req.user);
+    kafka.make_request("customerProfile_topic", { "path": "updatePaymentInfo", "user": req.user, "body": req.body }, function (err, results) {
+        console.log("In make request call back", results);
+        if (err) {
+            console.log("Inside err");
+            console.log(err);
+            return res.status(err.status).send(err.message);
+        } else {
+            console.log("Inside else", results);
+            if (results.status === 200) {
+                return res.status(results.status).send(results.data);
+            } else {
+                return res.status(results.status).send(results.errors);
+            }
+        }
+    }
+    );
+}
+);
+
 router.delete('/deleteAddress', passportAuth, (req, res) => {
     console.log("In update Customer Profile Delete Address API", req.user);
     console.log(res.body);
