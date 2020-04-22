@@ -3,6 +3,7 @@ var connection = new require('./kafka/Connection');
 //topics files
 var signupLoginTopics = require('./services/signUpLogin_topic');
 var sellerProfileTopics = require('./services/sellerProfile_topic');
+var customerProfileTopics = require('./services/customerProfile_topic');
 var sellerTopics = require('./services/sellerTopic');
 
 
@@ -85,6 +86,6 @@ function response(data, res, producer) {
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("signupLogin_topic", signupLoginTopics);
-//handleTopicRequest("customerProfile_topic",customerProfileTopics);
+handleTopicRequest("customerProfile_topic",customerProfileTopics);
 handleTopicRequest("sellerProfile_topic", sellerProfileTopics);
 handleTopicRequest("seller_topic", sellerTopics);
