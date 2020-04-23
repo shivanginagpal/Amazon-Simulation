@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import Navbar from './adminNavbar';
 
+ class inventory extends Component {
 
- class adminHome extends Component {
     render() {
+        
         return (
             <div>
-                <Navbar />
-                "Welcome to admin Home"
+                <Navbar/>
+                Inventory
             </div>
         )
     }
 }
-export default adminHome;
+
+export default inventory;
