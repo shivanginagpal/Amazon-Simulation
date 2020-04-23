@@ -43,6 +43,7 @@ function addProduct(msg, callback) {
                         productName: msg.body.productName,
                         productPrice: msg.body.productPrice,
                         productDescription: msg.body.productDescription,
+                        productImage: msg.images.productImage,
                     }
                     ProductCategory.update(
                         { _id: result1._id },
@@ -73,11 +74,15 @@ function addProduct(msg, callback) {
                 productName: msg.body.productName,
                 productPrice: msg.body.productPrice,
                 productDescription: msg.body.productDescription,
+                productImage: msg.images.productImage,
             }
+            console.log(msg.images.productImage);
+            console.log(newProduct);
 
             ProductCategory.update(
                 { _id: result[0]._id },
-                { $push: { products: newProduct } },
+                //  { $push: { products: newProduct } },
+                { $addToSet: { products: newProduct } },
                 { new: true }
             )
                 .then(result3 => {

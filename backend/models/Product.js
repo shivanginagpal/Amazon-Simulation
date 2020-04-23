@@ -19,10 +19,10 @@ const ProductSchema = new Schema({
         type: Boolean,
         default: false
     },
-    productImage: [
-        {type: String,
-        default:""}
-    ],
+    productImage: {
+        type: Array,
+        default:""
+    },
     productRating: {
         type: Number
     },

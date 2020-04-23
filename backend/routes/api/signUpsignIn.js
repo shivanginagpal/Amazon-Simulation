@@ -51,7 +51,7 @@ router.post("/signIn", async function (req, res) {
   kafka.make_request("signupLogin_topic", { "path": "login", "body": req.body }, function (err, results) {
     console.log("in make request call back signUpLogin_topic");
     console.log(results);
-    console.log(err);
+    console.log("error" ,err);
     if (err) {
       console.log("Inside err");
       console.log(err);

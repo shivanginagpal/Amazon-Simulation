@@ -22,7 +22,7 @@ function checkFileType(file, cb) {
 // SETTING STORAGE
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/profilepics');
+        cb(null, './uploads/');
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));

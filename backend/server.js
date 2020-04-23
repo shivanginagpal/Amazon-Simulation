@@ -21,6 +21,7 @@ var signUpSignIn = require('./routes/api/signUpSignIn');
 var sellerProfile = require('./routes/api/sellerProfile');
 var customerProfile=require('./routes/api/customerProfile');
 var sellerRoutes = require('./routes/api/sellerRoutes');
+var adminRoutes = require('./routes/api/adminRoutes');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -55,6 +56,7 @@ app.use('/', signUpSignIn);
 app.use('/', sellerProfile);
 app.use('/', customerProfile);
 app.use('/', sellerRoutes);
+app.use('/', adminRoutes);
 
 app.get('/',(req,res) => res.send('Hello World!!'));
 
