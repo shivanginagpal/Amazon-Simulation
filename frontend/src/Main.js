@@ -5,7 +5,9 @@ import Login from './Components/Login/login';
 import Signup from './Components/SignUp/signup';
 import SellerHome from './Components/Seller/sellerHome';
 import CustomerHome from './Components/Customer/customerHome';
-import Customer from './Components/Profile/customer';
+import Customer from './Components/Customer/customer';
+import CustomerProfile from './Components/Customer/customerProfile';
+import CustomerAddresses from './Components/Customer/customerAddresses';
 
 class Main extends Component {
     render(){
@@ -17,6 +19,8 @@ class Main extends Component {
                     <Route path="/sellerHome" component={SellerHome}/>
                     <Route path="/customerHome" component={CustomerHome}/>
                     <Route path="/customer" component={Customer}/>
+                    <Route path="/customerProfile" component={CustomerProfile}/>
+                    <Route path="/customerAddresses" component={CustomerAddresses}/>
                 </div>
         )
     }

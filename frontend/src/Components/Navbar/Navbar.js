@@ -21,12 +21,12 @@ class Navbar extends Component {
         const guestLinks = (
             <div>
                 <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/signup">SignUp</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/signup">SignUp</a>
+                    </li>
                 </ul>
             </div>
         );
@@ -34,13 +34,26 @@ class Navbar extends Component {
         const authLinks = (
             <div>
                 <ul class="navbar-nav mr-auto">
-                <li class="nav-item nav-link text-light">
-                   {user.name}
-                </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Account & Orders
+                            </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/customer">Your Account</a>
+                            <a class="dropdown-item" href="/customer">Your Orders</a>
+                            <a class="dropdown-item" href="/customerAddresses">Your Addresses</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/" onClick={this.handleLogout.bind(this)}>Logout</a>
-                </li>
+                    <li class="nav-item nav-link text-light">
+                        {user.name}
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/" onClick={this.handleLogout.bind(this)}>Logout</a>
+                    </li>
                 </ul>
             </div>
         )
@@ -59,19 +72,9 @@ class Navbar extends Component {
                                 <a class="nav-link text-light" href="/" >Home <span class="sr-only">(current)</span></a>
                             </li>
 
-                            
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Dropdown
-                            </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </li>
+
+
                             <li class="nav-item">
                                 <a class="nav-link disabled text-light" href="#">Disabled</a>
                             </li>
