@@ -7,6 +7,7 @@ import SellerHome from './Components/Seller/sellerHome';
 import CustomerHome from './Components/Customer/customerHome';
 import Customer from './Components/Profile/customer';
 import adminHome from './Components/Admin/adminHome';
+import inventory from './Components/Admin/inventory';
 
 class Main extends Component {
     render(){
@@ -19,6 +20,7 @@ class Main extends Component {
                     <Route path="/customerHome" component={CustomerHome}/>
                     <Route path="/customer" component={Customer}/>
                     <Route path="/adminHome" component={adminHome}/>
+                    <Route path="/inventory" component={inventory}/>
                 </div>
         )
     }

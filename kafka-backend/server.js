@@ -5,6 +5,7 @@ var signupLoginTopics = require('./services/signUpLogin_topic');
 var sellerProfileTopics = require('./services/sellerProfile_topic');
 var customerProfileTopics = require('./services/customerProfile_topic');
 var sellerTopics = require('./services/sellerTopic');
+var adminTopics = require('./services/admin_topic');
 
 
 const mongoose = require('mongoose');
@@ -59,6 +60,12 @@ function handleTopicRequest(topic_name, fname) {
                     return;
                 });
                 break;
+            case 'admin_topic':
+                fname.adminService(data.data, function (err, res) {
+                    response(data, res, producer);
+                    return;
+                });
+                break;
         }
 
     });
@@ -89,3 +96,4 @@ handleTopicRequest("signupLogin_topic", signupLoginTopics);
 handleTopicRequest("customerProfile_topic",customerProfileTopics);
 handleTopicRequest("sellerProfile_topic", sellerProfileTopics);
 handleTopicRequest("seller_topic", sellerTopics);
+handleTopicRequest("admin_topic", adminTopics);
