@@ -10,7 +10,7 @@ export default class customer extends Component {
 
                 <div class="row profile">
                     <div class="col-md ya-card-cell">
-                        <a href="https://www.amazon.com/gp/your-account/order-history?ref_=ya_d_c_yo" class="ya-card__whole-card-link">
+                        <a href="#" class="ya-card__whole-card-link">
                           <div data-card-identifier="YourOrders" class="a-box ya-card--rich"><div class="a-box-inner">
                             <div class="a-row">
                               <div class="a-column a-span3">
@@ -28,19 +28,19 @@ export default class customer extends Component {
                         </a>
                       </div>
                     <br/>
-                    
+        
                     <div class="col-md ya-card-cell">
-                        <a href="https://www.amazon.com/gp/your-account/order-history?ref_=ya_d_c_yo" class="ya-card__whole-card-link">
-                          <div data-card-identifier="YourOrders" class="a-box ya-card--rich"><div class="a-box-inner">
+                        <a href="/customerProfile" class="ya-card__whole-card-link">
+                          <div data-card-identifier="SignInAndSecurity" class="a-box ya-card--rich"><div class="a-box-inner">
                             <div class="a-row">
                               <div class="a-column a-span3">
-                                <img alt="Your Orders" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/ya/images/Box._CB485927553_.png"/>
+                                <img alt="Login &amp; security" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/ya/images/sign-in-lock._CB485931485_.png"/>
                               </div>
                               <div class="a-column a-span9 a-span-last">
                                 <h2 class="a-spacing-none ya-card__heading--rich a-text-normal">
-                                  Your Orders
+                                Login &amp; security
                                 </h2>
-                                <div><span class="a-color-secondary">Track, return, or buy things again</span></div>
+                                <div><span class="a-color-secondary">Edit login, name, and mobile number</span></div>
                                 
                               </div>
                             </div>
@@ -50,17 +50,17 @@ export default class customer extends Component {
                     <br/>
 
                     <div class="col-md ya-card-cell">
-                        <a href="https://www.amazon.com/gp/your-account/order-history?ref_=ya_d_c_yo" class="ya-card__whole-card-link">
-                          <div data-card-identifier="YourOrders" class="a-box ya-card--rich"><div class="a-box-inner">
+                        <a href="#" class="ya-card__whole-card-link">
+                          <div data-card-identifier="NewLinkGiftCards" class="a-box ya-card--rich"><div class="a-box-inner">
                             <div class="a-row">
                               <div class="a-column a-span3">
-                                <img alt="Your Orders" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/ya/images/Box._CB485927553_.png"/>
+                                <img alt="Gift cards" src="https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/ya/images/blackgc2._CB446992237_.png"/>
                               </div>
                               <div class="a-column a-span9 a-span-last">
                                 <h2 class="a-spacing-none ya-card__heading--rich a-text-normal">
-                                  Your Orders
+                                  Gift cards
                                 </h2>
-                                <div><span class="a-color-secondary">Track, return, or buy things again</span></div>
+                                <div><span class="a-color-secondary">View balance or redeem a card</span></div>
                                 
                               </div>
                             </div>
