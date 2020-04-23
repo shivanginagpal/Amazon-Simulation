@@ -10,7 +10,7 @@ const helper = require('./helperFunctions');
 // @desc    Post new product
 // @access  Private
 
-router.post("/addProduct", helper.upload.array('productImage',5),passportAuth, async function (req, res) {
+router.post("/addProduct/:type", helper.upload.array('productImage',5),passportAuth, async function (req, res) {
  
   console.log(req.files);
  

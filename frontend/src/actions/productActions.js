@@ -6,7 +6,7 @@ export const postProduct = (formdata,history) => dispatch => {
     console.log("Inside post product actions")
     console.log(formdata);
     
-    axios.post('/addProduct', formdata)
+    axios.post('/addProduct/productImage', formdata)
     .then(res => history.push('/sellerHome'))
     .catch(err => {
         console.log("Got an error",err);
