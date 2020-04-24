@@ -64,7 +64,7 @@ class signup extends Component {
         const { errors } = this.state;
         
         return (
-            <div>
+            <div className="bgimg">
                 <Navbar />
                 <br />
                 <br />

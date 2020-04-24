@@ -16,7 +16,7 @@ import AddProduct from './Components/Products/AddProduct';
 class Main extends Component {
     render() {
         return (
-                <div className="bgimg"> 
+                <div> 
                     <Route exact path="/" component={Home}/> 
                     <Route path="/login" component={Login}/>
                     <Route path="/signup" component={Signup}/>
