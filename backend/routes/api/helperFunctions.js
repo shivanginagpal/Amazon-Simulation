@@ -2,6 +2,7 @@
 
 const path = require('path');
 const multer = require('multer');
+let fs = require('fs-extra');
 
 // Check File Type
 function checkFileType(file, cb) {
@@ -22,7 +23,10 @@ function checkFileType(file, cb) {
 // SETTING STORAGE
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/profilepics');
+        let type = req.params.type;
+        let path = `./uploads/${type}`;
+        fs.mkdirsSync(path);
+        cb(null, path);
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));

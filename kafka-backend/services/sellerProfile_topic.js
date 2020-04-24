@@ -20,16 +20,39 @@ exports.sellerProfileService = function sellerProfileService(msg, callback) {
     }
 };
 
+function getSellerProfile(msg, callback) {
+    let err = {};
+    let response = {};
+    console.log("In getSellerProfile. Msg: ", msg);
+    console.log(msg.user._id);
+    Seller.findOne({ seller: msg.user._id })
+        .populate('seller', ['name', 'email'])
+        .then(profile => {
+
+            if (!profile) {
+                err.noprofile = 'There is no profile for this user';
+                err.status = 404;
+                return callback(null, err);
+            }
+            response.data = profile;
+            response.status = 200;
+            return callback(null, response);
+        })
+        .catch(err => {
+            return callback(null, err);
+        });
+}
+
 function updateSellerProfile(msg, callback) {
     let err = {};
     let response = {};
     console.log("In update Seller Profile Msg: ", msg);
 
-    Seller.findOne({ user: msg.user._id }).then(profile => {
+    Seller.findOne({ seller: msg.user._id }).then(profile => {
         if (profile) {
             // Update
             Seller.findOneAndUpdate(
-                { user: msg.user._id },
+                { seller: msg.user._id },
                 { $set: msg.profileFields },
                 { new: true }
             ).then(profile => {

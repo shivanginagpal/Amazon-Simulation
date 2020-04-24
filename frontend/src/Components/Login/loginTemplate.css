@@ -1,5 +1,5 @@
 * {box-sizing: border-box}
-body {font-family: Verdana, sans-serif; margin:0}
+body {font-family: Verdana, sans-serif; margin:0;background: #e5e5e5;}
 .mySlides {display: none}
 img {vertical-align: middle;}
 
@@ -203,9 +203,6 @@ a:focus {
 	outline: none;
 }
 
-.row { display: block; }
-.tm-left-right-container { width: 100%; }
-
 .tm-blue-bg {
 	background-color: #007777;
 	color: white;
@@ -408,7 +405,7 @@ textarea:-ms-input-placeholder {
 }
 
 @media (min-width: 1500px) {
-	.container { width: 100%; }
+	.login-container { width: 100%; }
 	p { margin-bottom: 30px; }
 
 	.tm-gallery-container {

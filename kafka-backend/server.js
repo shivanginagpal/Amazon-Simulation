@@ -1,8 +1,11 @@
-var connection =  new require('./kafka/Connection');
+var connection = new require('./kafka/Connection');
 
 //topics files
 var signupLoginTopics = require('./services/signUpLogin_topic');
 var sellerProfileTopics = require('./services/sellerProfile_topic');
+var customerProfileTopics = require('./services/customerProfile_topic');
+var sellerTopics = require('./services/sellerTopic');
+var adminTopics = require('./services/admin_topic');
 
 
 const mongoose = require('mongoose');
@@ -10,26 +13,28 @@ const mongoose = require('mongoose');
 const db = require('./config/keys').mongoURI;
 //connect to mongoDB
 mongoose
-  .connect(db,
-    {useNewUrlParser: true,
-     useUnifiedTopology: true,
-     poolSize: 100,
-     useCreateIndex: true})
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+    .connect(db,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            poolSize: 100,
+            useCreateIndex: true
+        })
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
 
-function handleTopicRequest(topic_name,fname){
+function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
     var consumer = connection.getConsumer(topic_name);
     var producer = connection.getProducer();
     console.log('server is running ');
     consumer.on('message', function (message) {
-        console.log('message received for ' + topic_name +" ", fname);
+        console.log('message received for ' + topic_name + " ", fname);
         console.log(JSON.stringify(message.value));
         var data = JSON.parse(message.value);
-        
+
         switch (topic_name) {
-            
+
             case 'signupLogin_topic':
                 fname.signUpLoginService(data.data, function (err, res) {
                     response(data, res, producer);
@@ -48,8 +53,21 @@ function handleTopicRequest(topic_name,fname){
                     response(data, res, producer);
                     return;
                 });
+                break;
+            case 'seller_topic':
+                fname.sellerService(data.data, function (err, res) {
+                    response(data, res, producer);
+                    return;
+                });
+                break;
+            case 'admin_topic':
+                fname.adminService(data.data, function (err, res) {
+                    response(data, res, producer);
+                    return;
+                });
+                break;
         }
-        
+
     });
 }
 
@@ -74,6 +92,8 @@ function response(data, res, producer) {
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
-handleTopicRequest("signupLogin_topic",signupLoginTopics);
-//handleTopicRequest("customerProfile_topic",customerProfileTopics);
-handleTopicRequest("sellerProfile_topic",sellerProfileTopics);
+handleTopicRequest("signupLogin_topic", signupLoginTopics);
+handleTopicRequest("customerProfile_topic",customerProfileTopics);
+handleTopicRequest("sellerProfile_topic", sellerProfileTopics);
+handleTopicRequest("seller_topic", sellerTopics);
+handleTopicRequest("admin_topic", adminTopics);
