@@ -47,7 +47,7 @@ async function getCustomerProfile(msg, callback) {
     let response = {};
     console.log("In get Customer Profile Msg: ", msg);
     Customer.findOne({ customer: msg.user._id })
-        .populate('user', ['name', 'img', 'email'])
+        .populate('customer', ['name', 'email'])
         .then(customer => {
             console.log(customer);
             if (!customer) {
