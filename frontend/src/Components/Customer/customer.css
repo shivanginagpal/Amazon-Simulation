@@ -109,3 +109,11 @@ body {
   .profile {
     margin: 50px 0;
   }
+
+  #userInfo {
+    padding: 25px 50px 75px 350px;
+  }
+
+  #infoCard {
+    margin-bottom: 10px;
+  }
