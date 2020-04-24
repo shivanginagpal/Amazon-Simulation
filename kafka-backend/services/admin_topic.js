@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var { addProductCat } = require('../models/addProductCat');
+var { ProductCategory } = require('../models/ProductCategory');
 
 exports.adminService = function adminService(msg, callback) {
     console.log("In admin Profile service path:", msg.path);
@@ -9,6 +10,9 @@ exports.adminService = function adminService(msg, callback) {
             break;
         case "getProductCategories":
             getProductCategories(msg, callback);
+            break;
+        case "removeProductCategory":
+            removeProductCategory(msg, callback);
             break;
     }
 
@@ -49,7 +53,6 @@ function addProductCategory(msg, callback) {
         err.data = error;
         return callback(err, null);
     })
-
 }
 
 function getProductCategories(msg, callback) {
@@ -77,6 +80,36 @@ function getProductCategories(msg, callback) {
             err.data = error;
             return callback(err, null);
         })
+}
 
-
+function removeProductCategory(msg,callback){
+    let response = {};
+    let err = {};
+    console.log("In admin topic service. Msg: ", msg);
+    
+    ProductCategory.find({"productCategoryName": msg.body.productCategory
+    }).select().then(async result => {
+        if(result.length === 0){
+            addProductCat.deleteOne({ "productCategoryName": msg.body.productCategory})
+            .then(result => {
+                response.message="successfully removed product category";
+                response.status=200;
+                return callback(null, response)
+            }).catch(err => {
+                err.status = 400;
+                err.message = "Error in removing category";
+                return callback(err, null);
+            });
+        } else {
+            response.status = 401;
+            response.message = "Product category contains Products cannot be removed";
+            return callback(null, response);
+        }
+    }).catch(error => {
+        console.log(error);
+        err.status = 412;
+        err.message = "could not remove product category";
+        err.data = error;
+        return callback(err, null);
+    })
 }
