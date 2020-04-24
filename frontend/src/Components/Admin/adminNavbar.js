@@ -75,6 +75,9 @@ class Navbar extends Component {
                             <li class="nav-item">
                                 <a class="nav-link disabled text-light" href="/inventory">Inventory</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled text-light" href="/viewSellerList">View Sellers</a>
+                            </li>
                         </ul>
                         {isAuthenticated ? authLinks : guestLinks}
                         <form class="form-inline my-2 my-lg-0">
