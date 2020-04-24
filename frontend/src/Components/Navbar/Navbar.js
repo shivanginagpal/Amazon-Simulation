@@ -17,7 +17,53 @@ class Navbar extends Component {
     }
     render() {
         const { isAuthenticated, user } = this.props.auth;
+        
+        let customerLinks = null;
+        let sellerLinks = null;
+        let authLinks = null;
+        
+        if (isAuthenticated){
+            const { userType } = user.userType;
+            customerLinks = (
+                <div>
+                    <a class="dropdown-item" href="/customer">Your Account</a>
+                    <a class="dropdown-item" href="/customer">Your Orders</a>
+                    <a class="dropdown-item" href="/customerAddresses">Your Addresses</a>
+                </div>
+            )
 
+            sellerLinks = (
+                <div>
+                    <a class="dropdown-item" href="/sellerOptions">Your Account</a>
+                    <a class="dropdown-item" href="/sellerOrders">Your Received Orders</a>
+                </div>
+            )
+
+            authLinks = (
+                <div>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Account & Orders
+                                </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {userType === 'customer' ? customerLinks:sellerLinks}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+    
+                        <li class="nav-item nav-link text-light">
+                            {user.name}
+                        </li>
+    
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/" onClick={this.handleLogout.bind(this)}>Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            )
+    }
         const guestLinks = (
             <div>
                 <ul class="navbar-nav mr-auto">
@@ -31,32 +77,7 @@ class Navbar extends Component {
             </div>
         );
 
-        const authLinks = (
-            <div>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Account & Orders
-                            </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/customer">Your Account</a>
-                            <a class="dropdown-item" href="/customer">Your Orders</a>
-                            <a class="dropdown-item" href="/customerAddresses">Your Addresses</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-
-                    <li class="nav-item nav-link text-light">
-                        {user.name}
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="/" onClick={this.handleLogout.bind(this)}>Logout</a>
-                    </li>
-                </ul>
-            </div>
-        )
+        
 
         return (
             <div>

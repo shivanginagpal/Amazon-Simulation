@@ -13,6 +13,10 @@ exports.signUpLoginService = function signUpLoginService(msg, callback) {
         case "login":
             loginUser(msg, callback);
             break;
+
+        case "updateUserInfo":
+            updateUserInfo(msg, callback);
+            break;
     }
 };
 
@@ -112,7 +116,7 @@ async function loginUser(msg, callback) {
                     return callback(null, err);
                 } else {
                     console.log("Valid User");
-                    const payload = { id: user.id, name: user.name, userType: userType }; // Create JWT Payload
+                    const payload = { id: user.id, name: user.name, userType: userType, email: user.email }; // Create JWT Payload
 
                     console.log(payload);
                     var token = jwt.sign(payload, keys.secret, {
@@ -133,4 +137,37 @@ async function loginUser(msg, callback) {
         err.message = "Internal Server Error";
         return callback(err, null);
     }
+}
+
+async function updateUserInfo(msg,callback){
+    console.log("Inside loginUser in kafka backend signUpLogin topic");
+    let response = {};
+    let err = {};
+    console.log("Msg Body", msg.body);
+
+    await User.findOneAndUpdate(
+        { _id: msg.user._id },
+        { $set: msg.body },
+    ).then(user => {
+        console.log("user updated");
+    }).catch(err => console.log(err));
+
+    User.findOne({_id: msg.user._id }
+        ).then(user =>{
+            console.log(user);
+            const payload = { id: user.id, name: user.name, userType: user.userType, email: user.email }; // Create JWT Payload
+
+                    console.log(payload);
+                    var token = jwt.sign(payload, keys.secret, {
+                        expiresIn: 900000 // in seconds
+                    });
+
+                    response.status = 200;
+                    response.data = {
+                        success: true,
+                        token: 'Bearer ' + token
+                    };
+                    return callback(null, response);
+        }).catch(err => console.log(err));
+
 }
