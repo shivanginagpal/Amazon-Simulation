@@ -8,8 +8,10 @@ import CustomerHome from './Components/Customer/customerHome';
 import Customer from './Components/Customer/customer';
 import CustomerProfile from './Components/Customer/customerProfile';
 import CustomerAddresses from './Components/Customer/customerAddresses';
+//admin
 import adminHome from './Components/Admin/adminHome';
 import inventory from './Components/Admin/inventory';
+import viewSellerList from './Components/Admin/viewSellerList';
 //Products
 import AddProduct from './Components/Products/AddProduct';
 
@@ -27,6 +29,7 @@ class Main extends Component {
                     <Route path="/customerAddresses" component={CustomerAddresses}/>
                     <Route path="/adminHome" component={adminHome} />
                     <Route path="/inventory" component={inventory} />
+                    <Route path="/viewSellerList" component={viewSellerList} />       
                     <Route path="/addProduct" component={AddProduct} />
                 </div>
         )
