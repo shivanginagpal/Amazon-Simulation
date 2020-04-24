@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var { addProductCat } = require('../models/addProductCat');
 var { ProductCategory } = require('../models/ProductCategory');
+const User = require('../models/User');
 
 exports.adminService = function adminService(msg, callback) {
     console.log("In admin Profile service path:", msg.path);
@@ -14,9 +15,11 @@ exports.adminService = function adminService(msg, callback) {
         case "removeProductCategory":
             removeProductCategory(msg, callback);
             break;
+        case "viewSellersList":
+            viewSellersList(msg, callback);
+            break;
     }
-
-};
+}; 
 
 function addProductCategory(msg, callback) {
     let response = {};
@@ -112,4 +115,23 @@ function removeProductCategory(msg,callback){
         err.data = error;
         return callback(err, null);
     })
+}
+
+async function viewSellersList(msg,callback){
+    let response = {};
+    let err = {};
+    console.log("In admin topic service. Msg: ", msg);
+    return await User.find({ "userType": "seller"})
+        .then((result) => {
+            response.status = 200;
+            response.message = "successfully retrieved sellers";
+            response.data = result;
+            return callback(null, response);   
+        }).catch((error) => {
+            err.status = 400;
+            err.message = "error in getting sellers";
+            err.data = error;
+            return callback(err, null);
+        });
+
 }
