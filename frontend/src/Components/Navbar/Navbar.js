@@ -56,6 +56,10 @@ class Navbar extends Component {
                         <li class="nav-item nav-link text-light">
                             {user.name}
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/cart" >Cart</a>
+                        </li>
     
                         <li class="nav-item">
                             <a class="nav-link text-light" href="/" onClick={this.handleLogout.bind(this)}>Logout</a>
@@ -72,6 +76,9 @@ class Navbar extends Component {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="/signup">SignUp</a>
+                    </li>
+                    <li class="nav-item">
+                            <a class="nav-link text-light" href="/cart" >Cart</a>
                     </li>
                 </ul>
             </div>
