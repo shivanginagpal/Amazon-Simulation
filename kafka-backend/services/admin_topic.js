@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var { addProductCat } = require('../models/addProductCat');
 var { ProductCategory } = require('../models/ProductCategory');
+const {prepareSuccess,prepareInternalServerError,prepareNoContent} = require('./responses');
 const User = require('../models/User');
 
 exports.adminService = function adminService(msg, callback) {
@@ -66,21 +67,15 @@ function getProductCategories(msg, callback) {
     addProductCat.find().select('productCategoryName')
         .then(async result => {
             if (result.length === 0) {
-                response.message = "Product Categories not found";
-                response.status = 201;
+                response = prepareNoContent(result);
                 return callback(null, response);
             }
             else {
-                response.data = result;
-                response.status = 200;
-                response.message = "Product categories found";
+                response = prepareSuccess(result);
                 return callback(null, response);
             }
         }).catch(error => {
-            console.log(error);
-            err.status = 412;
-            err.message = "Could not find product";
-            err.data = error;
+            err = prepareInternalServerError(error);
             return callback(err, null);
         })
 }

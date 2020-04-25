@@ -1,4 +1,6 @@
 const { Cart } = require('../models/Cart');
+const {prepareSuccess,prepareInternalServerError} = require('./responses');
+const GIFT_CHARGE = 2;
 
 exports.cartService = function cartService(msg, callback) {
     console.log("In cart topic Service path:", msg.path);
@@ -22,7 +24,7 @@ async function addToCart(msg, callback) {
     if (msg.body.gift === true) {
         newProduct["gift"] = true;
         newProduct["giftMessage"] = msg.body.giftMessage;
-        msg.body.productTotal += 2;
+        msg.body.productTotal += GIFT_CHARGE;
     }
 
     await Cart.findOneAndUpdate({ "customerEmail": msg.user.email }).then(cart => {
@@ -30,23 +32,19 @@ async function addToCart(msg, callback) {
             let existingProduct = cart.products.find(product => product.productId == msg.body.productId)
 
             if (existingProduct) {
+                //do not handle gift for same product being added multiple times
                 if (msg.body.gift === true)
-                    msg.body.productTotal -= 2;
+                    msg.body.productTotal -= GIFT_CHARGE;
 
                 cart.totalAmount += msg.body.productTotal;
                 existingProduct.productQuantity += msg.body.productQuantity;
 
                 cart.save().then(result => {
-                    console.log("product already in cart increasing the amount and quantity" + result);
-                    response.status = 200;
-                    response.message = "product already in cart increasing the amount and quantity";
+                    response = prepareSuccess(result);
                     return callback(null, response);
                 })
                     .catch(error => {
-                        console.log(error);
-                        err.status = 411;
-                        err.message = "could not append product inside cart";
-                        err.data = error;
+                        err = prepareInternalServerError(error);
                         return callback(err, null);
                     })
             }
@@ -55,16 +53,11 @@ async function addToCart(msg, callback) {
                 cart.totalAmount += msg.body.productTotal;
                 cart.products = newProduct;
                 cart.save().then(result => {
-                    console.log("adding product to customers cart" + result);
-                    response.status = 200;
-                    response.message = "adding product to customers cart";
+                    response = prepareSuccess(result);
                     return callback(null, response);
                 })
                     .catch(error => {
-                        console.log(error);
-                        err.status = 411;
-                        err.message = "could not append product inside cart";
-                        err.data = error;
+                        err = prepareInternalServerError(error);
                         return callback(err, null);
                     })
             }
@@ -76,16 +69,11 @@ async function addToCart(msg, callback) {
                 totalAmount: msg.body.productTotal,
             })
             newCart.save().then(result => {
-                console.log("creating cart and adding product" + result);
-                response.status = 200;
-                response.message = "creating cart and adding product";
+                response = prepareSuccess(result);
                 return callback(null, response);
             })
                 .catch(error => {
-                    console.log(error);
-                    err.status = 411;
-                    err.message = "could not append product inside cart";
-                    err.data = error;
+                    err = prepareInternalServerError(error);
                     return callback(err, null);
                 })
         }
