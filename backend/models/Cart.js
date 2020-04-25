@@ -3,10 +3,16 @@ var Schema = mongoose.Schema;
 
 var product = {
 	productId: {type: Schema.Types.ObjectId},
-	productQuantity: {type: Number},
+  productQuantity: {type: Number},
+  productPrice: {type: String},
 	gift: {type: Boolean, default: false},
 	giftMessage: {type: String, default: ""},
-	giftCharge: {type: Number, default: 2}
+  giftCharge: {type: Number, default: 2},
+  cartStatus: {
+    type: String,
+        enum: ["IN_CART", "SAVED_FOR_LATER"]
+  }
+  
 }
 
 const CartSchema = new Schema({
@@ -17,19 +23,15 @@ const CartSchema = new Schema({
     type: String
   },
   products: [product],
-  subTotal : {
-    type: Number
-  },
-  tax : {
-    type: Number
-  },
+ 
   totalAmount: {
     type: Number
-  },
-  cartStatus: {
-    type: String,
-        enum: ["IN_CART", "SAVED_FOR_LATER"]
   }
+ 
 });
 
-modules.export = Cart = mongoose.model('cart',CartSchema)
+
+
+var Cart = mongoose.model("Cart", CartSchema);
+exports.Cart = Cart;
+exports.CartSchema = CartSchema;

@@ -6,6 +6,8 @@ var sellerProfileTopics = require('./services/sellerProfile_topic');
 var customerProfileTopics = require('./services/customerProfile_topic');
 var sellerTopics = require('./services/sellerTopic');
 var adminTopics = require('./services/admin_topic');
+//var customerTopics = require('./services/customer_topics');
+var cartTopics = require('./services/cart_topics');
 
 
 const mongoose = require('mongoose');
@@ -66,6 +68,18 @@ function handleTopicRequest(topic_name, fname) {
                     return;
                 });
                 break;
+            // case 'customer_topic':
+            //     fname.customerService(data.data, function (err, res) {
+            //         response(data, res, producer);
+            //         return;
+            //     });
+            //     break;
+            case 'cart_topic':
+                fname.cartService(data.data, function (err, res) {
+                    response(data, res, producer);
+                    return;
+                });
+                break;
         }
 
     });
@@ -93,7 +107,9 @@ function response(data, res, producer) {
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("signupLogin_topic", signupLoginTopics);
-handleTopicRequest("customerProfile_topic",customerProfileTopics);
+handleTopicRequest("customerProfile_topic", customerProfileTopics);
 handleTopicRequest("sellerProfile_topic", sellerProfileTopics);
 handleTopicRequest("seller_topic", sellerTopics);
 handleTopicRequest("admin_topic", adminTopics);
+//handleTopicRequest("customer_topic", customerTopics);
+handleTopicRequest("cart_topic", cartTopics);
