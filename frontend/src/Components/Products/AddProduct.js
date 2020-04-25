@@ -200,15 +200,15 @@ class AddProduct extends Component {
                         <div className="col-md-12">
                             <div id="accordion">
                                 <div className="card">
-                                    <div className="card-header">
-                                        <a className="card-link" data-toggle="collapse" href="#collapseOne">
+                                    <div className="card-header" id = "product-header">
+                                        <a className="card-link" id="product-link" data-toggle="collapse" href="#collapseOne">
                                             Add Product
                                         </a>
                                     </div>
                                     <div id="collapseOne" className="collapse show" data-parent="#accordion">
-                                        <div className="card-body">
+                                        <div className="card-body" id="product-body">
                                             <div className="row">
-                                                <div className="card-body">
+                                                <div className="card-body text-center">
                                                     <h2>Please Enter Product details</h2>
                                                     <hr />
                                                     <div className="card-body border">
@@ -246,13 +246,13 @@ class AddProduct extends Component {
 
 
                     <div className="card">
-                        <div className="card-header">
-                            <a className="collapsed card-link" data-toggle="collapse" href="#collapseFour">
+                        <div className="card-header" id="product-header">
+                            <a className="collapsed card-link" id="product-link" data-toggle="collapse" href="#collapseFour">
                                 Product Photos
                            </a>
                         </div>
                         <div id="collapseFour" className="collapse" data-parent="#accordion">
-                            <div className="card-body">
+                            <div className="card-body text-center">
                                 <h2>Add up to 5 photos of your product</h2>
                                 <hr />
                                 <div className="container">
