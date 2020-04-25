@@ -3,7 +3,6 @@ const prepareSuccess = (data = {}) => {
         status: 200,
         message: "Successful",
         data: data,
-        
     };
     console.log("preparing success response with code 200");
     console.log(responseData);
@@ -24,7 +23,7 @@ const prepareInternalServerError = (data = {}) => {
     return responseData;
 }
 
-const prepareNoContent = (data ={}) =>{
+const prepareNoContent = (data = {}) => {
     const responseData = {
         code: 201,
         data: {
@@ -38,5 +37,7 @@ const prepareNoContent = (data ={}) =>{
     return responseData;
 }
 
-module.exports = { prepareSuccess, prepareNoContent,
-     prepareInternalServerError };
+module.exports = {
+    prepareSuccess, prepareNoContent,
+    prepareInternalServerError
+};
