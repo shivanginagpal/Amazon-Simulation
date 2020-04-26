@@ -142,10 +142,10 @@ router.post('/updatePaymentInfo', passportAuth, (req, res) => {
 }
 );
 
-router.delete('/deleteAddress', passportAuth, (req, res) => {
+router.delete('/deleteAddress/:_id', passportAuth, (req, res) => {
     console.log("In update Customer Profile Delete Address API", req.user);
-    console.log(res.body);
-    kafka.make_request("customerProfile_topic", { "path": "deleteAddress", "user": req.user, "body": req.body }, function (err, results) {
+    console.log(res.params);
+    kafka.make_request("customerProfile_topic", { "path": "deleteAddress", "user": req.user, "body": req.params }, function (err, results) {
         console.log("In make request call back", results);
         if (err) {
             console.log("Inside err");
