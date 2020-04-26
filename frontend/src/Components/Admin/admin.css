@@ -2,3 +2,11 @@
  #viewSellerList{
     margin-top: 100px;
 }
+
+
+
+.modal-popup{
+    max-width: 50%;
+    overflow: hidden;
+    height: 80%;
+}

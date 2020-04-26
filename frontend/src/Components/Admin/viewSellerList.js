@@ -34,28 +34,17 @@ import { Link } from "react-router-dom";
                 return (
                     <tr>
                         <td>{seller.name}</td>
-                        {/* <td>{student.last_name}</td>
-                        <td>{student.college_name}</td>
-                        <td>{student.skill_set}</td> */}
                         <td>
-                            {/* <input
-                       type="button"
-                       className="btn btn-primary btn-sm"
-                       //onClick={}
-                       value="view Profile"
-                     /> */}
                             <Link
                                 to="/viewsellerProfile"
                                 className="btn btn-primary btn-sm"
                             >
                                 View Profile
-                    </Link>
+                            </Link>
                         </td>
                     </tr>
-
                 )
             }
-
         })
         return (
             <div>
