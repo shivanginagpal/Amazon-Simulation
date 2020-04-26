@@ -14,8 +14,8 @@ var productsSchema = new Schema({
         type: String,
         required: true
     },
-    productSellerName: {
-        type: String, 
+    productSellerId: {
+        type: Schema.Types.ObjectId, 
         required: true
     }
 })

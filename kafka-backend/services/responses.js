@@ -12,14 +12,14 @@ const prepareSuccess = (data = {}) => {
 
 const prepareInternalServerError = (data = {}) => {
     const responseData = {
-        status: 411,
+        status: 500,
         message: "Internal Server Error",
         data: {
             success: false,
             ...data
         }
     };
-    console.log("preparing internal server error response with code 411");
+    console.log("preparing internal server error response with code 500");
     console.log(responseData);
     return responseData;
 }
