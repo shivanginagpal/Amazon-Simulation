@@ -23,12 +23,16 @@ class Navbar extends Component {
         let authLinks = null;
         
         if (isAuthenticated){
-            const { userType } = user.userType;
+            const { userType } = user;
+            
             customerLinks = (
                 <div>
                     <a class="dropdown-item" href="/customer">Your Account</a>
                     <a class="dropdown-item" href="/customer">Your Orders</a>
                     <a class="dropdown-item" href="/customerAddresses">Your Addresses</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/paymentInfo">Payment Options</a>
+                    <a class="dropdown-item" href="#">Your Amazon Profile</a>
                 </div>
             )
 
@@ -36,6 +40,8 @@ class Navbar extends Component {
                 <div>
                     <a class="dropdown-item" href="/sellerOptions">Your Account</a>
                     <a class="dropdown-item" href="/sellerOrders">Your Received Orders</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Your Amazon Profile</a>
                 </div>
             )
 
@@ -47,9 +53,7 @@ class Navbar extends Component {
                                 Account & Orders
                                 </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {userType === 'customer' ? customerLinks:sellerLinks}
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                {(userType === 'customer') ? customerLinks:sellerLinks}
                             </div>
                         </li>
     

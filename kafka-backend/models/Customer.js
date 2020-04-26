@@ -15,7 +15,8 @@ var address = {
 
 var paymentInfo = {
 	cardNumber : {type: String, required: true}, 
-    expiryDate : {type: String, required: true}, 
+	expiryYear : {type: String, required: true},
+	expiryMonth : {type: String, required: true}, 
 	name : {type: String, required: true}, 
 	cvv : {type: String, required: true}
 }

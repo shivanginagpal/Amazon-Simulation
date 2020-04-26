@@ -17,6 +17,8 @@ import AddProduct from './Components/Products/AddProduct';
 import EditName from './Components/User/editName';
 import EditEmail from './Components/User/editEmail';
 import SellerOptions from './Components/Seller/sellerOptions';
+import AddNewAddress from './Components/Addresses/addNewAddress';
+import PaymentInfo from './Components/PaymentOptions/paymentInfo';
 
 class Main extends Component {
     render() {
@@ -37,6 +39,8 @@ class Main extends Component {
                     <Route path="/editName" component={EditName}/>
                     <Route path="/editEmail" component={EditEmail}/>
                     <Route path="/sellerOptions" component={SellerOptions}/>
+                    <Route path="/addNewAddress" component={AddNewAddress}/>
+                    <Route path="/paymentInfo" component={PaymentInfo}/>
                 </div>
         )
     }

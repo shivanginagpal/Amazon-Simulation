@@ -143,7 +143,8 @@ async function addPaymentInfo(msg, callback) {
         if (profile) {
             const newPayment = {
                 cardNumber: msg.body.cardNumber,
-                expiryDate: msg.body.expiryDate,
+                expiryYear: msg.body.expiryYear,
+                expiryMonth: msg.body.expiryMonth,
                 name: msg.body.name,
                 cvv: msg.body.cvv,
             };
