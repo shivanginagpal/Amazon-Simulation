@@ -88,7 +88,7 @@ function removeProductCategory(msg,callback){
     ProductCategory.find({"productCategoryName": msg.body.productCategory
     }).select().then(async result => {
         if(result.length === 0){
-            addProductCat.deleteOne({ "productCategoryName": msg.body.productCategory})
+            addProductCat.deleteOne({ "_id": msg.body.id})
             .then(result => {
                 response.message="successfully removed product category";
                 response.status=200;
@@ -99,7 +99,7 @@ function removeProductCategory(msg,callback){
                 return callback(err, null);
             });
         } else {
-            response.status = 401;
+            response.status = 201;
             response.message = "Product category contains Products cannot be removed";
             return callback(null, response);
         }
