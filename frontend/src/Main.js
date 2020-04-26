@@ -7,6 +7,8 @@ import SellerHome from './Components/Seller/sellerHome';
 import CustomerHome from './Components/Customer/customerHome';
 import Customer from './Components/Customer/customer';
 import UserProfile from './Components/User/userProfile';
+import CustomerAddresses from './Components/Customer/customerAddresses';
+import Cart from './Components/Cart/Cart';
 //admin
 import adminHome from './Components/Admin/adminHome';
 import inventory from './Components/Admin/inventory';
@@ -38,6 +40,7 @@ class Main extends Component {
                     <Route path="/editName" component={EditName}/>
                     <Route path="/editEmail" component={EditEmail}/>
                     <Route path="/sellerOptions" component={SellerOptions}/>
+                    <Route path="/cart" component={Cart}/>
                     <Route path="/addNewAddress" component={AddNewAddress}/>
                     <Route path="/paymentInfo" component={PaymentInfo}/>
                     <Route path="/savedAddresses" component={SavedAddresses}/>

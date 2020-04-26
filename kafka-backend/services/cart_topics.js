@@ -1,12 +1,17 @@
 const { Cart } = require('../models/Cart');
 const { prepareSuccess, prepareInternalServerError } = require('./responses');
 const GIFT_CHARGE = 2;
+const Seller = require('../models/Seller');
+const User = require('../models/User');
 
 exports.cartService = function cartService(msg, callback) {
     console.log("In cart topic Service path:", msg.path);
     switch (msg.path) {
         case "addToCart":
             addToCart(msg, callback);
+            break;
+        case "getCart":
+            fetchCart(msg, callback);
             break;
     }
 };
@@ -73,5 +78,75 @@ async function addToCart(msg, callback) {
                 return callback(err, null);
             })
         }
+    })
+}
+
+async function fetchCart(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    await Cart.aggregate([
+        {
+            $match : {"customerEmail": msg.user}
+        },
+        {
+            $project: {  
+                "customerEmail" : 1,
+                "totalAmount" : 1,
+                products: {
+                   $filter: {
+                      input: "$products",
+                      as: "product",
+                      cond: { 
+                        "$eq": [ "$$product.cartStatus", "IN_CART" ]
+                      }
+                   }
+                }
+             }
+    
+        }
+    ])
+    .then(async cart => {
+        console.log(JSON.stringify(cart));
+        if (cart.length > 0) {
+            var sellerName = "";
+            var products =[];
+            var product = {};
+            let pdata = async()=> { return Promise.all(cart[0].products.map(async item =>{ 
+               return User.findOne({ "_id": item.sellerId})
+                .then(user => { 
+                    sellerName = user.name;
+                    product = {
+                        sellerName: sellerName,
+                        productQuantity: item.productQuantity,
+                        productPrice: item.productPrice,
+                        totalPrice : item.productPrice*item.productQuantity
+                    };
+                    products.push(product);
+                });
+             }))}
+             pdata().then(data => {
+                 console.log("DATA IS ----", data);
+                result = {
+                    customerEmail : cart[0].customerEmail,
+                    totalAmount : cart[0].totalAmount,
+                    products : products
+                 };
+                //end
+                console.log(result);
+                response = prepareSuccess(result);
+                return callback(null, response);
+             });
+             
+        } 
+        else
+        {
+            response = prepareSuccess(result);
+            return callback(null, response);
+        }
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
     })
 }
