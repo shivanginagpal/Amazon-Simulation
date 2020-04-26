@@ -39,9 +39,9 @@ router.post('/removeProductCategory', (req,res)=> {
         } else {
             console.log("Inside else", results);
             if (results.status === 200) {
-                return res.status(results.status).send(results.message);
-            } else if (results.status === 401) {
-                return res.status(results.status).send(results.message);
+                return res.status(results.status).send(results);
+            } else if (results.status === 201) {
+                return res.status(results.status).send(results);
             }
             else {
                 return res.status(results.status).send(results.errors);

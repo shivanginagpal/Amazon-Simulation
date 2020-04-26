@@ -36,10 +36,10 @@ import { Link } from "react-router-dom";
                         <td>{seller.name}</td>
                         <td>
                             <Link
-                                to="/viewsellerProfile"
+                                to="/viewsellerProducts"
                                 className="btn btn-primary btn-sm"
                             >
-                                View Profile
+                                View Products
                             </Link>
                         </td>
                     </tr>

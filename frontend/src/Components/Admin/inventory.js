@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Navbar from './adminNavbar';
 import axios from "axios";
 import { Link } from "react-router-dom";
+import swal from 'sweetalert';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './admin.css'
 
@@ -11,13 +12,22 @@ class inventory extends Component {
         this.state = {
             categories: [],
             searchString: "",
+            productCat: '',
+            category: null,
             modal: false
         };
         this.searchChangeHandler = this.searchChangeHandler.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         //this.showModal = this.showModal.bind(this);
     }
     searchChangeHandler(e) {
         this.setState({ searchString: e.target.value });
+    }
+    handleChange = (e) => {
+        this.setState({
+            productCat: e.target.value
+        });
+
     }
     showModal = () => {
         console.log('hello');
@@ -25,7 +35,7 @@ class inventory extends Component {
             modal: !this.state.modal
         });
     };
-    componentDidMount() {
+    componentWillMount() {
         axios("/getProductCategories", {
             method: "get"
         }).then(response => {
@@ -33,6 +43,69 @@ class inventory extends Component {
                 categories: this.state.categories.concat(response.data)
             })
             console.log(this.state.categories);
+        });
+    }
+    deleteProductCategory = (category) => {
+        const data ={
+            id:category._id,
+            productCategory: category.productCategoryName
+        }
+        console.log("deleteProductcategory data", data);
+        
+        axios.post("/removeProductCategory", data)
+        .then(res => {
+            console.log(res);
+            if(res.status==200){
+            swal({
+                title: "Deleted!",
+                text: "You Successfully deleted product category!",
+                icon: "success",
+                button: "OK"
+            })
+                .then(() => {
+                    window.location.reload();
+                })
+            .catch(error => console.log(error.response.data));
+            } else if (res.status == 201) {
+                swal({
+                    title: "Sorry!",
+                    text: "cannot delete product category!",
+                    icon: "error",
+                    button: "OK"
+                })
+                    .then(() => {
+                        window.location.reload();
+                    })
+                    .catch(error => console.log(error.response.data));
+            }
+        }
+        ).catch(error => {console.log(error);
+        });   
+    }
+
+    addProductCategory = (e) => {
+        const data ={
+            productCategory: this.state.productCat
+        }
+
+        axios("/addProductCategory",{
+            method: 'post',
+            data: data
+        }).then((response) => {
+            console.log(response);
+            if(response.status==200){
+                swal({
+                    title:"Success",
+                    text: "Product category added successfully",
+                    icon: "success",
+                    button: "OK"
+                }).then(() => {
+                    window.location.reload();
+                })
+                    .catch(error => console.log(error.response.data));
+            }
+        }).catch((error) => {
+            console.log('add project not 2xx response');
         });
     }
 
@@ -52,8 +125,8 @@ class inventory extends Component {
                         <td>{category.productCategoryName}</td>
                         <td>
                             <Link
-                                to="/viewsellerProfile"
                                 className="btn btn-danger btn-sm"
+                                onClick={() => this.deleteProductCategory(category)}
                             >
                                 Delete
                             </Link>
@@ -69,8 +142,6 @@ class inventory extends Component {
                 <div className="container">
                     <button type="button" class="btn btn-success" onClick={() => this.showModal()}>Add Product Category</button>
 
-                    
-
                     <nav class="navbar navbar-light bg-light">
                         <form class="form-inline">
                             <input
@@ -81,7 +152,6 @@ class inventory extends Component {
                                 placeholder="Search"
                                 aria-label="Search"
                             />
-
                         </form>
                     </nav>
                     <div className="row justify-content-center align-items-center">
@@ -122,15 +192,21 @@ class inventory extends Component {
                         Add Product Category
                     </ModalHeader>
                     <ModalBody className="modal-body">
-                        This is modal body
+                        {/* <form > */}
+                            <div className="form-group">
+                                <h4 className="font-weight-bold">Product Category: </h4><br />
+                                <input onChange={this.handleChange} name='projectTitle' className='form-control' type='text' required></input><br /><br />
+                            </div>
+                            <button className='btn btn-primary' onClick={() => this.addProductCategory()}>Submit</button>
+                        {/* </form> */}
                     </ModalBody>
                     <ModalFooter>
-                        {/* <Button
+                        <Button
                         color="secondary"
                         onClick={() => this.showModal()}
                       >
                         Cancel
-                      </Button> */}
+                      </Button>
                     </ModalFooter>
                 </Modal>
             </div>
