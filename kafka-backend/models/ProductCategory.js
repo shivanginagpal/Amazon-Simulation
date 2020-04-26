@@ -10,9 +10,6 @@ const ProductCategorySchema = new Schema({
     seller : {
         type: Schema.Types.ObjectId
     },
-    sellerName : {
-        type:String,
-    },
     products: [ProductSchema]
 })
 

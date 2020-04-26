@@ -29,7 +29,7 @@ class Navbar extends Component {
                 <div>
                     <a class="dropdown-item" href="/customer">Your Account</a>
                     <a class="dropdown-item" href="/customer">Your Orders</a>
-                    <a class="dropdown-item" href="/customerAddresses">Your Addresses</a>
+                    <a class="dropdown-item" href="/savedAddresses">Your Addresses</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/paymentInfo">Payment Options</a>
                     <a class="dropdown-item" href="#">Your Amazon Profile</a>

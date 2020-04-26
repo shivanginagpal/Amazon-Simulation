@@ -41,7 +41,7 @@ export const clearProfile = () => {
 
 export const addCustomerNewAddress = (newAddr, history) => dispatch => {
     axios.post('/addAddress', newAddr)
-        .then(res => history.push('/customerAddresses'))
+        .then(res => history.push('/savedAddresses'))
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,
@@ -78,10 +78,10 @@ export const deleteCard = id => dispatch => {
         );
 };
 
-// Delete Education
-export const deleteEducation = id => dispatch => {
+// Delete Address
+export const deleteAddress = id => dispatch => {
     axios
-        .delete(`/api/profile/education/${id}`)
+        .delete(`/deleteAddress/${id}`)
         .then(res =>
             dispatch({
                 type: GET_PROFILE,
