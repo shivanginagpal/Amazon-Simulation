@@ -1,5 +1,5 @@
 const { Cart } = require('../models/Cart');
-const {prepareSuccess,prepareInternalServerError} = require('./responses');
+const { prepareSuccess, prepareInternalServerError } = require('./responses');
 const GIFT_CHARGE = 2;
 const Seller = require('../models/Seller');
 const User = require('../models/User');
@@ -47,24 +47,21 @@ async function addToCart(msg, callback) {
                 cart.save().then(result => {
                     response = prepareSuccess(result);
                     return callback(null, response);
+                }).catch(error => {
+                    err = prepareInternalServerError(error);
+                    return callback(err, null);
                 })
-                    .catch(error => {
-                        err = prepareInternalServerError(error);
-                        return callback(err, null);
-                    })
             }
             else {
-
                 cart.totalAmount += msg.body.productTotal;
                 cart.products = newProduct;
                 cart.save().then(result => {
                     response = prepareSuccess(result);
                     return callback(null, response);
+                }).catch(error => {
+                    err = prepareInternalServerError(error);
+                    return callback(err, null);
                 })
-                    .catch(error => {
-                        err = prepareInternalServerError(error);
-                        return callback(err, null);
-                    })
             }
         } else {
             var newCart = new Cart({
@@ -76,11 +73,10 @@ async function addToCart(msg, callback) {
             newCart.save().then(result => {
                 response = prepareSuccess(result);
                 return callback(null, response);
+            }).catch(error => {
+                err = prepareInternalServerError(error);
+                return callback(err, null);
             })
-                .catch(error => {
-                    err = prepareInternalServerError(error);
-                    return callback(err, null);
-                })
         }
     })
 }

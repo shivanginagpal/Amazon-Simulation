@@ -18,6 +18,9 @@ import AddProduct from './Components/Products/AddProduct';
 import EditName from './Components/User/editName';
 import EditEmail from './Components/User/editEmail';
 import SellerOptions from './Components/Seller/sellerOptions';
+import AddNewAddress from './Components/Addresses/addNewAddress';
+import PaymentInfo from './Components/PaymentOptions/paymentInfo';
+import SavedAddresses from './Components/Addresses/savedAddresses';
 
 class Main extends Component {
     render() {
@@ -30,7 +33,6 @@ class Main extends Component {
                     <Route path="/customerHome" component={CustomerHome}/>
                     <Route path="/customer" component={Customer}/>
                     <Route path="/userProfile" component={UserProfile}/>
-                    <Route path="/customerAddresses" component={CustomerAddresses}/>
                     <Route path="/adminHome" component={adminHome} />
                     <Route path="/inventory" component={inventory} />
                     <Route path="/viewSellerList" component={viewSellerList} />       
@@ -39,6 +41,9 @@ class Main extends Component {
                     <Route path="/editEmail" component={EditEmail}/>
                     <Route path="/sellerOptions" component={SellerOptions}/>
                     <Route path="/cart" component={Cart}/>
+                    <Route path="/addNewAddress" component={AddNewAddress}/>
+                    <Route path="/paymentInfo" component={PaymentInfo}/>
+                    <Route path="/savedAddresses" component={SavedAddresses}/>
                 </div>
         )
     }

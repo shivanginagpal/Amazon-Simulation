@@ -9,7 +9,7 @@ export const getCustomerProfile = (id) => dispatch => {
         {
             method: 'get',
         })
-        .then(res =>{
+        .then(res => {
             console.log(res.data);
             dispatch({
                 type: GET_PROFILE,
@@ -27,7 +27,7 @@ export const getCustomerProfile = (id) => dispatch => {
 
 //Profile Loading 
 export const setProfileLoading = () => {
-    return{
+    return {
         type: PROFILE_LOADING
     }
 }
@@ -38,3 +38,60 @@ export const clearProfile = () => {
         type: CLEAR_CURRENT_PROFILE
     }
 }
+
+export const addCustomerNewAddress = (newAddr, history) => dispatch => {
+    axios.post('/addAddress', newAddr)
+        .then(res => history.push('/savedAddresses'))
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            }))
+}
+
+export const addCustomerNewCard = (newCard, history) => dispatch => {
+    console.log(newCard);
+    axios.post('/addPaymentInfo', newCard)
+        .then(res => history.push('/paymentInfo'))
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            }))
+}
+
+// Delete Card
+export const deleteCard = id => dispatch => {
+    axios
+        .delete(`/deletePaymentInfo/${id}`)
+        .then(res =>
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+        )
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
+};
+
+// Delete Address
+export const deleteAddress = id => dispatch => {
+    axios
+        .delete(`/deleteAddress/${id}`)
+        .then(res =>
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+        )
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
+};

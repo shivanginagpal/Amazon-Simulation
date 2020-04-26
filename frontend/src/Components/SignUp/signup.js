@@ -62,13 +62,12 @@ class signup extends Component {
 
     render() {
         const { errors } = this.state;
-        
         return (
             <div className="bgimg">
                 <Navbar />
                 <br />
                 <br />
-                <form class="modal-content animate" onSubmit={this.onSubmit}>
+                <form class="modal-content animate" id="loginform" onSubmit={this.onSubmit}>
 
                     <div class="imgcontainer">
                         <img src={avatar} alt="Avatar" class="avatar" />

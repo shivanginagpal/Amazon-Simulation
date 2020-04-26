@@ -73,12 +73,29 @@ async function loginUser(msg, callback) {
         // Find user by email
         console.log("Here to find user from");
 
-        if (userType == "admin") {
-            let adminemail = "admin@gmail.com";
-            let adminpassword = "123456";
-            if(adminemail == email && adminpassword==password){
-                console.log("Valid Admin");
-                const payload = { email: adminemail, userType: userType }; // Create JWT Payload
+        let user = await User.findOne({
+            email: msg.body.email,
+            userType: msg.body.userType
+        });
+
+        if (!user) {
+            err.status = 400;
+            err.errors = { email: "User Not Found" }
+            console.log(err);
+            return callback(null, err);
+        } else {
+            console.log(user);
+
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) {
+                console.log("Invalid User");
+                err.status = 400;
+                err.errors = { password: "Password Incorrect" };
+                console.log(err);
+                return callback(null, err);
+            } else {
+                console.log("Valid User");
+                const payload = { id: user.id, name: user.name, userType: userType, email: user.email }; // Create JWT Payload
 
                 console.log(payload);
                 var token = jwt.sign(payload, keys.secret, {
@@ -91,47 +108,9 @@ async function loginUser(msg, callback) {
                     token: 'Bearer ' + token
                 };
                 return callback(null, response);
-
             }
         }
-        else {
-            let user = await User.findOne({
-                email: msg.body.email
-            });
 
-            if (!user) {
-                err.status = 400;
-                err.errors = { email: "User Not Found" }
-                console.log(err);
-                return callback(null, err);
-            } else {
-                console.log(user);
-
-                const validPassword = await bcrypt.compare(password, user.password);
-                if (!validPassword) {
-                    console.log("Invalid User");
-                    err.status = 400;
-                    err.errors = { password: "Password Incorrect" };
-                    console.log(err);
-                    return callback(null, err);
-                } else {
-                    console.log("Valid User");
-                    const payload = { id: user.id, name: user.name, userType: userType, email: user.email }; // Create JWT Payload
-
-                    console.log(payload);
-                    var token = jwt.sign(payload, keys.secret, {
-                        expiresIn: 900000 // in seconds
-                    });
-
-                    response.status = 200;
-                    response.data = {
-                        success: true,
-                        token: 'Bearer ' + token
-                    };
-                    return callback(null, response);
-                }
-            }
-        }
     } catch (error) {
         err.status = 500;
         err.message = "Internal Server Error";
@@ -139,7 +118,7 @@ async function loginUser(msg, callback) {
     }
 }
 
-async function updateUserInfo(msg,callback){
+async function updateUserInfo(msg, callback) {
     console.log("Inside loginUser in kafka backend signUpLogin topic");
     let response = {};
     let err = {};
@@ -152,22 +131,22 @@ async function updateUserInfo(msg,callback){
         console.log("user updated");
     }).catch(err => console.log(err));
 
-    User.findOne({_id: msg.user._id }
-        ).then(user =>{
-            console.log(user);
-            const payload = { id: user.id, name: user.name, userType: user.userType, email: user.email }; // Create JWT Payload
+    User.findOne({ _id: msg.user._id }
+    ).then(user => {
+        console.log(user);
+        const payload = { id: user.id, name: user.name, userType: user.userType, email: user.email }; // Create JWT Payload
 
-                    console.log(payload);
-                    var token = jwt.sign(payload, keys.secret, {
-                        expiresIn: 900000 // in seconds
-                    });
+        console.log(payload);
+        var token = jwt.sign(payload, keys.secret, {
+            expiresIn: 900000 // in seconds
+        });
 
-                    response.status = 200;
-                    response.data = {
-                        success: true,
-                        token: 'Bearer ' + token
-                    };
-                    return callback(null, response);
-        }).catch(err => console.log(err));
+        response.status = 200;
+        response.data = {
+            success: true,
+            token: 'Bearer ' + token
+        };
+        return callback(null, response);
+    }).catch(err => console.log(err));
 
 }

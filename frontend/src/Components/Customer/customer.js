@@ -5,7 +5,7 @@ import "./customer.css";
 export default class customer extends Component {
     render() {
         return (
-            <div className="bgimg">
+            <div>
                 <Navbar/>
 
                 <div class="row profile">
