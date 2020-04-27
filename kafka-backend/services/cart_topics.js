@@ -21,9 +21,11 @@ async function addToCart(msg, callback) {
     let err = {};
     var newProduct = []
     newProduct = {
+        sellerId: msg.body.sellerId,
         productId: msg.body.productId,
         productPrice: msg.body.productPrice,
         productQuantity: msg.body.productQuantity,
+        productTotal: msg.body.productTotal,
         cartStatus: 'IN_CART',
     }
     if (msg.body.gift === true) {
@@ -43,6 +45,7 @@ async function addToCart(msg, callback) {
 
                 cart.totalAmount += msg.body.productTotal;
                 existingProduct.productQuantity += msg.body.productQuantity;
+                existingProduct.productTotal += msg.body.productTotal,
 
                 cart.save().then(result => {
                     response = prepareSuccess(result);
@@ -66,7 +69,6 @@ async function addToCart(msg, callback) {
         } else {
             var newCart = new Cart({
                 customerEmail: msg.user.email,
-                sellerName: msg.body.sellerName,
                 products: newProduct,
                 totalAmount: msg.body.productTotal,
             })
