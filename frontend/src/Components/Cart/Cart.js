@@ -40,7 +40,7 @@ class Cart extends Component {
         cartResult = this.state.cartDetails.products.map((item,key)=>
             <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>
                 <div class="card-body">
-                    <h5 class="card-title" > Product Name</h5>
+                    <h5 class="card-title" >{item.productName}</h5>
                     <div className="row">
                         <div className="col-md-3">
                             <b>Seller :</b> {item.sellerName}
