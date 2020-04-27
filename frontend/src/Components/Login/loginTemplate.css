@@ -298,7 +298,7 @@ p { line-height: 2; }
 
 .tm-contact-right { margin-top: 40px; }
 
-.form-control {
+.login-form-control {
 	border-color: #0a6697;
 	border-radius: 0;
 	color: #4286ab;

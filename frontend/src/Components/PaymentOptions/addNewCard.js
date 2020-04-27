@@ -54,37 +54,38 @@ class addNewCard extends Component {
                         </div>
                         <div className="payment">
                             <form noValidate onSubmit={this.onSubmit}>
-                                <div className="form-group owner">
-                                    <label for="name">Name on Card</label>
+                                <div className="form-group owner payment-form-group" >
+                                    <label for="name" className="payment-label">Name on Card</label>
                                     <input type="text"
-                                        className="form-control"
+                                        className="form-control payment-form-control"
                                         name="name"
                                         id="owner"
                                         value={this.state.name}
                                         onChange={this.onChange} />
                                 </div>
 
-                                <div className="form-group CVV">
-                                    <label for="cvv">CVV</label>
+                                <div className="form-group CVV payment-form-group" >
+                                    <label for="cvv" className="payment-label">CVV</label>
                                     <input type="text"
-                                        className="form-control"
+                                        className="form-control payment-form-control"
                                         name="cvv"
                                         id="cvv"
                                         value={this.state.cvv}
                                         onChange={this.onChange} />
                                 </div>
-                                <div className="form-group" id="card-number-field">
-                                    <label for="cardNumber">Card Number</label>
+                                <div className="form-group payment-form-group" id="card-number-field">
+                                    <label for="cardNumber" className="payment-label">Card Number</label>
                                     <input type="text"
-                                        className="form-control"
+                                        className="form-control payment-form-control"
                                         name="cardNumber"
                                         id="cardNumber"
                                         value={this.state.cardNumber}
                                         onChange={this.onChange} />
                                 </div>
-                                <div className="form-group" id="expiration-date">
-                                    <label>Expiration Date</label>
-                                    <select name="expiryMonth"
+                                <div className="form-group payment-form-group" id="expiration-date">
+                                    <label className="payment-label">Expiration Date</label>
+                                    <select className="payment-select"
+                                        name="expiryMonth"
                                         value={this.state.expiryMonth}
                                         onChange={this.onChange}>
                                         <option>Month</option>
@@ -115,7 +116,7 @@ class addNewCard extends Component {
                                 </div>
                                 <div className="form-group" id="pay-now">
                                     <button type="submit"
-                                        className="btn btn-dark"
+                                        className="btn btn-dark payment-btn"
                                         value="submit"
                                         id="confirm-purchase">Confirm</button>
                                 </div>
