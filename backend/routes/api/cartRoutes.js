@@ -27,10 +27,10 @@ router.post("/addToCart", passportAuth, async function (req, res) {
     });
   });
 
-  router.get("/getCart/:id", async function (req, res) {
+  router.get("/getCart/:email", async function (req, res) {
     console.log("in get cart product route");
-    console.log(req.params.id);
-    kafka.make_request("cart_topic", { "path": "getCart", "user": req.params.id}, function (err, results) {
+    console.log(req.params.email);
+    kafka.make_request("cart_topic", { "path": "getCart", "user": req.params.email}, function (err, results) {
       console.log("in make request call back cart_topic");
       console.log(results);
       console.log(err);

@@ -1,0 +1,20 @@
+.a-icon-text-separator, .a-text-separator {
+    display: inline-block;
+    margin: -2px .67375em 0;
+    width: 1px;
+    background-color: #ddd;
+    line-height: 0;
+    height: 14px;
+    vertical-align: middle;
+}
+
+
+#movecenter{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+};
+
+#eventscard{
+    margin-bottom: 20px;
+  }
