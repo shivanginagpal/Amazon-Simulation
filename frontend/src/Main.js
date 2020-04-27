@@ -7,6 +7,7 @@ import SellerHome from './Components/Seller/sellerHome';
 import CustomerHome from './Components/Customer/customerHome';
 import Customer from './Components/Customer/customer';
 import UserProfile from './Components/User/userProfile';
+//import CustomerAddresses from './Components/Customer/customerAddresses';
 import Cart from './Components/Cart/Cart';
 //admin
 import adminHome from './Components/Admin/adminHome';

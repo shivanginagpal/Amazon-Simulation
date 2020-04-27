@@ -81,9 +81,6 @@ class Navbar extends Component {
                     <li class="nav-item">
                         <a class="nav-link text-light" href="/signup">SignUp</a>
                     </li>
-                    <li class="nav-item">
-                            <a class="nav-link text-light" href="/cart" >Cart</a>
-                    </li>
                 </ul>
             </div>
         );

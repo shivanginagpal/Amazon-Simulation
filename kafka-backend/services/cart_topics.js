@@ -3,6 +3,7 @@ const { prepareSuccess, prepareInternalServerError } = require('./responses');
 const GIFT_CHARGE = 2;
 const Seller = require('../models/Seller');
 const User = require('../models/User');
+var { ProductCategory } = require('../models/ProductCategory');
 
 exports.cartService = function cartService(msg, callback) {
     console.log("In cart topic Service path:", msg.path);
@@ -91,6 +92,7 @@ async function fetchCart(msg, callback) {
         {
             $match : {"customerEmail": msg.user}
         },
+        //{ $lookup: {from: 'users', localField: 'email', foreignField: 'email', as: 'user'} },
         {
             $project: {  
                 "customerEmail" : 1,
@@ -114,17 +116,25 @@ async function fetchCart(msg, callback) {
             var sellerName = "";
             var products =[];
             var product = {};
-            let pdata = async()=> { return Promise.all(cart[0].products.map(async item =>{ 
+            let pdata = async() => { return Promise.all(cart[0].products.map(async item =>{ 
+                console.log("ITEM HAS === ",JSON.stringify(item))
                return User.findOne({ "_id": item.sellerId})
                 .then(user => { 
                     sellerName = user.name;
-                    product = {
-                        sellerName: sellerName,
-                        productQuantity: item.productQuantity,
-                        productPrice: item.productPrice,
-                        totalPrice : item.productPrice*item.productQuantity
-                    };
-                    products.push(product);
+                    console.log("ITEM IN PRODUCT-ID ---", JSON.stringify(item));
+                    console.log("PRODUCT-ID ---", JSON.stringify(item.productId));
+                    return ProductCategory.find({ "products._id" : item.productId },{"products.$" : 1})
+                    .then( p => {
+                        console.log("PRODUCT INFORMATION ------ ", JSON.stringify(p));
+                        product = {
+                            sellerName: sellerName,
+                            productQuantity: item.productQuantity,
+                            productPrice: item.productPrice,
+                            totalPrice : item.productPrice*item.productQuantity,
+                            productName: p[0].products[0].productName
+                        };
+                        products.push(product);
+                    });
                 });
              }))}
              pdata().then(data => {
