@@ -101,7 +101,7 @@ async function productSearchResults(msg, callback) {
     }
 
            result = await ProductCategory.aggregate(prepareQuery(msg.body, sellerId,productName))
-           .skip(msg.body.pageLimit).limit(msg.body.pageLimit * (msg.body.currentPage - 1)).catch(error => {
+           .skip(msg.body.pageLimit * (msg.body.currentPage - 1)).limit(msg.body.pageLimit).catch(error => {
             console.log(error);
             err = prepareInternalServerError();
             return callback(err, null);
