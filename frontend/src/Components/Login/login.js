@@ -81,7 +81,7 @@ class login extends Component {
           <div class="login-container">
             <div className="form-group">
               <input type="text"
-                className={classnames('form-control form-control-lg', {
+                className={classnames('form-control form-control-lg login-form-control', {
                   'is-invalid': errors.email
                 })}
                 placeholder="Enter Email"
@@ -94,7 +94,7 @@ class login extends Component {
             </div>
             <div className="form-group">
               <input type="password"
-                className={classnames('form-control form-control-lg', {
+                className={classnames('form-control form-control-lg login-form-control', {
                   'is-invalid': errors.password
                 })}
                 placeholder="Enter Password"

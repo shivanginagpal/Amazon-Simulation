@@ -52,4 +52,12 @@ export  var getID = ()=> {
     return "";
 }
 
+export  var getEmail = ()=> {
+    if(localStorage.jwtToken){
+        const decoded = jwt_decode(localStorage.jwtToken);
+        return decoded.email;
+    }
+    return "";
+}
+
 export default setAuthToken;

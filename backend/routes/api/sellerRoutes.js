@@ -17,7 +17,7 @@ router.post("/addProduct/:type", helper.upload.array('productImage',5),passportA
   const reqFiles = [];
   const url = req.protocol + '://' + req.get('host')
   for (var i = 0; i < req.files.length; i++) {
-      reqFiles.push(url + '/uploads/' + req.files[i].filename)
+      reqFiles.push( req.files[i].filename)
   }
 
   console.log(reqFiles);
