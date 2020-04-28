@@ -47,7 +47,7 @@ async function getCustomerProfile(msg, callback) {
     let response = {};
     console.log("In get Customer Profile Msg: ", msg);
     Customer.findOne({ customer: msg.user._id })
-        .populate('user', ['name', 'img', 'email'])
+        .populate('customer', ['name', 'email'])
         .then(customer => {
             console.log(customer);
             if (!customer) {
@@ -143,7 +143,8 @@ async function addPaymentInfo(msg, callback) {
         if (profile) {
             const newPayment = {
                 cardNumber: msg.body.cardNumber,
-                expiryDate: msg.body.expiryDate,
+                expiryYear: msg.body.expiryYear,
+                expiryMonth: msg.body.expiryMonth,
                 name: msg.body.name,
                 cvv: msg.body.cvv,
             };

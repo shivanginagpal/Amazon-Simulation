@@ -30,7 +30,7 @@ export default class customer extends Component {
                     <br/>
         
                     <div class="col-md ya-card-cell">
-                        <a href="/customerProfile" class="ya-card__whole-card-link">
+                        <a href="/userProfile" class="ya-card__whole-card-link">
                           <div data-card-identifier="SignInAndSecurity" class="a-box ya-card--rich"><div class="a-box-inner">
                             <div class="a-row">
                               <div class="a-column a-span3">
@@ -40,7 +40,7 @@ export default class customer extends Component {
                                 <h2 class="a-spacing-none ya-card__heading--rich a-text-normal">
                                 Login &amp; security
                                 </h2>
-                                <div><span class="a-color-secondary">Edit login, name, and mobile number</span></div>
+                                <div><span class="a-color-secondary">Edit email and name</span></div>
                                 
                               </div>
                             </div>

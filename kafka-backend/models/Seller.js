@@ -7,24 +7,10 @@ const SellerSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'user'
     },
-    // sellerName: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    // },
-    // sellerEmail: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    // },
-    // sellerPassword: {
-    //     type: String,
-    //     required: true
-    // },
-    // sellerImage: {
-    //     type: String,
-    //     default: ""
-    // },
+    salesTotal: {
+        type: String,
+        default: "0"
+    },
     sellerAddress: {
         type: String,
         default: ""

@@ -10,7 +10,10 @@ const ProductCategorySchema = new Schema({
     seller : {
         type: Schema.Types.ObjectId
     },
-    //products: [ProductSchema]
+    sellerName : {
+        type:String,
+    },
+    products: [ProductSchema]
 })
 
 var ProductCategory = mongoose.model("ProductCategory", ProductCategorySchema);

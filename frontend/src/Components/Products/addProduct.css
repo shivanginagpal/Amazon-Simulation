@@ -32,17 +32,18 @@ input {
 img.mypreview{
   width: 20%;
 }
-.card-header{
+
+#product-header{
   color: white;
   background: white;
 }
 
-.card-body{
+#product-body{
   background: white;
   border-bottom: 1px solid gray;
 }
 
-.card-link{
+#product-link{
   color: #A77B0E;
   font-size: 25px;
 }

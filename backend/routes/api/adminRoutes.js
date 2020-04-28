@@ -26,7 +26,6 @@ router.post('/addProductCategory', (req, res) => {
             }
         }
     })
-
 })
 
 router.post('/removeProductCategory', (req,res)=> {
@@ -40,9 +39,9 @@ router.post('/removeProductCategory', (req,res)=> {
         } else {
             console.log("Inside else", results);
             if (results.status === 200) {
-                return res.status(results.status).send(results.message);
-            } else if (results.status === 401) {
-                return res.status(results.status).send(results.message);
+                return res.status(results.status).send(results);
+            } else if (results.status === 201) {
+                return res.status(results.status).send(results);
             }
             else {
                 return res.status(results.status).send(results.errors);
@@ -66,6 +65,26 @@ router.get('/getProductCategories', (req, res) => {
             } else if (results.status === 401) {
                 return res.status(results.status).send(results.message);
             }
+            else {
+                return res.status(results.status).send(results.errors);
+            }
+        }
+    })
+})
+
+router.get('/viewSellersList', (req,res) => {
+    console.log(req.body);
+    kafka.make_request("admin_topic", { "path": "viewSellersList" }, function (err, results) {
+        console.log("In make request viewseller call back", results);
+        if (err) {
+            console.log("Inside err");
+            console.log(err);
+            return res.status(err.status).send(err.message);
+        } else {
+            console.log("Inside else", results);
+            if (results.status === 200) {
+                return res.status(results.status).send(results.data);
+            } 
             else {
                 return res.status(results.status).send(results.errors);
             }

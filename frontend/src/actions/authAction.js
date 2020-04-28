@@ -54,3 +54,27 @@ export const logoutUser = () => dispatch =>{
     //Set current user empty obj
     dispatch(setCurrentUser({}));
 }
+
+export const updateUserInfo = (data,history) => dispatch => {
+    axios.post('/updateUserInfo',data)
+    .then(res => {
+        console.log("got response",res);
+        const {token} = res.data;
+        //set token to local storage
+        localStorage.setItem('jwtToken',token);
+        setAuthToken(token);
+        //Decode token
+        const decoded = jwt_decode(token);
+        //set current user
+        dispatch(setCurrentUser(decoded));
+        
+        history.push('/userProfile');
+    }).catch(err => { 
+        console.log("Got an error",err);
+        dispatch(
+            {
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        });
+}

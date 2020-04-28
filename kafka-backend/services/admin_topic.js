@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var { addProductCat } = require('../models/addProductCat');
 var { ProductCategory } = require('../models/ProductCategory');
+const {prepareSuccess,prepareInternalServerError,prepareNoContent} = require('./responses');
+const User = require('../models/User');
 
 exports.adminService = function adminService(msg, callback) {
     console.log("In admin Profile service path:", msg.path);
@@ -14,9 +16,11 @@ exports.adminService = function adminService(msg, callback) {
         case "removeProductCategory":
             removeProductCategory(msg, callback);
             break;
+        case "viewSellersList":
+            viewSellersList(msg, callback);
+            break;
     }
-
-};
+}; 
 
 function addProductCategory(msg, callback) {
     let response = {};
@@ -63,21 +67,15 @@ function getProductCategories(msg, callback) {
     addProductCat.find().select('productCategoryName')
         .then(async result => {
             if (result.length === 0) {
-                response.message = "Product Categories not found";
-                response.status = 201;
+                response = prepareNoContent(result);
                 return callback(null, response);
             }
             else {
-                response.data = result;
-                response.status = 200;
-                response.message = "Product categories found";
+                response = prepareSuccess(result);
                 return callback(null, response);
             }
         }).catch(error => {
-            console.log(error);
-            err.status = 412;
-            err.message = "Could not find product";
-            err.data = error;
+            err = prepareInternalServerError(error);
             return callback(err, null);
         })
 }
@@ -90,7 +88,7 @@ function removeProductCategory(msg,callback){
     ProductCategory.find({"productCategoryName": msg.body.productCategory
     }).select().then(async result => {
         if(result.length === 0){
-            addProductCat.deleteOne({ "productCategoryName": msg.body.productCategory})
+            addProductCat.deleteOne({ "_id": msg.body.id})
             .then(result => {
                 response.message="successfully removed product category";
                 response.status=200;
@@ -101,7 +99,7 @@ function removeProductCategory(msg,callback){
                 return callback(err, null);
             });
         } else {
-            response.status = 401;
+            response.status = 201;
             response.message = "Product category contains Products cannot be removed";
             return callback(null, response);
         }
@@ -112,4 +110,23 @@ function removeProductCategory(msg,callback){
         err.data = error;
         return callback(err, null);
     })
+}
+
+async function viewSellersList(msg,callback){
+    let response = {};
+    let err = {};
+    console.log("In admin topic service. Msg: ", msg);
+    return await User.find({ "userType": "seller"})
+        .then((result) => {
+            response.status = 200;
+            response.message = "successfully retrieved sellers";
+            response.data = result;
+            return callback(null, response);   
+        }).catch((error) => {
+            err.status = 400;
+            err.message = "error in getting sellers";
+            err.data = error;
+            return callback(err, null);
+        });
+
 }

@@ -66,12 +66,12 @@ class login extends Component {
     const { errors } = this.state;
 
     return (
-      <div>
+      <div className="bgimg">
         <Navbar />
         <br />
         <br />
 
-        <form class="modal-content animate" onSubmit={this.onSubmit}>
+        <form class="modal-content animate" id="loginform" onSubmit={this.onSubmit}>
 
           <div class="imgcontainer">
             <img src={avatar} alt="Avatar" class="avatar" />
@@ -81,7 +81,7 @@ class login extends Component {
           <div class="login-container">
             <div className="form-group">
               <input type="text"
-                className={classnames('form-control form-control-lg', {
+                className={classnames('form-control form-control-lg login-form-control', {
                   'is-invalid': errors.email
                 })}
                 placeholder="Enter Email"
@@ -94,7 +94,7 @@ class login extends Component {
             </div>
             <div className="form-group">
               <input type="password"
-                className={classnames('form-control form-control-lg', {
+                className={classnames('form-control form-control-lg login-form-control', {
                   'is-invalid': errors.password
                 })}
                 placeholder="Enter Password"

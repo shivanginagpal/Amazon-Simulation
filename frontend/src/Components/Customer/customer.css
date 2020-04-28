@@ -109,3 +109,58 @@ body {
   .profile {
     margin: 50px 0;
   }
+
+  #userInfo {
+    padding: 25px 50px 75px 300px;
+  }
+
+  #infoCard {
+    margin-bottom: 10px;
+  }
+
+  div.a-column.address-column:not(.a-span-last) {
+    margin-right: 13px;
+    width: auto;
+}
+.a-row .a-span4, .a-ws .a-row .a-ws-span4 {
+    width: 31.948%;
+}
+.a-ws div.a-column, div.a-column {
+    margin-right: 2%;
+    float: left;
+    min-height: 1px;
+    overflow: visible;
+}
+.address-column {
+    position: relative;
+}
+.a-spacing-top-mini {
+    margin-top: 6px!important;
+}
+.a-spacing-none, .a-ws .a-ws-spacing-none {
+    margin-bottom: 0!important;
+}
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+div {
+    display: block;
+}
+.a-text-left {
+    text-align: left!important;
+}
+.a-ember body {
+    font-family: "Amazon Ember",Arial,sans-serif;
+}
+body {
+    font-size: 13px;
+    line-height: 19px;
+    color: #111;
+    font-family: Arial,sans-serif;
+}
+html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+}

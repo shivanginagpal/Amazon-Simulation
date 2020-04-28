@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import Navbar from '../Navbar/Navbar';
+import Navbar from './adminNavbar';
 
-export default class customerAddresses extends Component {
+ class viewOrdersAdmin extends Component {
+     
     render() {
         return (
             <div>
                 <Navbar/>
-                
+                Orders Page!! 
             </div>
         )
     }
 }
+
+export default viewOrdersAdmin;
