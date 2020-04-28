@@ -11,6 +11,7 @@ import UserProfile from './Components/User/userProfile';
 import adminHome from './Components/Admin/adminHome';
 import inventory from './Components/Admin/inventory';
 import viewSellerList from './Components/Admin/viewSellerList';
+import viewOrdersAdmin from './Components/Admin/viewOrdersAdmin';
 //Products
 import AddProduct from './Components/Products/AddProduct';
 import EditName from './Components/User/editName';
@@ -41,6 +42,7 @@ class Main extends Component {
                     <Route path="/addNewAddress" component={AddNewAddress}/>
                     <Route path="/paymentInfo" component={PaymentInfo}/>
                     <Route path="/savedAddresses" component={SavedAddresses}/>
+                    <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
                 </div>
         )
     }
