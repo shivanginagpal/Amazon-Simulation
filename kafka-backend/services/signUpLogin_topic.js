@@ -101,7 +101,6 @@ async function loginUser(msg, callback) {
                 var token = jwt.sign(payload, keys.secret, {
                     expiresIn: 900000 // in seconds
                 });
-
                 response.status = 200;
                 response.data = {
                     success: true,
