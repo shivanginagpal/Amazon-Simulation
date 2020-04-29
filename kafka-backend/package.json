@@ -20,6 +20,7 @@
     "mongoose": "^5.9.6",
     "node-zookeeper-client": "^1.1.0",
     "nodemon": "^2.0.2",
+    "redis": "^2.8.0",
     "uuid": "^7.0.2"
   }
 }
