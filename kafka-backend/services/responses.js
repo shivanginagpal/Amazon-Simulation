@@ -4,8 +4,8 @@ const prepareSuccess = (data = {}) => {
         message: "Successful",
         data: data,
     };
-    console.log("preparing success response with code 200");
-    console.log(responseData);
+    //console.log("preparing success response with code 200");
+    //console.log(responseData);
     return responseData;
 }
 

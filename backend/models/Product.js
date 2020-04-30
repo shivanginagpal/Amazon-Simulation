@@ -21,7 +21,7 @@ const ProductSchema = new Schema({
     },
     productImage: {
         type: Array,
-        default:""
+        default: ""
     },
     productRating: {
         type: Number
@@ -30,7 +30,7 @@ const ProductSchema = new Schema({
         customerId: {
             type: Schema.Types.ObjectId,
         },
-        comment : {
+        comment: {
             type: String
         },
         rating: {

@@ -82,9 +82,7 @@ function prepareQuery(request, sellerId, product) {
                 }
             )
         }
-
     }
-
     console.log('query is', query);
     return query;
 }
@@ -93,34 +91,31 @@ async function productSearchResults(msg, callback) {
      let response = {};
     let result = {};
     let productName = "";
-    console.log("In product search ==============================================================================")
-    console.log(msg.body);
+    // console.log("In product search ==============================================================================")
+    // console.log(msg.body);
 
     var sellerId = null;
 
-    await User.findOne({ name: msg.body.search }).then(result => {
-        if (result) {
-            sellerId = result._id;
-        }
+    // await User.findOne({ name: msg.body.search }).then(result => {
+    //     if (result) {
+    //         sellerId = result._id;
+    //     }
 
-    })
-    console.log(sellerId);
+    // })
+    // console.log(sellerId);
 
-    if (sellerId === null) {
-        productName = msg.body.search;
-    }
+    // if (sellerId === null) {
+    //     productName = msg.body.search;
+    // }
 
     redisClient.get(msg.body.productCategoryName, async (err, products) => {
         if (products) {
-
             products = JSON.parse(products);
             console.log('REDIS HIT')
             //response.status = 200;
              response = prepareSuccess(products);
             return callback(null, response);
-
         } else {
-
             result = await ProductCategory.aggregate(prepareQuery(msg.body, sellerId, productName))
                 .skip(msg.body.pageLimit * (msg.body.currentPage - 1)).limit(msg.body.pageLimit).catch(error => {
                     console.log(error);
@@ -137,7 +132,6 @@ async function productSearchResults(msg, callback) {
             return callback(null, response);
         }
     })
-
 }
 
 async function addProductRating(msg, callback) {

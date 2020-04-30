@@ -16,6 +16,7 @@ mongoose
      useCreateIndex: true})
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
+  
 
 var signUpSignIn = require('./routes/api/signUpSignIn');
 var sellerProfile = require('./routes/api/sellerProfile');
