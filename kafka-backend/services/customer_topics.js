@@ -15,8 +15,8 @@ exports.customerService = function customerService(msg, callback) {
         case "addProductReview":
             addProductReview(msg, callback);
             break;
-        case "addProductRating":
-            addProductRating(msg, callback);
+        case "getProduct":
+            getProduct(msg, callback);
             break;
 
     }
@@ -25,6 +25,8 @@ exports.customerService = function customerService(msg, callback) {
 
 function prepareQuery(request, sellerId, product) {
     let query = [];
+    filterRating = 0;
+    filterPrice = 0;
 
 
     if (request.productCategoryName && sellerId) {
@@ -36,7 +38,7 @@ function prepareQuery(request, sellerId, product) {
                 }
             },
             {
-                $unwind: "$products"
+                $unwind: "$products",
             }
         );
     }
@@ -84,6 +86,42 @@ function prepareQuery(request, sellerId, product) {
 
     }
 
+    if (request.priceLow && request.priceHigh) {
+        query.push(
+
+            { $match: { 'products.productPrice': { $gte: request.priceLow, $lte: request.priceHigh } } },
+
+        )
+    }
+    if (request.rating) {
+        query.push(
+
+            { $match: { 'products.productRating': { $gte: request.rating } } },
+
+        )
+    }
+
+    if (request.sort === "Price Low-High") {
+        query.push(
+            { $sort: { 'products.productPrice': 1 } }
+        )
+    }
+    if (request.sort === "Price High-Low") {
+        query.push(
+            { $sort: { 'products.productPrice': -1 } }
+        )
+    }
+    if (request.sort === "Rating Low-High") {
+        query.push(
+            { $sort: { 'products.productRating': 1 } }
+        )
+    }
+    if (request.sort === "Rating High-Low") {
+        query.push(
+            { $sort: { 'products.productRating': -1 } }
+        )
+    }
+
     console.log('query is', query);
     return query;
 }
@@ -91,10 +129,12 @@ function prepareQuery(request, sellerId, product) {
 async function productSearchResults(msg, callback) {
 
     let response = {};
-    let result = {};
+    let result = [];
     let productName = "";
     console.log("In product search ")
     console.log(msg.body);
+    var pageLimit = 20;
+    var currentPage = msg.body.currentPage;
 
     var sellerId = null;
 
@@ -110,15 +150,22 @@ async function productSearchResults(msg, callback) {
         productName = msg.body.search;
     }
 
-    result = await ProductCategory.aggregate(prepareQuery(msg.body, sellerId, productName))
-        .skip(msg.body.pageLimit * (msg.body.currentPage - 1)).limit(msg.body.pageLimit).catch(error => {
-            console.log(error);
-            err = prepareInternalServerError();
-            return callback(err, null);
-        })
+    result = await ProductCategory.aggregate(prepareQuery(msg.body, sellerId, productName)).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError();
+        return callback(null, err);
+    })
+
+    let pageMax = Math.ceil(result.length / pageLimit);
+
+    if (currentPage > pageMax) {
+        currentPage = pageMax;
+    }
+    let start = (currentPage - 1) * pageLimit;
+    let end = currentPage * pageLimit;
+    result = result.slice(start, end);
 
     response = prepareSuccess(result);
-    console.log(response);
     return callback(null, response);
 }
 
@@ -126,7 +173,7 @@ async function addProductReview(msg, callback) {
     let response = {};
     let err = {};
     let query = [];
-    console.log("In seller topic service. Msg: ", msg);
+    console.log("In customer topic service. Msg: ", msg);
     var review = {
         customerId: msg.body.customerId,
         comment: msg.body.comment,
@@ -171,5 +218,22 @@ async function addProductReview(msg, callback) {
         }).catch(error => {
             err = prepareInternalServerError(error);
             return callback(err, null);
+        })
+}
+
+
+async function getProduct(msg, callback) {
+    let response = {};
+    let err = {};
+    let query = [];
+    console.log("In customer topic service. Msg: ", msg);
+
+    ProductCategory.find({ "products._id": msg.body }, { "products.$": 1, "seller": 1, "productCategoryName": 1 })
+        .then(product => {
+            response = prepareSuccess(product);
+            return callback(null, response);
+        }).catch(error => {
+            err = prepareInternalServerError(error);
+            return callback(null, err);
         })
 }

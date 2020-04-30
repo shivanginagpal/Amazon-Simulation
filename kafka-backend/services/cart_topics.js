@@ -57,7 +57,7 @@ async function addToCart(msg, callback) {
                 })
             }
             else {
-                // add product to existing product
+                // add product to existing cart
                 cart.totalAmount += msg.body.productTotal;
                 cart.products.push(newProduct);
                 cart.save().then(result => {

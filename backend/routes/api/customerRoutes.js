@@ -28,26 +28,28 @@ router.get("/productSearch",passportAuth, async function (req, res) {
     });
   });
 
-  router.post('/addProductRating', passportAuth, async (req,res)=>{
-    console.log("In add Product Rating");
-    console.log(req.body);
-      kafka.make_request("customer_topic",{"path":"addProductReview", "body": req.body}, function (err, results) {
-        console.log("In make request call back",results);
-        if (err) {
-          console.log("Inside err");
-          console.log(err);
-          return res.status(err.status).send(err.message);
+ 
+  router.get("/getProduct/:productId",passportAuth, async function (req, res) {
+ 
+    
+    kafka.make_request("customer_topic", { "path": "getProduct", "user": req.user, "body": req.params.productId }, function (err, results) {
+      console.log("in make request call back seller_topic");
+      if (err) {
+        console.log("Inside err");
+        console.log(err);
+        return res.status(err.status).send(err.message);
+      } else {
+        console.log("Inside else", results);
+        if (results.status === 200) {
+          return res.status(results.status).send(results.data);
         } else {
-            console.log("Inside else",results);
-            if (results.status === 200){
-              return res.status(results.status).send(results.data);
-            }else{
-            return res.status(results.status).send(results.errors);
-            }
+          return res.status(results.status).send(results.errors);
         }
       }
-    );
+    });
   });
+
+ 
 
   router.post('/addProductReview', passportAuth, async (req,res)=>{
     console.log("In add Product Review");
