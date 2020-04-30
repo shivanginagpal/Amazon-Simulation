@@ -84,7 +84,14 @@ class Cart extends Component {
                             <br/>
                             {this.state.cartDetails && 
                                 <div id= "movecenter" style={{color: "#DC143C", fontWeight: "bold", fontSize: "16px"}}>
-                                    Total Price : {this.state.cartDetails.totalAmount}
+                                    <div className="row">
+                                        <div className="col-sm" >
+                                        Total Price : {this.state.cartDetails.totalAmount}
+                                        </div>
+                                        <div className="col-sm" >
+                                        <button className="btn btn-success">CheckOut</button>
+                                        </div>
+                                    </div>
                                 </div>
                             }
                         </div>

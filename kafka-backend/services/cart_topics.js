@@ -92,7 +92,6 @@ async function fetchCart(msg, callback) {
         {
             $match : {"customerEmail": msg.user}
         },
-        //{ $lookup: {from: 'users', localField: 'email', foreignField: 'email', as: 'user'} },
         {
             $project: {  
                 "customerEmail" : 1,
