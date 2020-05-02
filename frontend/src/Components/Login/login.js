@@ -81,7 +81,7 @@ class login extends Component {
           <div class="login-container">
             <div className="form-group">
               <input type="text"
-                className={classnames('form-control form-control-lg login-form-control', {
+                className={classnames('form-control form-control-lg login-form-control login-text', {
                   'is-invalid': errors.email
                 })}
                 placeholder="Enter Email"
@@ -94,7 +94,7 @@ class login extends Component {
             </div>
             <div className="form-group">
               <input type="password"
-                className={classnames('form-control form-control-lg login-form-control', {
+                className={classnames('form-control form-control-lg login-form-control login-text', {
                   'is-invalid': errors.password
                 })}
                 placeholder="Enter Password"
@@ -124,7 +124,7 @@ class login extends Component {
               <label className="custom-control-label" htmlFor="seller">Seller</label>
             </div>
             <div className="custom-control custom-radio custom-control-inline">
-              <input type="radio" className="custom-control-input"
+              <input type="radio" className="custom-control-input "
                 id="admin"
                 name="userType"
                 value="admin"

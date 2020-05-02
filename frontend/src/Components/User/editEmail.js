@@ -31,7 +31,7 @@ class editEmail extends Component {
     }
 
     render() {
-        console.log(this.state.email);
+        
         return (
             <div>
                 <Navbar/>

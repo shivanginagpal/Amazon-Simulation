@@ -85,7 +85,7 @@ router.post(
   }
 );
 
-router.post('/updateSellerProfilePic',
+router.post('/updateSellerProfilePic/:type',
   helper.upload.single('file'),
   passportAuth,
   async (req, res) => {
