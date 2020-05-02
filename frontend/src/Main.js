@@ -22,6 +22,8 @@ import SellerOptions from './Components/Seller/sellerOptions';
 import AddNewAddress from './Components/Addresses/addNewAddress';
 import PaymentInfo from './Components/PaymentOptions/paymentInfo';
 import SavedAddresses from './Components/Addresses/savedAddresses';
+import EditSellerAddress from './Components/User/editSellerAddress';
+import SellerProfile from './Components/Seller/sellerProfile';
 
 class Main extends Component {
     render() {
@@ -46,6 +48,8 @@ class Main extends Component {
                     <Route path="/paymentInfo" component={PaymentInfo}/>
                     <Route path="/savedAddresses" component={SavedAddresses}/>
                     <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
+                    <Route path="/editSellerAddress" component={EditSellerAddress}/>
+                    <Route path="/sellerProfile" component={SellerProfile}/>
                 </div>
         )
     }

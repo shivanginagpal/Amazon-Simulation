@@ -97,10 +97,8 @@ img {vertical-align: middle;}
 }
 
 
-
-
-input[type=text], input[type=password] , input[type=email] {
-    width: 90%;
+.login-text {
+	width: 90%;
     padding: 12px 20px;
     margin: 8px 26px;
     display: inline-block;
@@ -108,6 +106,16 @@ input[type=text], input[type=password] , input[type=email] {
     box-sizing: border-box;
 	font-size:16px;
 }
+
+/* input[type=text], input[type=password] , input[type=email] {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 26px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+	font-size:16px;
+} */
 
 /* Set a style for all buttons */
 .login-signup {
