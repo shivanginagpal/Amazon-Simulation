@@ -32,7 +32,17 @@ function userSignUp(msg, callback) {
                 console.log(err);
                 console.log("Returning error");
                 callback(null, err);
-            } else {
+            } else if( msg.body.userType == 'seller' )
+            {
+                User.findOne({ name: msg.body.name}).then(user =>{
+                    err.status = 400;
+                    err.errors = { name: "Seller exists this name, please try a different name." };
+                    console.log(err);
+                    console.log("Returning error");
+                    callback(null, err);
+                })
+            }
+            else {
                 const newSeller = new User({
                     name: msg.body.name,
                     email: msg.body.email,
@@ -101,7 +111,6 @@ async function loginUser(msg, callback) {
                 var token = jwt.sign(payload, keys.secret, {
                     expiresIn: 900000 // in seconds
                 });
-
                 response.status = 200;
                 response.data = {
                     success: true,

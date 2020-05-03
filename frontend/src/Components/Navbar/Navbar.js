@@ -41,7 +41,7 @@ class Navbar extends Component {
                     <a class="dropdown-item" href="/sellerOptions">Your Account</a>
                     <a class="dropdown-item" href="/sellerOrders">Your Received Orders</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Your Amazon Profile</a>
+                    <a class="dropdown-item" href="/sellerProfile">Your Amazon Profile</a>
                 </div>
             )
 

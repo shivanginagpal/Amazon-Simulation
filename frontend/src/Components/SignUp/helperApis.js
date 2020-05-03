@@ -3,6 +3,8 @@ import jwt_decode from 'jwt-decode';
 
 import axios from 'axios';
 
+export const backendURL = "http://localhost:5001";
+
 const setAuthToken = token => {
   if (token) {
     // Apply to every request
@@ -60,4 +62,4 @@ export  var getEmail = ()=> {
     return "";
 }
 
-export default setAuthToken;
+export default setAuthToken ;

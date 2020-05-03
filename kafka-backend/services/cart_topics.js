@@ -35,10 +35,10 @@ async function addToCart(msg, callback) {
         msg.body.productTotal += GIFT_CHARGE;
     }
 
-    await Cart.findOneAndUpdate({ "customerEmail": msg.user.email }).then(cart => {
+    console.log(msg.user);
+    await Cart.findOne({ "customerEmail": msg.user.email }).then(cart => {
         if (cart) {
             let existingProduct = cart.products.find(product => product.productId == msg.body.productId)
-
             if (existingProduct) {
                 //do not handle gift for same product being added multiple times
                 if (msg.body.gift === true)
@@ -57,8 +57,9 @@ async function addToCart(msg, callback) {
                 })
             }
             else {
+                // add product to existing cart
                 cart.totalAmount += msg.body.productTotal;
-                cart.products = newProduct;
+                cart.products.push(newProduct);
                 cart.save().then(result => {
                     response = prepareSuccess(result);
                     return callback(null, response);
@@ -68,6 +69,7 @@ async function addToCart(msg, callback) {
                 })
             }
         } else {
+          //creating new cart
             var newCart = new Cart({
                 customerEmail: msg.user.email,
                 products: newProduct,
