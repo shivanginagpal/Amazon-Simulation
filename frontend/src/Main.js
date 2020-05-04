@@ -24,6 +24,7 @@ import PaymentInfo from './Components/PaymentOptions/paymentInfo';
 import SavedAddresses from './Components/Addresses/savedAddresses';
 import EditSellerAddress from './Components/User/editSellerAddress';
 import SellerProfile from './Components/Seller/sellerProfile';
+import Checkout from './Components/Cart/Checkout';
 
 class Main extends Component {
     render() {
@@ -50,6 +51,7 @@ class Main extends Component {
                     <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
                     <Route path="/editSellerAddress" component={EditSellerAddress}/>
                     <Route path="/sellerProfile" component={SellerProfile}/>
+                    <Route path="/checkout" component={Checkout}/>
                 </div>
         )
     }
