@@ -9,6 +9,6 @@ export default combineReducers({
     auth : authReducer,
     errors : errorReducer,
     profile : profileReducer,
-    product : productReducers,
+    products : productReducers,
     cartReducer : cartReducer
 });

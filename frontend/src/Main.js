@@ -27,7 +27,10 @@ import SellerProfile from './Components/Seller/sellerProfile';
 import CustomerProfile from './Components/Customer/customerProfile';
 import EditSavedAddress from './Components/Addresses/editSavedAddress';
 import EditCardDetail from './Components/PaymentOptions/editCardDetail';
-import AddNewCard from './Components/PaymentOptions/addNewCard'
+import AddNewCard from './Components/PaymentOptions/addNewCard';
+import ProductSearch from './Components/Products/productSearch';
+import ProductPage from './Components/Products/ProductPage';
+
 
 class Main extends Component {
     render() {
@@ -58,6 +61,8 @@ class Main extends Component {
                     <Route path="/EditSavedAddress" component={EditSavedAddress}/>
                     <Route path="/EditCardDetail" component={EditCardDetail}/>
                     <Route path="/AddNewCard" component={AddNewCard}/>
+                    <Route path='/productSearch' component={ProductSearch}/>
+                    <Route path='/productPage/:id' component={ProductPage}/>
                 </div>
         )
     }

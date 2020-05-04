@@ -86,13 +86,21 @@ function prepareQuery(request, sellerId, product) {
 
     }
 
-    if (request.priceLow && request.priceHigh) {
+    query.push(
+        {
+            $match: {
+                "products.productRemoved" : false
+            }
+        }
+    )
+
+    // if (request.priceLow && request.priceHigh) {
         query.push(
 
             { $match: { 'products.productPrice': { $gte: request.priceLow, $lte: request.priceHigh } } },
 
         )
-    }
+   // }
     if (request.rating) {
         query.push(
 
