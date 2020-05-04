@@ -97,7 +97,7 @@ router.post('/updateSellerProfilePic/:type',
       "sellerProfilePicture": req.file.filename,
       "seller": req.user._id
     }
-    kafka.make_request("sellerProfile_topic", { "path": "updateSellerProfilePic", "user": req.user, "sellerProfile": sellerProfile }, function (err, results) {
+    kafka.make_request("sellerProfile_topic", { "path": "updateSellerProfile", "user": req.user, "profileFields": sellerProfile }, function (err, results) {
       console.log("In make request call back", results);
       if (err) {
         console.log("Inside err");

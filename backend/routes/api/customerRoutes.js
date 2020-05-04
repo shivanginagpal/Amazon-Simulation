@@ -3,9 +3,11 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 var kafka = require('../../kafka/client');
+const path = require("path");
+const fs = require("fs");
 const passportAuth = passport.authenticate('jwt', { session: false });
 
-router.get("/productSearch",passportAuth, async function (req, res) {
+router.post("/productSearch",passportAuth, async function (req, res) {
  
     console.log("in product search route");
     console.log(req.body);
@@ -29,10 +31,10 @@ router.get("/productSearch",passportAuth, async function (req, res) {
   });
 
  
-  router.get("/getProduct/:productId",passportAuth, async function (req, res) {
+  router.get("/getProduct",passportAuth, async function (req, res) {
  
-    
-    kafka.make_request("customer_topic", { "path": "getProduct", "user": req.user, "body": req.params.productId }, function (err, results) {
+    console.log(req.query);
+    kafka.make_request("customer_topic", { "path": "getProduct", "user": req.user, "body": req.query.productId }, function (err, results) {
       console.log("in make request call back seller_topic");
       if (err) {
         console.log("Inside err");
@@ -76,5 +78,17 @@ router.get("/productSearch",passportAuth, async function (req, res) {
       }
     );
   });
+
+  router.get("/downloadProductImg/:product_image", (req, res) => {
+    console.log("Entering download api=============================================================");
+    var image = path.join(__dirname + "/../../uploads/productImage", req.params.product_image);
+    console.log("image", image)
+    if (fs.existsSync(image)) {
+      res.sendFile(image);
+    } else {
+      res.end("image not found");
+    }
+  });
+
   
   module.exports = router;

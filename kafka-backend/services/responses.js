@@ -5,7 +5,6 @@ const prepareSuccess = (data = {}) => {
         data: data,
     };
     console.log("preparing success response with code 200");
-    console.log(responseData);
     return responseData;
 }
 
@@ -33,7 +32,6 @@ const prepareNoContent = (data = {}) => {
         }
     };
     console.log("preparing No content response with code 204");
-    console.log(responseData);
     return responseData;
 }
 

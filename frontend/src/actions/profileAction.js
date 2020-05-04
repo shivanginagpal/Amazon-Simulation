@@ -129,3 +129,23 @@ export const updateSellerAddr = (newAddr, history) => dispatch => {
                 payload: err.response.data
             }))
 }
+
+export const updateCustomerAddress = (newAddr, history) => dispatch => {
+    axios.post('/updateAddress', newAddr )
+        .then(res => history.push('/savedAddresses'))
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            }))
+}
+
+export const updateCustomerCardInfo = (newCard, history) => dispatch => {
+    axios.post('/updatePaymentInfo', newCard )
+        .then(res => history.push('/paymentInfo'))
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            }))
+}

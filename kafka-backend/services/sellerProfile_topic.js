@@ -13,10 +13,7 @@ exports.sellerProfileService = function sellerProfileService(msg, callback) {
         case "updateSellerProfile":
             updateSellerProfile(msg, callback);
             break;
-
-        case "updateSellerProfilePic":
-            updateSellerProfilePic(msg, callback);
-            break;
+            
     }
 };
 
@@ -63,28 +60,6 @@ function updateSellerProfile(msg, callback) {
         } else {
             // Save Profile
             new Seller(msg.profileFields).save().then(profile => {
-                response.data = profile;
-                response.status = 200;
-                return callback(null, response);
-            }).catch(err => console.log(err));
-        }
-    });
-}
-
-async function updateSellerProfilePic(msg, callback) {
-    let err = {};
-    let response = {};
-    console.log("In updateSellerProfilePic. Msg: ", msg);
-
-    Seller.findOne({ seller: msg.user._id }).then(profile => {
-        console.log(profile);
-        if (profile) {
-            // Update
-            Seller.findOneAndUpdate(
-                { seller: msg.user._id },
-                { $set: msg.sellerProfile },
-                { new: true }
-            ).then(profile => {
                 response.data = profile;
                 response.status = 200;
                 return callback(null, response);

@@ -303,7 +303,7 @@ AddProduct.propTypes = {
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
-    productCategoryResults: state.product.product_categories,
+    productCategoryResults: state.products.product_categories,
 
 })
 
