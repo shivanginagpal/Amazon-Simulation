@@ -14,6 +14,7 @@ import adminHome from './Components/Admin/adminHome';
 import inventory from './Components/Admin/inventory';
 import viewSellerList from './Components/Admin/viewSellerList';
 import viewOrdersAdmin from './Components/Admin/viewOrdersAdmin';
+import viewProductsUnderCategory from './Components/Admin/viewProductsUnderCategory';
 //Products
 import AddProduct from './Components/Products/AddProduct';
 import EditName from './Components/User/editName';
@@ -52,6 +53,7 @@ class Main extends Component {
                     <Route path="/paymentInfo" component={PaymentInfo}/>
                     <Route path="/savedAddresses" component={SavedAddresses}/>
                     <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
+                    <Route path="/viewProductsUnderCategory/:category" component={viewProductsUnderCategory} />
                     <Route path="/editSellerAddress" component={EditSellerAddress}/>
                     <Route path="/sellerProfile" component={SellerProfile}/>
                     <Route path="/customerProfile" component={CustomerProfile}/>

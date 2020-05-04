@@ -19,8 +19,40 @@ exports.adminService = function adminService(msg, callback) {
         case "viewSellersList":
             viewSellersList(msg, callback);
             break;
+        case "viewProducts":
+            viewProducts(msg, callback);
+            break;
     }
 }; 
+
+async function viewProducts(msg, callback){
+    let response = {};
+    let err = {};
+    var pageLimit = 20;
+    var currentPage = msg.body.currentPage;
+    console.log("In admin topic service. Msg: ", msg);
+
+    return await ProductCategory.find({ "productCategoryName": msg.body.productCategory
+}).then((result) => {
+    //Pagination start
+    // let pageMax = Math.ceil(result.length / pageLimit);
+    // if (currentPage > pageMax) {
+    //     currentPage = pageMax;
+    // }
+    // let start = (currentPage - 1)* pageLimit;
+    // let end = currentPage * pageLimit;
+    // result = result.slice(start, end);
+    //pagination end
+    response.status =200;
+    response.data=result;
+    return callback(null, response);
+}).catch((error) => {
+    err.status = 400;
+    err.message = "error in getting sellers";
+    err.data = error;
+    return callback(err, null);
+})
+}
 
 function addProductCategory(msg, callback) {
     let response = {};
@@ -128,5 +160,4 @@ async function viewSellersList(msg,callback){
             err.data = error;
             return callback(err, null);
         });
-
 }
