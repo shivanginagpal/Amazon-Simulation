@@ -14,6 +14,16 @@ class savedAddresses extends Component {
         this.props.deleteAddress(id);
     }
 
+    editClick = (addr_id) => {
+        console.log("Came inside edit-click");
+        this.props.history.push({
+            pathname: "/editSavedAddress",
+            state: {
+                addr_id: addr_id
+            }
+        });
+    }
+
     render() {
         const { profile = [], loading } = this.props.profile;
         console.log(this.props);
@@ -22,7 +32,9 @@ class savedAddresses extends Component {
         let profileContent = null;
 
         if (profile === null || loading) {
-            profileContent = ("Profile Loading");
+            profileContent = (<div className="container">
+                                "Address Book Loading"
+                                </div>);
         } else {
             let { savedAddresses } = profile;
             console.log(savedAddresses);
@@ -44,6 +56,14 @@ class savedAddresses extends Component {
                                 className="btn btn-danger"
                             >
                                 Delete Address
+                        </button>
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <button
+                                onClick={() =>this.editClick(addr._id) }
+                                className="btn btn-outline-success"
+                            >
+                                Edit 
                         </button>
                         </tr>
 

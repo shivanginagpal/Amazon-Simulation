@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getSellerProfile } from '../../actions/profileAction';
+import { getCustomerProfile } from '../../actions/profileAction';
 import { backendURL, isFieldEmpty } from '../SignUp/helperApis';
 import Navbar from '../Navbar/Navbar';
 
-class sellerProfile extends Component {
+class customerProfile extends Component {
 
     componentDidMount() {
-        this.props.getSellerProfile();
+        this.props.getCustomerProfile();
     }
 
     render() {
+
         const { profile = [], loading } = this.props.profile;
         console.log(this.props);
         console.log("Profile:")
         let profileImg;
-        let sellerAddr=null;
 
         if (profile === null || loading) {
             return (
@@ -35,14 +35,9 @@ class sellerProfile extends Component {
                 );
         } else {
 
-            profileImg = isFieldEmpty(profile.sellerProfilePicture) ?
+            profileImg = isFieldEmpty(profile.customerProfilePicture) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
-                backendURL + "/downloadProfileImg/" + profile.sellerProfilePicture;
-            
-            if(!isFieldEmpty(profile.sellerAddress)){
-                sellerAddr = (<h2 className="profile-text text-center">
-                        Located At: {profile.sellerAddress} </h2>)
-            }
+                backendURL + "/downloadProfileImg/" + profile.customerProfilePicture;
 
             return (
                 <div>
@@ -60,13 +55,13 @@ class sellerProfile extends Component {
                                 </div>
                             </div>
                             <div className="text-center">
-                                <h1 className="text-center profile-text">{profile.seller.name}
+                                <h1 className="text-center profile-text">{profile.customer.name}
                                 </h1>
-                                {sellerAddr}
+                                
                             </div>
                         </div>
                         <div>
-                            <h2>Recently Added Products</h2>
+                            <h2>Your Comments and Ratings</h2>
                         </div>
                     </div>
                 </div>
@@ -74,9 +69,10 @@ class sellerProfile extends Component {
         }
     }
 }
+
 const mapStateToProps = state => ({
     auth: state.auth,
     profile: state.profile
 });
 
-export default connect(mapStateToProps, { getSellerProfile })(sellerProfile);
+export default connect(mapStateToProps, { getCustomerProfile })(customerProfile);

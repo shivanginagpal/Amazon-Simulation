@@ -39,6 +39,14 @@ exports.customerProfileService = function customerProfileService(msg, callback) 
         case "updateCustomerProfilePic":
             updateCustomerProfilePic(msg, callback);
             break;
+
+        case "getAddress":
+            getAddress(msg, callback);
+            break;
+
+        case "getCardInfo":
+            getCardInfo(msg, callback);
+            break;
     }
 };
 
@@ -172,7 +180,8 @@ async function addPaymentInfo(msg, callback) {
                     console.log("customer created " + result1);
                     const newPayment = {
                         cardNumber: msg.body.cardNumber,
-                        expiryDate: msg.body.expiryDate,
+                        expiryYear: msg.body.expiryYear,
+                        expiryMonth: msg.body.expiryMonth,
                         name: msg.body.name,
                         cvv: msg.body.cvv,
                     };
@@ -204,10 +213,10 @@ async function updateAddress(msg, callback) {
 
     await Customer.findOneAndUpdate({ customer: msg.user._id }).then(profile => {
         if (profile) {
-            console.log(profile);
-            console.log(profile.customer);
+            //console.log(profile);
+
             console.log(profile.savedAddresses);
-            const item = profile.savedAddresses.find(item => item._id == msg.body._id)
+            const item = profile.savedAddresses.find(item => item._id == msg.body.addr_id)
             if (item) {
                 item.fullName = msg.body.fullName;
                 item.addrLine1 = msg.body.addrLine1;
@@ -254,10 +263,11 @@ async function updatePaymentInfo(msg, callback) {
             console.log(profile);
             console.log(profile.customer);
             console.log(profile.paymentOptions);
-            const item = profile.paymentOptions.find(item => item._id == msg.body._id)
+            const item = profile.paymentOptions.find(item => item._id == msg.body.card_id)
             if (item) {
                 item.cardNumber = msg.body.cardNumber;
-                item.expiryDate = msg.body.expiryDate;
+                item.expiryMonth = msg.body.expiryMonth;
+                item.expiryYear = msg.body.expiryYear,
                 item.name = msg.body.name;
                 item.cvv = msg.body.cvv;
 
@@ -366,5 +376,67 @@ async function updateCustomerProfilePic(msg, callback) {
                 return callback(null, response);
             }).catch(err => console.log(err));
         }
+        else {
+            // Save Profile
+            new Customer(msg.customerProfile).save().then(profile => {
+                response.data = profile;
+                response.status = 200;
+                return callback(null, response);
+            }).catch(err => console.log(err));
+        }
     });
+}
+
+async function getAddress(msg, callback) {
+    let err = {};
+    let response = {};
+    console.log("In getAddress Msg: ", msg);
+
+    Customer.findOne({ customer: msg.user._id })
+        .then(customer => {
+            //console.log(customer.savedAddresses);
+            const address = customer.savedAddresses.find(addr => addr._id == msg.query.addr_id)
+            if (address) {
+                console.log(address);
+                response.data = address;
+                response.message = "Address Found";
+                response.status = 200;
+                return callback(null, response);
+            } else {
+                err.status = 400;
+                err.message = "Address Not Found";
+                return callback(err, null);
+            }
+        }).catch(err => {
+            err.status = 400;
+            err.message = "Address Not Found";
+            return callback(err, null);
+        });
+}
+
+async function getCardInfo(msg, callback) {
+    let err = {};
+    let response = {};
+    console.log("In getCardInfo Msg: ", msg);
+
+    Customer.findOne({ customer: msg.user._id })
+        .then(customer => {
+            console.log(customer.paymentOptions);
+            const card = customer.paymentOptions.find(card => card._id == msg.query.card_id)
+            if (card) {
+                console.log(card);
+                response.data = card;
+                response.message = "Card Found";
+                response.status = 200;
+                return callback(null, response);
+            } else {
+                err.status = 400;
+                err.message = "Card Not Found";
+                return callback(err, null);
+            }
+        }).catch(err => {
+            err.status = 400;
+            err.message = "Card Not Found";
+            return callback(err, null);
+        });
 }
