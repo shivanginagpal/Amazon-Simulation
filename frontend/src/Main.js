@@ -24,6 +24,7 @@ import PaymentInfo from './Components/PaymentOptions/paymentInfo';
 import SavedAddresses from './Components/Addresses/savedAddresses';
 import EditSellerAddress from './Components/User/editSellerAddress';
 import SellerProfile from './Components/Seller/sellerProfile';
+import Checkout from './Components/Cart/Checkout';
 import CustomerProfile from './Components/Customer/customerProfile';
 import EditSavedAddress from './Components/Addresses/editSavedAddress';
 import EditCardDetail from './Components/PaymentOptions/editCardDetail';
@@ -57,6 +58,7 @@ class Main extends Component {
                     <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
                     <Route path="/editSellerAddress" component={EditSellerAddress}/>
                     <Route path="/sellerProfile" component={SellerProfile}/>
+                    <Route path="/checkout" component={Checkout}/>
                     <Route path="/customerProfile" component={CustomerProfile}/>
                     <Route path="/EditSavedAddress" component={EditSavedAddress}/>
                     <Route path="/EditCardDetail" component={EditCardDetail}/>

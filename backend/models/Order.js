@@ -17,6 +17,10 @@ var productsSchema = new Schema({
     productSellerName: {
         type: String, 
         required: true
+    },
+    productOrderStatus: {
+        type: String, 
+        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "DELIVERED", "CANCELLED"]
     }
 })
 
@@ -49,7 +53,7 @@ const OrderSchema = new Schema({
         type: String,
         required: true
     },
-    deliveryAddrees: {
+    deliveryAddress: {
         type: String,
         required: true
     },
