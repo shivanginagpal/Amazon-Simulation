@@ -49,7 +49,7 @@ const OrderSchema = new Schema({
         type: String,
         required: true
     },
-    deliveryAddrees: {
+    deliveryAddress: {
         type: String,
         required: true
     },

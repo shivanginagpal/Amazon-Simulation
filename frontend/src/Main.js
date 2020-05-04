@@ -25,10 +25,14 @@ import PaymentInfo from './Components/PaymentOptions/paymentInfo';
 import SavedAddresses from './Components/Addresses/savedAddresses';
 import EditSellerAddress from './Components/User/editSellerAddress';
 import SellerProfile from './Components/Seller/sellerProfile';
+import Checkout from './Components/Cart/Checkout';
 import CustomerProfile from './Components/Customer/customerProfile';
 import EditSavedAddress from './Components/Addresses/editSavedAddress';
 import EditCardDetail from './Components/PaymentOptions/editCardDetail';
-import AddNewCard from './Components/PaymentOptions/addNewCard'
+import AddNewCard from './Components/PaymentOptions/addNewCard';
+import ProductSearch from './Components/Products/productSearch';
+import ProductPage from './Components/Products/ProductPage';
+
 
 class Main extends Component {
     render() {
@@ -56,10 +60,13 @@ class Main extends Component {
                     <Route path="/viewProductsUnderCategory/:category" component={viewProductsUnderCategory} />
                     <Route path="/editSellerAddress" component={EditSellerAddress}/>
                     <Route path="/sellerProfile" component={SellerProfile}/>
+                    <Route path="/checkout" component={Checkout}/>
                     <Route path="/customerProfile" component={CustomerProfile}/>
                     <Route path="/EditSavedAddress" component={EditSavedAddress}/>
                     <Route path="/EditCardDetail" component={EditCardDetail}/>
                     <Route path="/AddNewCard" component={AddNewCard}/>
+                    <Route path='/productSearch' component={ProductSearch}/>
+                    <Route path='/productPage/:id' component={ProductPage}/>
                 </div>
         )
     }
