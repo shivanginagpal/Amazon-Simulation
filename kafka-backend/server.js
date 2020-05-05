@@ -8,6 +8,7 @@ var sellerTopics = require('./services/sellerTopic');
 var adminTopics = require('./services/admin_topic');
 var customerTopics = require('./services/customer_topics');
 var cartTopics = require('./services/cart_topics');
+var orderTopics = require('./services/order_topic');
 
 
 const mongoose = require('mongoose');
@@ -80,6 +81,12 @@ function handleTopicRequest(topic_name, fname) {
                     return;
                 });
                 break;
+            case 'order_topic':
+                fname.orderService(data.data, function (err, res) {
+                    response(data, res, producer);
+                    return;
+                });
+                break;
         }
 
     });
@@ -113,3 +120,4 @@ handleTopicRequest("seller_topic", sellerTopics);
 handleTopicRequest("admin_topic", adminTopics);
 handleTopicRequest("customer_topic", customerTopics);
 handleTopicRequest("cart_topic", cartTopics);
+handleTopicRequest("order_topic", orderTopics);

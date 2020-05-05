@@ -17,6 +17,10 @@ var productsSchema = new Schema({
     productSellerId: {
         type: Schema.Types.ObjectId, 
         required: true
+    },
+    productOrderStatus: {
+        type: String,
+        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "DELIVERED", "CANCELLED"]
     }
 })
 
@@ -54,18 +58,8 @@ const OrderSchema = new Schema({
         required: true
     },
     paymentInfo: {
-        cardNumber: {
-            type : String,
-            required: true
-        },
-        cardExpiryDate:{
-            type: Date,
-            required: true
-        },
-        cardHolderName: {
-            type: String,
-            required: true
-        }
+        type: String,
+        required: true
     }
 });
 
