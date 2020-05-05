@@ -31,6 +31,7 @@ import EditCardDetail from './Components/PaymentOptions/editCardDetail';
 import AddNewCard from './Components/PaymentOptions/addNewCard';
 import ProductSearch from './Components/Products/productSearch';
 import ProductPage from './Components/Products/ProductPage';
+import OrderSummary from './Components/Order/OrderSummary';
 
 
 class Main extends Component {
@@ -65,6 +66,8 @@ class Main extends Component {
                     <Route path="/AddNewCard" component={AddNewCard}/>
                     <Route path='/productSearch' component={ProductSearch}/>
                     <Route path='/productPage/:id' component={ProductPage}/>
+                    <Route path='/orderSummary' component={OrderSummary}/>
+                    
                 </div>
         )
     }

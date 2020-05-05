@@ -58,18 +58,8 @@ const OrderSchema = new Schema({
         required: true
     },
     paymentInfo: {
-        cardNumber: {
-            type : String,
-            required: true
-        },
-        cardExpiryDate:{
-            type: Date,
-            required: true
-        },
-        cardHolderName: {
-            type: String,
-            required: true
-        }
+        type: String,
+        required: true
     }
 });
 

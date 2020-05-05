@@ -122,13 +122,13 @@ class Cart extends Component {
                             {cartResult}
                             <br/>
                             {this.state.cartDetails && this.state.cartDetails.status &&
-                                <div id= "movecenter" style={{color: "#DC143C", fontWeight: "bold", fontSize: "16px"}}>
+                                <div style={{color: "#DC143C", fontWeight: "bold", fontSize: "16px"}}>
                                     <div className="row">
-                                        <div className="col-sm" >
+                                        <div className="col-sm" style={{textAlign: "right"}}>
                                         Total Price : {this.state.cartDetails.data.totalAmount}
                                         </div>
                                         <div className="col-sm" >
-                                        <Link to={{pathname: "/checkout"}} class="btn btn-success">CheckOut</Link>
+                                        <Link to={{pathname: "/checkout"}} class="btn btn-success">Proceed to checkOut</Link>
                                         </div>
                                     </div>
                                 </div>

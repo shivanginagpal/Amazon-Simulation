@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { GET_CART, DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY } from './types';
+import { GET_CART, DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, CHECKOUT_ADD_PAYMENT, GET_PROFILE} from './types';
 import {getEmail} from '../Components/SignUp/helperApis';
 
 export const getCart = () => dispatch => {
@@ -103,4 +103,36 @@ export const changeQuantity = (payload) => dispatch => {
       result = {data : err, status : false}
       dispatch({type: CART_CHANGE_PRODUCT_QUANTITY, payload: result})}
       );
+};
+
+export const addPaymentOption = (newCard) => dispatch => {
+  //alert("YYYYY"+JSON.stringify(newCard))
+  //alert("ACTION DATA =="+JSON.stringify(newCard));
+  axios.post('/addPaymentInfo', newCard)
+      .then(res => 
+      {
+
+        axios('/getCustomerProfile',
+        {
+            method: 'get',
+        })
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+        }
+        )
+        .catch(err => 
+          {
+            dispatch({type: CHECKOUT_ADD_PAYMENT, payload: {}})
+          });
+
+        //dispatch({type: CHECKOUT_ADD_PAYMENT, payload: res});
+      })
+      .catch(err => 
+      {
+        dispatch({type: CHECKOUT_ADD_PAYMENT, payload: {}})
+      });
 };
