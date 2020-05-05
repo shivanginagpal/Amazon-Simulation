@@ -27,6 +27,7 @@ import { Link } from "react-router-dom";
      }
     render() {
         let sellerProfile = this.state.sellers.map(seller => {
+            let url = "http://localhost:3000/viewProductsUnderSeller/" + seller._id
             if(
                 seller.name.toUpperCase()
                 .includes(this.state.searchString.toUpperCase())
@@ -35,12 +36,11 @@ import { Link } from "react-router-dom";
                     <tr>
                         <td>{seller.name}</td>
                         <td>
-                            <Link
-                                to="/viewsellerProducts"
+                            <a href={url}
                                 className="btn btn-primary btn-sm"
                             >
                                 View Products
-                            </Link>
+                            </a>
                         </td>
                     </tr>
                 )

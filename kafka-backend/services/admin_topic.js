@@ -3,6 +3,7 @@ var { addProductCat } = require('../models/addProductCat');
 var { ProductCategory } = require('../models/ProductCategory');
 const {prepareSuccess,prepareInternalServerError,prepareNoContent} = require('./responses');
 const User = require('../models/User');
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.adminService = function adminService(msg, callback) {
     console.log("In admin Profile service path:", msg.path);
@@ -22,36 +23,82 @@ exports.adminService = function adminService(msg, callback) {
         case "viewProducts":
             viewProducts(msg, callback);
             break;
+        case "viewProductsUnderSeller":
+            viewProductsUnderSeller(msg, callback);
+            break;
     }
 }; 
 
-async function viewProducts(msg, callback){
+async function viewProductsUnderSeller(msg, callback) {
     let response = {};
     let err = {};
+    let result={};
     var pageLimit = 20;
     var currentPage = msg.body.currentPage;
     console.log("In admin topic service. Msg: ", msg);
+    var sellerId = msg.body.id;
+    var query = [];
+    query.push(
+        {
+            $match: {
+                "seller": ObjectId(sellerId)
+            }
+        },
+        {
+            $unwind: "$products"
+        },
+    )
+    result = await ProductCategory.aggregate(query).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError();
+        return callback(null, err);
+    })
+        let pageMax = Math.ceil(result.length / pageLimit);
+        if (currentPage > pageMax) {
+            currentPage = pageMax;
+        }
+        let start = (currentPage - 1)* pageLimit;
+        let end = currentPage * pageLimit;
+        result = result.slice(start, end);
+        response.status = 200;
+        response.data = result;
+        return callback(null, response);
+}
 
-    return await ProductCategory.find({ "productCategoryName": msg.body.productCategory
-}).then((result) => {
-    //Pagination start
-    // let pageMax = Math.ceil(result.length / pageLimit);
-    // if (currentPage > pageMax) {
-    //     currentPage = pageMax;
-    // }
-    // let start = (currentPage - 1)* pageLimit;
-    // let end = currentPage * pageLimit;
-    // result = result.slice(start, end);
-    //pagination end
-    response.status =200;
-    response.data=result;
-    return callback(null, response);
-}).catch((error) => {
-    err.status = 400;
-    err.message = "error in getting sellers";
-    err.data = error;
-    return callback(err, null);
-})
+
+async function viewProducts(msg, callback) {
+    let response = {};
+    let err = {};
+    let result = {};
+    var pageLimit = 20;
+    var currentPage = msg.body.currentPage;
+    console.log("In admin topic service. Msg: ", msg);
+    var query=[];
+    query.push(
+        {
+            $match: {
+                "productCategoryName": { $regex: msg.body.productCategory, $options: "i" }
+            }
+        },
+        {
+            $unwind: "$products"
+        },
+    )
+    result = await ProductCategory.aggregate(query).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError();
+        return callback(null, err);
+    })
+    let pageMax = Math.ceil(result.length / pageLimit);
+    if (currentPage > pageMax) {
+        currentPage = pageMax;
+    }
+    let start = (currentPage - 1) * pageLimit;
+    let end = currentPage * pageLimit;
+    result = result.slice(start, end);
+    response.status = 200;
+    response.data = result;
+    return callback(null, response);    
 }
 
 function addProductCategory(msg, callback) {

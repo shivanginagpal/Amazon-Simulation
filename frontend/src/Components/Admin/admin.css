@@ -52,17 +52,16 @@
 #cardadmin-img-top{
     height: 200px;
 }
-#itemRight{
+#itemAdminRight{
     margin-bottom: 50px;
 }
 
 
-
-
-
-
-
-
+span.active {
+  background-color: #0099FF;
+  color: white;
+  border: 1px solid #0099FF;
+}
 
 
 

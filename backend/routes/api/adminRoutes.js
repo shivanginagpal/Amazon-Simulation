@@ -71,9 +71,9 @@ router.get('/getProductCategories', (req, res) => {
         }
     })
 })
-router.get('/getProductsUnderProductCategory',(req,res) => {
-console.log(req.query);
-kafka.make_request("admin_topic", {"path": "viewProducts", "body":req.query}, function (err, results){
+router.put('/getProductsUnderProductCategory',(req,res) => {
+console.log("IN GET PRODUCT UNDER CATEGORY ", req.body);
+kafka.make_request("admin_topic", {"path": "viewProducts", "body":req.body}, function (err, results){
     console.log("In make request ", results);
     if (err) {
         console.log("Inside err");
@@ -112,6 +112,26 @@ router.get('/viewSellersList', (req,res) => {
     })
 })
 
+router.put("/viewProductsUnderSeller", (req,res) => {
+    console.log(req.body);
+    kafka.make_request("admin_topic", { "path": "viewProductsUnderSeller", "body": req.body}, function (err, results){
+        console.log("In make request viewProductsUnderseller call back", results);
+        if (err) {
+            console.log("Inside err");
+            console.log(err);
+            return res.status(err.status).send(err.message);
+        } else {
+            console.log("Inside else", results);
+            if (results.status === 200) {
+                return res.status(results.status).send(results.data);
+            }
+            else {
+                return res.status(results.status).send(results.errors);
+            }
+        }
+    })
+    
+})
 
 
 module.exports = router;

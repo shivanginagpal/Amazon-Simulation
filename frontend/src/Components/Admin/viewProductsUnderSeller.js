@@ -1,77 +1,71 @@
 import React, { Component } from 'react';
 import Navbar from './adminNavbar';
-import axios from "axios";
+import axios from 'axios';
 import product_image from "../../images/adminproduct.jpg";
 import './admin.css';
 
-class viewProductsUnderCategory extends Component {
-    constructor() {
-        super()
-        this.state = {
-            productdetails: [],
-            currentPage: 1
-        }
-        this.onSubmit = this.onSubmit.bind(this);
-    };
+ class viewProductsUnderSeller extends Component {
+     constructor() {
+         super()
+         this.state = {
+             productdetails: [],
+             currentPage: 1
+         }
+         //this.onSubmit = this.onSubmit.bind(this);
+     };
 
-    componentDidMount = () => {
-        const productCategory = this.props.match.params.category
-        const data = {
-            productCategory: productCategory,
-            currentPage: this.state.currentPage
-        }
-        console.log("Category Selected ", data);
-        axios("/getProductsUnderProductCategory", {
-            method: 'put',
-            data: data
-        })
-            .then(res => {
-                this.setState({
-                    productdetails: res.data
-                })
-                console.log("This is p", this.state.productdetails);
-            })
-    }
+     componentDidMount = () => {
+         const sellerid = this.props.match.params.id;
+         const data = {
+             id: sellerid,
+             currentPage: this.state.currentPage
+         }
+         axios("/viewProductsUnderSeller", {
+             method: 'put',
+             data: data
+         }).then(res => {
+             this.setState({
+                 productdetails: res.data
+             })
+             console.log("This is p", this.state.productdetails);
+         })
+     }
 
-    nextPage = async (e) => {
-        let page = this.state.currentPage;
-        page += 1;
-        this.setState({ currentPage: page }, () => {
-            this.onSubmit();
-        });
-    }
+     nextPage = async (e) => {
+         let page = this.state.currentPage;
+         page += 1;
+         this.setState({ currentPage: page }, () => {
+             this.onSubmit();
+         });
+     }
 
-    prevPage = async (e) => {
-        let page = this.state.currentPage;
-        if (page === 1)
-            return;
-        page -= 1;
-        this.setState({ currentPage: page }, () => {
-            this.onSubmit();
-        });
-    }
+     prevPage = async (e) => {
+         let page = this.state.currentPage;
+         if (page === 1)
+             return;
+         page -= 1;
+         this.setState({ currentPage: page }, () => {
+             this.onSubmit();
+         });
+     }
 
-
-    onSubmit = async () => {
-        const productCategory = this.props.match.params.category
-        const data = {
-            currentPage: this.state.currentPage,
-            productCategory: productCategory
-        }
-        await axios.put("/getProductsUnderProductCategory", data)
-            .then(res => {
-                this.setState({
-                    productdetails: res.data
-                })
-                console.log("This is p", this.state.productdetails);
-            })
-    }
-
-
+     onSubmit = async () => {
+         const sellerid = this.props.match.params.id;
+         const data = {
+             currentPage: this.state.currentPage,
+             id: sellerid
+         }
+         await axios.put("/viewProductsUnderSeller", data)
+             .then(res => {
+                 this.setState({
+                     productdetails: res.data
+                 })
+                 console.log("This is p", this.state.productdetails);
+             })
+     }
     render() {
         let products;
         var pageBar, showPageBar;
-
         if (this.state.productdetails != null) {
             showPageBar = true;
             products = this.state.productdetails.map(product => {
@@ -120,8 +114,6 @@ class viewProductsUnderCategory extends Component {
         let threedottwo = <li className="page-item ">
             <div className="page-link" ><span aria-hidden="true">...</span></div>
         </li>
-
-
         if (showPageBar) {
             pageBar = (
                 <div className="col-sm-12 justify-content-center mt-1">
@@ -156,23 +148,20 @@ class viewProductsUnderCategory extends Component {
                     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
                     <div className="container">
                         <div className="row ">
-
                             <div className="col">
                                 <br />
                                 <div className="row">
-
                                     {products}
-
                                 </div>
                             </div>
-
                             {pageBar}
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
         )
     }
 }
 
-export default viewProductsUnderCategory;
+
+export default viewProductsUnderSeller;

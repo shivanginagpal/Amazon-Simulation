@@ -15,6 +15,7 @@ import inventory from './Components/Admin/inventory';
 import viewSellerList from './Components/Admin/viewSellerList';
 import viewOrdersAdmin from './Components/Admin/viewOrdersAdmin';
 import viewProductsUnderCategory from './Components/Admin/viewProductsUnderCategory';
+import viewProductsUnderSeller from './Components/Admin/viewProductsUnderSeller';
 //Products
 import AddProduct from './Components/Products/AddProduct';
 import EditName from './Components/User/editName';
@@ -58,6 +59,7 @@ class Main extends Component {
                     <Route path="/savedAddresses" component={SavedAddresses}/>
                     <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
                     <Route path="/viewProductsUnderCategory/:category" component={viewProductsUnderCategory} />
+                    <Route path="/viewProductsUnderSeller/:id" component={viewProductsUnderSeller} />
                     <Route path="/editSellerAddress" component={EditSellerAddress}/>
                     <Route path="/sellerProfile" component={SellerProfile}/>
                     <Route path="/checkout" component={Checkout}/>
