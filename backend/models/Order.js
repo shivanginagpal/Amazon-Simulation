@@ -7,11 +7,11 @@ var productsSchema = new Schema({
         required: true
     },
     productPrice: {
-        type: String,
+        type: Number,
         required: true
     },
     productQuantity:{
-        type: String,
+        type: Number,
         required: true
     },
     productSellerName: {
@@ -38,19 +38,19 @@ const OrderSchema = new Schema({
         default: Date.now
     },
     subTotal:{ 
-        type: String,
+        type: Number,
         required: true
     },
     discount: {
-        type: String, 
+        type: Number, 
         required: true
     },
     tax: {
-        type: String,
+        type: Number,
         required: true
     },
     totalAmount: {
-        type: String,
+        type: Number,
         required: true
     },
     deliveryAddress: {

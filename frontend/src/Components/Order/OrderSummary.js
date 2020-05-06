@@ -7,8 +7,7 @@ class OrderSummary extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cartDetails : null,
-            customerData : null
+            id : null
         };    
     }
 
@@ -19,7 +18,8 @@ class OrderSummary extends Component {
     }
 
     render() {
-        
+        let orderId = localStorage.getItem('orderId');
+        localStorage.removeItem('orderId');
         return (
             <div>
                 <Navbar />
@@ -29,6 +29,8 @@ class OrderSummary extends Component {
                     <div className="row">
                         <div className="col-md-12" >
                             ORDER SUMMARY PAGE!
+                            <br/>
+                            {orderId}
                         </div>
                     </div>
 

@@ -9,6 +9,7 @@ import {getCart, addPaymentOption} from '../../actions/cartAction';
 import {placeOrder} from '../../actions/orderAction';
 import EdiText from 'react-editext';
 import { getCustomerProfile } from '../../actions/profileAction';
+import {getID, getEmail} from '../SignUp/helperApis';
 
 
 class Checkout extends Component {
@@ -74,12 +75,13 @@ class Checkout extends Component {
                     productName: prd.productName,
                     productPrice: prd.productPrice,
                     productQuantity: prd.productQuantity,
-                    productSellerId: prd.sellerName
+                    productSellerId: prd.sellerId
                 };
                 productList.push(product);
             });
             let order = {
-                customerId : this.state.cartDetails.data.customerEmail,
+                customerId : getID(),
+                customerEmail : getEmail(),
                 products : productList,
                 subTotal : this.state.cartDetails.data.totalAmount,
                 tax : 0.07*this.state.cartDetails.data.totalAmount,
@@ -110,8 +112,10 @@ class Checkout extends Component {
 
     render() {
         let redirectVar = null;
+        //alert("ORDER STATUS!!!"+this.props.orderStatus)
         if (this.props.orderStatus) {
-            redirectVar = <Redirect to="/orderSummary" />
+            localStorage.setItem("orderId", this.props.orderId);
+            redirectVar = <Redirect to='/orderSummary' />
         }
         let cartResult = "";
         if(this.state.cartDetails && this.state.cartDetails.status){
@@ -158,6 +162,7 @@ class Checkout extends Component {
                 <Navbar />
                 <br />
                 <br />
+                {redirectVar}
                 <div className="container" id= "movecenter">
                     <div className="row">
                         <div className="col-md-12" >
@@ -298,7 +303,8 @@ function mapStateToProps (state) {
     return {
        cartItems: state.cartReducer.cartItems,
        profile: state.profile.profile,
-       orderStatus : state.orderReducer.status
+       orderStatus : state.orderReducer.status,
+       orderId : state.orderReducer.orderId
     }
 }
 
