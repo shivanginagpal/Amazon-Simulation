@@ -18,6 +18,10 @@ var productsSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true
     },
+    productSellerName: {
+        type: Schema.Types.ObjectId,
+        required: false
+    },
     productOrderStatus: {
         type: String,
         enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "PACKAGE_ARRIVED", "OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED"]

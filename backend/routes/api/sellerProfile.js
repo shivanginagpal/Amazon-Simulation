@@ -22,8 +22,8 @@ router.get(
   '/getSellerProfile',
   passportAuth,
   (req, res) => {
-    console.log("In getSellerProfile API", req.user);
-    kafka.make_request("sellerProfile_topic", { "path": "getSellerProfile", "user": req.user }, function (err, results) {
+    console.log("In getSellerProfile API", req.query);
+    kafka.make_request("sellerProfile_topic", { "path": "getSellerProfile", "user": req.user, "body": req.query }, function (err, results) {
       console.log("In make request call back", results);
       if (err) {
         console.log("Inside err");

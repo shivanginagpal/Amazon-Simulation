@@ -34,6 +34,10 @@ import AddNewCard from './Components/PaymentOptions/addNewCard';
 import ProductSearch from './Components/Products/productSearch';
 import ProductPage from './Components/Products/ProductPage';
 import OrderSummary from './Components/Order/OrderSummary';
+import CustomerOrders from './Components/Order/CustomerOrders';
+import sellerProductPage from './Components/Products/SellerProductPage';
+import editProduct from './Components/Products/EditProduct';
+import UpdateProductImages from './Components/Products/UpdateProductImages';
 
 
 class Main extends Component {
@@ -62,7 +66,7 @@ class Main extends Component {
                     <Route path="/viewProductsUnderCategory/:category" component={viewProductsUnderCategory} />
                     <Route path="/viewProductsUnderSeller/:id" component={viewProductsUnderSeller} />
                     <Route path="/editSellerAddress" component={EditSellerAddress}/>
-                    <Route path="/sellerProfile" component={SellerProfile}/>
+                    <Route path="/sellerProfile/:seller" component={SellerProfile}/>
                     <Route path="/checkout" component={Checkout}/>
                     <Route path="/customerProfile" component={CustomerProfile}/>
                     <Route path="/EditSavedAddress" component={EditSavedAddress}/>
@@ -70,8 +74,11 @@ class Main extends Component {
                     <Route path="/AddNewCard" component={AddNewCard}/>
                     <Route path='/productSearch' component={ProductSearch}/>
                     <Route path='/productPage/:id' component={ProductPage}/>
-                    <Route path='/orderSummary' component={OrderSummary}/>
-                    
+                    <Route path='/orderSummary/:id' component={OrderSummary}/>
+                    <Route path='/customerOrders' component={CustomerOrders}/>
+                    <Route path='/sellerProductPage/:id' component={sellerProductPage}/>
+                    <Route path='/editProduct' component={editProduct}/>
+                    <Route path='/updateProductImages' component={UpdateProductImages}/>
                 </div>
         )
     }

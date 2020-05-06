@@ -20,6 +20,9 @@ const CartSchema = new Schema({
   customerEmail: {
     type: String,
   },
+  customerName: {
+    type: String,
+  },
   products: [product],
   totalAmount: {
     type: Number

@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.customerService = function customerService(msg, callback) {
-    console.log("In customer topic Service path:", msg.path);
+    //console.log("In customer topic Service path:", msg.path);
     switch (msg.path) {
         case "productSearchResults":
             productSearchResults(msg, callback);
@@ -18,6 +18,9 @@ exports.customerService = function customerService(msg, callback) {
             break;
         case "getCustomerReview":
             getCustomerReview(msg, callback);
+            break;
+        case "getCustomerName":
+            getCustomerName(msg, callback);
     }
 };
 
@@ -25,6 +28,7 @@ function prepareQuery(request, sellerId, product) {
     let query = [];
     filterRating = 0;
     filterPrice = 0;
+
 
     if (request.productCategoryName && sellerId) {
         query.push(
@@ -80,23 +84,24 @@ function prepareQuery(request, sellerId, product) {
                 }
             )
         }
+
     }
 
     query.push(
         {
             $match: {
-                "products.productRemoved" : false
+                "products.productRemoved": false
             }
         }
     )
 
     // if (request.priceLow && request.priceHigh) {
-        query.push(
+    query.push(
 
-            { $match: { 'products.productPrice': { $gte: request.priceLow, $lte: request.priceHigh } } },
+        { $match: { 'products.productPrice': { $gte: request.priceLow, $lte: request.priceHigh } } },
 
-        )
-   // }
+    )
+    // }
     if (request.rating) {
         query.push(
 
@@ -179,7 +184,7 @@ async function addProductReview(msg, callback) {
     let query = [];
     console.log("In customer topic service. Msg: ", msg);
     var review = {
-        customerId: msg.body.customerId,
+        customerId: msg.user._id,
         comment: msg.body.comment,
         rating: msg.body.rating,
     };
@@ -200,8 +205,6 @@ async function addProductReview(msg, callback) {
     console.log(query);
     let result = await ProductCategory.aggregate(query);
 
-    var { customers } = result;
-    console.log(customers);
     console.log(result);
 
     let avgrating = msg.body.rating;
@@ -221,33 +224,59 @@ async function addProductReview(msg, callback) {
             return callback(null, response);
         }).catch(error => {
             err = prepareInternalServerError(error);
-            return callback(err, null);
+            return callback(null, err);
         })
 }
+
 
 async function getProduct(msg, callback) {
     let response = {};
     let err = {};
-    let query = [];
+    let sellerName = '';
     console.log("In customer topic service. Msg: ", msg);
 
-    ProductCategory.find({ "products._id": msg.body }, { "products.$": 1, "seller": 1, "productCategoryName": 1 })
-        .then(product => {
-            response = prepareSuccess(product);
-            return callback(null, response);
+    await ProductCategory.find({ "products._id": msg.body }, { "products.$": 1, "seller": 1, "productCategoryName": 1 })
+        .then(async product => {
+            await User.findOne({ _id: product[0].seller }).then(result => {
+                if (result) {
+                    sellerName = result.name;
+                }
+                product.push(sellerName);
+                response = prepareSuccess(product);
+                return callback(null, response);
+
+            }).catch(error => {
+                err = prepareInternalServerError(error);
+                return callback(null, err);
+            })
         }).catch(error => {
             err = prepareInternalServerError(error);
             return callback(null, err);
         })
 }
 
+async function getCustomerName(msg, callback) {
+    let response = {};
+    let err = {};
+
+    await User.findOne({ _id: msg.body }, { "name": 1, "_id": 0 }).then(result => {
+
+        response = prepareSuccess(result);
+        return callback(null, response);
+
+    }).catch(error => {
+        err = prepareInternalServerError(error);
+        return callback(null, err);
+    })
+}
+
 async function getCustomerReview(msg, callback) {
     let response = {};
     let err = {};
 
-    console.log("In getCustomerReview, msg",msg);
+    console.log("In getCustomerReview, msg", msg);
 
-    await ProductCategory.find({"products.productReview.customerId":msg.user._id},{"products.$":1})
+    await ProductCategory.find({ "products.productReview.customerId": msg.user._id }, { "products.$": 1 })
         .then(product => {
             response = prepareSuccess(product);
             return callback(null, response);
