@@ -5,6 +5,7 @@ const initialState = {
     products_items: null,
     loading: false,
     product:null,
+    reviewed_products: [],
 
 }
 
