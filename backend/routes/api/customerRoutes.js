@@ -8,7 +8,6 @@ const fs = require("fs");
 const passportAuth = passport.authenticate('jwt', { session: false });
 
 router.post("/productSearch",passportAuth, async function (req, res) {
- 
     console.log("in product search route");
     console.log(req.body);
     kafka.make_request("customer_topic", { "path": "productSearchResults", "user": req.user, "body": req.body }, function (err, results) {
