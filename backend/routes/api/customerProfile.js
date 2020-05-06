@@ -7,6 +7,8 @@ const helper = require('./helperFunctions');
 const passportAuth = passport.authenticate('jwt', { session: false });
 const fs = require("fs");
 const path = require("path");
+const validate = require('../../validation/validateAddress');
+const validatePayment = require('../../validation/validatePaymentInfo');
 // Load Validation
 
 router.get('/test', (req, res) => res.json({ msg: 'Profile Works' }));
@@ -25,7 +27,7 @@ router.get("/downloadProfileImg/:user_image", (req, res) => {
 router.get('/getCustomerProfile', passportAuth, (req, res) => {
     console.log("In getCustomerProfile API", req.user);
     kafka.make_request("customerProfile_topic", { "path": "getCustomerProfile", "user": req.user }, function (err, results) {
-        console.log("In make request call back", results);
+        //console.log("In make request call back", results);
         if (err) {
             console.log("Inside err");
             console.log(err);
@@ -43,15 +45,14 @@ router.get('/getCustomerProfile', passportAuth, (req, res) => {
 });
 
 router.post('/addAddress', passportAuth, (req, res) => {
-    console.log(req.body);
-    //console.log(req.user);
-    //const { errors, isValid } = validateProfileInput(req.body);
-    //console.log(errors);
-    // Check Validation
-    //   if (!isValid) {
-    //     // Return any errors with 400 status
-    //     return res.status(400).json(errors);
-    //   }
+
+    const { errors, isValid } = validate.validateAddress(req.body);
+    console.log(errors);
+    //Check Validation
+      if (!isValid) {
+        // Return any errors with 400 status
+        return res.status(400).json(errors);
+      }
 
     console.log("In update Customer Profile Add Address API", req.user);
     kafka.make_request("customerProfile_topic", { "path": "addAddress", "user": req.user, "body": req.body }, function (err, results) {
@@ -76,17 +77,17 @@ router.post('/addAddress', passportAuth, (req, res) => {
 router.post('/addPaymentInfo', passportAuth, (req, res) => {
     console.log(req.body);
     //console.log(req.user);
-    //const { errors, isValid } = validateProfileInput(req.body);
-    //console.log(errors);
-    // Check Validation
-    //   if (!isValid) {
-    //     // Return any errors with 400 status
-    //     return res.status(400).json(errors);
-    //   }
+    const { errors, isValid } = validatePayment.validatePaymentInfo(req.body);
+    console.log(errors);
+    //Check Validation
+      if (!isValid) {
+        // Return any errors with 400 status
+        return res.status(400).json(errors);
+      }
 
-    console.log("In update Customer Profile Add PaymentInfo API", req.user);
+    console.log("In update Customer Profile Add PaymentInfo API");
     kafka.make_request("customerProfile_topic", { "path": "addPaymentInfo", "user": req.user, "body": req.body }, function (err, results) {
-        console.log("In make request call back", results);
+
         if (err) {
             console.log("Inside err");
             console.log(err);
@@ -105,9 +106,8 @@ router.post('/addPaymentInfo', passportAuth, (req, res) => {
 );
 
 router.get('/getAddress', passportAuth, (req, res) => {
-    
     //console.log(req.user);
-    console.log("Query: ",req.query);
+    //console.log("Query: ",req.query);
 
     console.log("In Customer Profile Get Address API");
     kafka.make_request("customerProfile_topic", { "path": "getAddress", "user": req.user, "query": req.query }, function (err, results) {
@@ -130,7 +130,7 @@ router.get('/getAddress', passportAuth, (req, res) => {
 );
 
 router.post('/updateAddress', passportAuth, (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     //console.log(req.user);
 
     console.log("In update Customer Profile update Address API", req.user);
@@ -154,12 +154,12 @@ router.post('/updateAddress', passportAuth, (req, res) => {
 );
 
 router.post('/updatePaymentInfo', passportAuth, (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     //console.log(req.user);
 
-    console.log("In update Customer Profile update PaymentInfo API", req.user);
+    console.log("In update Customer Profile update PaymentInfo API");
     kafka.make_request("customerProfile_topic", { "path": "updatePaymentInfo", "user": req.user, "body": req.body }, function (err, results) {
-        console.log("In make request call back", results);
+        //console.log("In make request call back", results);
         if (err) {
             console.log("Inside err");
             console.log(err);
@@ -178,10 +178,10 @@ router.post('/updatePaymentInfo', passportAuth, (req, res) => {
 );
 
 router.delete('/deleteAddress/:_id', passportAuth, (req, res) => {
-    console.log("In update Customer Profile Delete Address API", req.user);
+    console.log("In update Customer Profile Delete Address API");
     
     kafka.make_request("customerProfile_topic", { "path": "deleteAddress", "user": req.user, "body": req.params }, function (err, results) {
-        console.log("In make request call back", results);
+        //console.log("In make request call back", results);
         if (err) {
             console.log("Inside err");
             console.log(err);
@@ -204,7 +204,7 @@ router.delete('/deletePaymentInfo/:_id', passportAuth, (req, res) => {
     
     console.log("Params",req.params);
     kafka.make_request("customerProfile_topic", { "path": "deletePaymentInfo", "user": req.user, "body": req.params }, function (err, results) {
-        console.log("In make request call back", results);
+        //console.log("In make request call back", results);
         if (err) {
             console.log("Inside err");
             console.log(err);
@@ -231,7 +231,7 @@ router.post('/updateCustomerProfilePic/:type', helper.upload.single('file'), pas
         "customerProfilePicture": req.file.filename,
     }
     kafka.make_request("customerProfile_topic", { "path": "updateCustomerProfilePic", "user": req.user, "customerProfile": customerProfile }, function (err, results) {
-        console.log("In make request call back", results);
+        //console.log("In make request call back", results);
         if (err) {
             console.log("Inside err");
             console.log(err);

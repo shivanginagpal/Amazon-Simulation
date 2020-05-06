@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { getCustomerProfile } from '../../actions/profileAction';
 import { backendURL, isFieldEmpty } from '../SignUp/helperApis';
 import Navbar from '../Navbar/Navbar';
+import CustomerReviews from './customerReviews';
 
 class customerProfile extends Component {
 
@@ -62,6 +63,7 @@ class customerProfile extends Component {
                         </div>
                         <div>
                             <h2>Your Comments and Ratings</h2>
+                            <CustomerReviews />
                         </div>
                     </div>
                 </div>

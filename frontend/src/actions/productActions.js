@@ -54,6 +54,23 @@ export const productSearch = (data) => dispatch => {
         );
 };
 
+export const sellerProducts = (data) => dispatch => {
+    dispatch(setProductLoading());
+    axios.post('/sellerProductSearch', data)
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: GET_PRODUCTS,
+                payload: res.data
+            })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_PRODUCTS,
+                payload: {}
+            })
+        );
+};
 
 export const getProduct = (id) => dispatch => {
     dispatch(setProductLoading());
@@ -86,3 +103,23 @@ export const setProductLoading = () => {
     }
 }
 
+export const getCustomerReviews = () => dispatch => {
+    dispatch(setProductLoading());
+   
+    axios('/getCustomerReview', {
+        method : 'get'
+    })
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: GET_PRODUCTS,
+                payload: res.data
+            })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_PRODUCTS,
+                payload: {}
+            })
+        );
+};

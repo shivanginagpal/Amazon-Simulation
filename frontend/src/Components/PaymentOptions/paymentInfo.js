@@ -6,8 +6,21 @@ import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 class paymentInfo extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+        profile: null,
+        }
+    }
     componentDidMount() {
         this.props.getCustomerProfile();
+    }
+
+    componentWillReceiveProps(nextProps){
+        if (nextProps.profile) {
+            console.log("received error");
+            this.setState({ profile: nextProps.profile })
+        }
     }
 
     onDeleteClick(id) {
@@ -25,13 +38,15 @@ class paymentInfo extends Component {
     }
 
     render() {
-        const { profile = [], loading } = this.props.profile;
-        console.log(this.props);
-        console.log("Profile:")
+        // const { profile = [], loading } = this.props.profile;
+        // console.log(this.props);
+        // console.log("Profile:")
+
+        const {profile} = this.state;
 
         let profileContent = null;
 
-        if (profile === null || loading) {
+        if (profile === null ) {
             profileContent = ("Profile Loading");
         } else {
             let { paymentOptions } = profile;
@@ -41,7 +56,7 @@ class paymentInfo extends Component {
                     <tr key={card._id} className="list-group-item" id="display-card">
                         <h4>{card.name}</h4>
                         <tr>
-                            <strong>Card Number:</strong>{card.cardNumber}
+                            <strong>Card Number:</strong>{" Ending in "+card.cardNumber.slice(-4)}
                         </tr>
                         <td>
                             <strong>Expiry Month:</strong> {card.expiryMonth}
@@ -80,7 +95,7 @@ class paymentInfo extends Component {
                 <Navbar />
                 <div className="container">
                     <br />
-                <Link to="/addNewCard" className="btn btn-primary">
+                <Link to="/addNewCard" className="btn btn-primary" id="add-new-card">
                     Add New Card
                 </Link>
                 
@@ -93,7 +108,7 @@ class paymentInfo extends Component {
 }
 const mapStateToProps = state => ({
     auth: state.auth,
-    profile: state.profile
+    profile: state.profile.profile
 });
 
 export default connect(mapStateToProps, { getCustomerProfile, deleteCard })(withRouter(paymentInfo));
