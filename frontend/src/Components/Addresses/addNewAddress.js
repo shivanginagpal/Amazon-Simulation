@@ -23,6 +23,15 @@ class addNewAddress extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("in componentWillReceiveProps");
+    if (nextProps.errors) {
+        console.log("received error");
+        this.setState({ errors: nextProps.errors })
+    }
+  }
+
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -141,7 +150,8 @@ class addNewAddress extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile
+  profile: state.profile,
+  errors: state.errors
 });
 
 export default connect(mapStateToProps, { addCustomerNewAddress })(withRouter(addNewAddress));

@@ -56,7 +56,7 @@ router.post("/addProduct/:type", helper.upload.array('productImage', 5), passpor
   });
 });
 
-router.get("/sellerProductSearch", passportAuth, async function (req, res) {
+router.post("/sellerProductSearch", passportAuth, async function (req, res) {
 
   console.log("in product search  seller route");
   console.log(req.body);
@@ -77,7 +77,6 @@ router.get("/sellerProductSearch", passportAuth, async function (req, res) {
     }
   });
 });
-
 
 router.post("/updateProduct", passportAuth, async function (req, res) {
   
