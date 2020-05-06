@@ -83,6 +83,7 @@ async function addToCart(msg, callback) {
           //creating new cart
             var newCart = new Cart({
                 customerEmail: msg.user.email,
+                customerName: msg.user.name,
                 products: newProduct,
                 totalAmount: productTotal,
             })
