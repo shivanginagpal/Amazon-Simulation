@@ -13,16 +13,23 @@ exports.sellerProfileService = function sellerProfileService(msg, callback) {
         case "updateSellerProfile":
             updateSellerProfile(msg, callback);
             break;
-            
+
     }
 };
 
 function getSellerProfile(msg, callback) {
     let err = {};
     let response = {};
+    let sellerId = null;
+    if (msg.body.sellerId) {
+        sellerId = msg.body.sellerId
+    }
+    else {
+        sellerId = msg.user._id
+    }
     console.log("In getSellerProfile. Msg: ", msg);
-    console.log(msg.user._id);
-    Seller.findOne({ seller: msg.user._id })
+    console.log(sellerId);
+    Seller.findOne({ seller: sellerId })
         .populate('seller', ['name', 'email'])
         .then(profile => {
 
