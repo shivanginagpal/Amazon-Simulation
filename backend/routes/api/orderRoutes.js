@@ -4,7 +4,7 @@ const passport = require('passport');
 var kafka = require('../../kafka/client');
 const passportAuth = passport.authenticate('jwt', { session: false });
 
-router.post("/placeOrder", passportAuth, async function (req, res) {
+router.post("/placeOrder", async function (req, res) {
 
     console.log("in place order route");
     console.log(req.body);

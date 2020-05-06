@@ -5,7 +5,7 @@ exports.orderService = function orderService(msg, callback) {
     console.log("In order topic service path:", msg.path);
     switch (msg.path) {
         case "placeOrder":
-            addToCart(msg, callback);
+            placeOrder(msg, callback);
             break;
     }
 };
@@ -21,7 +21,6 @@ async function placeOrder(msg, callback) {
         "orderStatus": "NEW",
         "orderDate": new Date,
         "subTotal" : msg.subTotal,
-        "discount": "",
         "tax" : msg.tax,
         "totalAmount": msg.totalAmount,
         "deliveryAddress": msg.deliveryAddress,
@@ -29,7 +28,11 @@ async function placeOrder(msg, callback) {
     })
     .then(async newOrder => {
         console.log("placeOrder response =====" +newOrder);
-        response = prepareSuccess(newOrder);
+        result = {
+            status : true,
+            id : newOrder._id
+        }
+        response = prepareSuccess(result);
         return callback(null, response);
     }).catch(error => {
         console.log(error);

@@ -5,7 +5,8 @@ export default function (state = {}, action) {
         case PLACE_ORDER:
             return {
                 ...state,
-                cartItems: action.payload,
+                status: action.payload.status,
+                orderId: action.payload.id
             }
         default:
             return state;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { connect } from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import './cart.css';
 import '../PaymentOptions/payment.css';
 import {getCart, addPaymentOption} from '../../actions/cartAction';
@@ -87,7 +88,7 @@ class Checkout extends Component {
                 paymentInfo: this.state.paymentId
             };
             alert("PLACE ORDER --"+JSON.stringify(order))
-            //this.props.placeOrder(data)
+            this.props.placeOrder(order)
         }
     }
 
@@ -108,6 +109,10 @@ class Checkout extends Component {
     }
 
     render() {
+        let redirectVar = null;
+        if (this.props.orderStatus) {
+            redirectVar = <Redirect to="/orderSummary" />
+        }
         let cartResult = "";
         if(this.state.cartDetails && this.state.cartDetails.status){
         cartResult = this.state.cartDetails.data.products.map((item,key)=>
@@ -292,7 +297,8 @@ class Checkout extends Component {
 function mapStateToProps (state) {
     return {
        cartItems: state.cartReducer.cartItems,
-       profile: state.profile.profile
+       profile: state.profile.profile,
+       orderStatus : state.orderReducer.status
     }
 }
 
@@ -301,7 +307,8 @@ function mapDispatchToProps (dispatch)
     return {
         getCart: data => dispatch(getCart(data)),
         getCustomerProfile : data => dispatch(getCustomerProfile(data)),
-        addPaymentOption : data => dispatch(addPaymentOption(data))
+        addPaymentOption : data => dispatch(addPaymentOption(data)),
+        placeOrder : data => dispatch(placeOrder(data))
     };
 }
 
