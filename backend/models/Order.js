@@ -10,7 +10,7 @@ var productsSchema = new Schema({
         type: Number,
         required: true
     },
-    productQuantity:{
+    productQuantity: {
         type: Number,
         required: true
     },
@@ -41,13 +41,13 @@ const OrderSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    subTotal:{ 
+    subTotal: {
         type: Number,
         required: true
     },
     discount: {
-        type: Number, 
-        required: true
+        type: Number,
+        required: false
     },
     tax: {
         type: Number,
@@ -68,3 +68,4 @@ const OrderSchema = new Schema({
 });
 
 module.exports = mongoose.model('order', OrderSchema);
+

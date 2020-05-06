@@ -4,6 +4,8 @@ const passport = require('passport');
 var kafka = require('../../kafka/client');
 const passportAuth = passport.authenticate('jwt', { session: false });
 const Order = require('../../models/Order');
+const Seller = require('../../models/Seller');
+const User = require('../../models/User');
 
 router.get("/noOfOrdersPerDay",  (req , res) => {
     console.log("IN NOOF ORDERS PER DAY");
@@ -40,8 +42,17 @@ router.get("/orderStatusAdminGraph", (req, res) => {
             res.end("could not get messages");
         })
 })
+
+router.get("/top5Customers",(req,res) => {
+    
+
+});
+
+router.get("/top5Sellers",(req,res) => {
+
+});
 router.get("/top5SoldProducts", (req, res) => {
-    console.log("IN NOOF ORDERS PER DAY");
+    console.log("IN top5SoldProducts ");
     Order.aggregate([
         {
             $unwind: "$products"

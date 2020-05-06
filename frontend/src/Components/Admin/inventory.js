@@ -80,8 +80,7 @@ class inventory extends Component {
                     .catch(error => console.log(error.response.data));
             }
         }
-        ).catch(error => {console.log(error);
-        });   
+        ).catch(error => {console.log(error)});   
     }
 
     addProductCategory = (e) => {
