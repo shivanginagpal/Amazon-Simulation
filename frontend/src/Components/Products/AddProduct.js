@@ -4,7 +4,7 @@ import Navbar from '../Navbar/Navbar';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactDropzone from "react-dropzone";
-import SweetAlert from 'react-bootstrap-sweetalert';
+import swal from 'sweetalert';
 import { Redirect } from 'react-router';
 import { postProduct, getProductCategoryNames } from '../../actions/productActions';
 
@@ -26,12 +26,13 @@ class AddProduct extends Component {
             inputPhotos: [],
             added: false,
             alert: null,
+            productStatus:null,
 
         }
 
         this.onChange = this.onChange.bind(this);
         this.onDrop = this.onDrop.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+       // this.onSubmit = this.onSubmit.bind(this);
         this.addProduct = this.addProduct.bind(this);
         this.productCategoryChangeHandler = this.productCategoryChangeHandler.bind(this);
 
@@ -60,6 +61,12 @@ class AddProduct extends Component {
                 })
             }
         }
+        if(nextProps.status){
+			var {status} = nextProps;
+			this.setState({
+				productStatus:status
+			})
+		}
 
     }
 
@@ -114,26 +121,9 @@ class AddProduct extends Component {
         }
     }
 
-    onSubmit = () => {
-        console.log("In submit")
-        const getAlert = () => (
-            <SweetAlert
-                success
-                title="Congratulations!!"
-                onConfirm={() => this.addProduct()}>
-                You successfully added you product!!!
-            </SweetAlert>
-        );
-
-        this.setState({
-            alert: getAlert(),
-        })
-
-        //this.addProduct();
-    }
-
-    addProduct = (e) => {
-        console.log("In Add Property");
+   
+    addProduct =  async (e) => {
+        console.log("In Add Product");
         console.log(this.state.startDate);
         var data = {
             productPrice: this.state.productPrice,
@@ -157,17 +147,22 @@ class AddProduct extends Component {
         for (var pair of formdata.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
         }
-        this.props.postProduct(formdata, this.props.history);
-        // .then(response => {
-        //     if (response.payload.status === 200) {
-        //         console.log("Successful added product");
-        //         this.setState({ added: true })
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log("Add product Server error:", error);
-        // })
+      await this.props.postProduct(formdata, this.props.history).then(res => {
+            if (this.state.productStatus == 200) {
+                swal({
+                  text: "Product added Sucessfully!"
+                }).then()
+              }
+              else {
+                swal({
+                  text: "Error adding product, please try again",
+                  button: "ok"
+                }).then()
+              }
+        })			
     }
+
+   
 
     render() {
 
@@ -262,7 +257,7 @@ class AddProduct extends Component {
 
                                             {this.state.previewuploadedPhotos.length > 0 ? <div>
                                                 <h2>Preview of {this.state.previewuploadedPhotos.length} uploaded files</h2>
-                                                <div>{this.state.previewuploadedPhotos.map((selectedfile) => <img className="mypreview" key={selectedfile} src={selectedfile.preview} alt="Property Preview" />)}</div>
+                                                <div>{this.state.previewuploadedPhotos.map((selectedfile,i) => <img className="mypreview" key={i} src={selectedfile.preview} alt="Property Preview" />)}</div>
                                             </div> : null}
                                             <h2> Uploaded {this.state.uploadedPhotos.length} Files </h2>
                                             <br></br>
@@ -281,7 +276,7 @@ class AddProduct extends Component {
                     <br />
 
                     <div className="form-row">
-                        <button type="button" onClick={this.onSubmit} className="btn btn-secondary">Add Product</button>
+                        <button type="button" onClick={this.addProduct} className="btn btn-secondary">Add Product</button>
                         {this.state.alert}
                     </div>
                     <br />
@@ -304,7 +299,7 @@ AddProduct.propTypes = {
 const mapStateToProps = (state) => ({
     auth: state.auth,
     productCategoryResults: state.products.product_categories,
-
+    status: state.products.status
 })
 
 export default connect(mapStateToProps, { postProduct, getProductCategoryNames })(AddProduct);

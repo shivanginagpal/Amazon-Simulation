@@ -1,10 +1,14 @@
-import { GET_PRODUCT_CATEGORIES, GET_PRODUCTS, PRODUCT_LOADING, GET_PRODUCT } from '../actions/types';
+import { GET_PRODUCT_CATEGORIES, GET_PRODUCTS, PRODUCT_LOADING, GET_PRODUCT, POST_PRODUCT, GET_CUSTOMER_NAME, POST_REVIEW, DELETE_PRODUCT, UPDATE_PRODUCT, UPDATE_IMAGE_PRODUCT } from '../actions/types';
 
 const initialState = {
     product_categories: null,
     products_items: null,
     loading: false,
-    product:null,
+    product: null,
+    status: null,
+    customer_name: null,
+    reviewStatus: null,
+    deleteStatus: null
 
 }
 
@@ -33,6 +37,34 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: false,
                 product: action.payload,
+            }
+        case POST_PRODUCT:
+            return {
+                ...state,
+                status: action.payload,
+            }
+        case GET_CUSTOMER_NAME:
+            return {
+                ...state,
+                customer_name: action.payload,
+            }
+        case POST_REVIEW:
+            return {
+                ...state,
+                reviewStatus: action.payload,
+            }
+        case DELETE_PRODUCT:
+            return {
+                ...state,
+                deleteStatus: action.payload
+            }
+        case UPDATE_PRODUCT:
+            return {
+                ...state
+            }
+        case UPDATE_IMAGE_PRODUCT:
+            return {
+                ...state
             }
 
         default:

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { GET_CART, DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, CHECKOUT_ADD_PAYMENT, GET_PROFILE} from './types';
+import { GET_CART, DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, CHECKOUT_ADD_PAYMENT, GET_PROFILE,POST_CART,GET_ERRORS} from './types';
 import {getEmail} from '../Components/SignUp/helperApis';
 
 export const getCart = () => dispatch => {
@@ -19,6 +19,28 @@ export const getCart = () => dispatch => {
         dispatch({type: GET_CART, payload: result})}
         );
 };
+
+export const postProductToCart = (data) => dispatch => {
+  console.log("Inside post product add to cart actions")
+  console.log(data);
+
+  return axios.post('/addToCart', data)
+      .then(res =>{
+        console.log(res);
+         dispatch({
+        type: POST_CART,
+        payload: res.status
+    })})
+      .catch(err => {
+          console.log("Got an error", err);
+          dispatch({
+              type: GET_ERRORS,
+              payload: err.response.data
+          })
+      }
+      );
+};
+
 
 export const deleteCartItem = (payload) => dispatch => {
   let url = '/deleteCartItem';

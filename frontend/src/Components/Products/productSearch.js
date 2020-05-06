@@ -34,9 +34,7 @@ class ProductSearch extends Component {
         this.onCategoryDropdown = this.onCategoryDropdown.bind(this);
         this.handleRate = this.handleRate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-
-
-        // this.productCategoryChangeHandler = this.productCategoryChangeHandler.bind(this);
+       
     }
     async componentDidMount() {
         await this.props.getProductCategoryNames();
