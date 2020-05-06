@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var product = {
 	productId: {type: Schema.Types.ObjectId},
   productQuantity: {type: Number},
-  productPrice: {type: String},
+  productPrice: {type: Number},
 	gift: {type: Boolean, default: false},
 	giftMessage: {type: String, default: ""},
   giftCharge: {type: Number, default: 2},

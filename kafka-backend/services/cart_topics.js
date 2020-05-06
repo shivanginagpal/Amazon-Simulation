@@ -139,6 +139,7 @@ async function fetchCart(msg, callback) {
                         //console.log("PRODUCT INFORMATION ------ ", JSON.stringify(p));
                         product = {
                             itemId : item._id,
+                            sellerId : item.sellerId,
                             sellerName: sellerName,
                             productQuantity: item.productQuantity,
                             productPrice: item.productPrice,
