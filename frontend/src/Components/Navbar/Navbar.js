@@ -5,7 +5,7 @@ import { logoutUser } from '../../actions/authAction';
 import { clearProfile } from '../../actions/profileAction';
 import logo from "./../../images/amazon-logo.jpg";
 import "./navbar.css";
-
+import { Link } from "react-router-dom";
 
 class Navbar extends Component {
     handleLogout(e) {
@@ -23,7 +23,7 @@ class Navbar extends Component {
         let authLinks = null;
         
         if (isAuthenticated){
-            const { userType } = user;
+            const { userType, id } = user;
             
             customerLinks = (
                 <div>
@@ -41,10 +41,10 @@ class Navbar extends Component {
                     <a class="dropdown-item" href="/sellerOptions">Your Account</a>
                     <a class="dropdown-item" href="/sellerOrders">Your Received Orders</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/sellerProfile">Your Amazon Profile</a>
+                    <a class="dropdown-item"> <Link to={{pathname:`/sellerProfile/${id}`}}>Your Amazon Profile</Link></a>
                 </div>
             )
-
+           
             authLinks = (
                 <div>
                     <ul class="navbar-nav mr-auto">
