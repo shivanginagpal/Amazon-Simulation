@@ -28,28 +28,30 @@ exports.sellerService = function sellerService(msg, callback) {
 
 function prepareQuery(request) {
     let query = [];
-    let sellerId = request.user._id;
-
+    let sellerId = ObjectId(request.body.sellerId);
+    console.log(request);
     // get products only for that particular seller
     query.push({
         $match: {
-            "seller": ObjectId(sellerId)
+            $and: [{ "productCategoryName": { $regex: request.body.productCategoryName, $options: "i" } },
+            { "seller": sellerId }]
         }
     },
         {
             $unwind: "$products"
         },
     );
-    // serach for product name
+    //search for product name
     if (request.body.search) {
         query.push(
             {
                 $match: {
-
-                    "products.productName": {
-                        $regex: request.body.search, $options: "i"
-                    }
-                }
+                $and: [{ "products.productName": { $regex: request.body.search, $options: "i" } },
+                        { "seller": sellerId },
+                        { "productCategoryName": { $regex: request.body.productCategoryName, $options: "i" } } 
+                      ]
+            }
+                
             }
         );
     }

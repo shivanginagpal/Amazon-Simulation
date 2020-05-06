@@ -1,16 +1,22 @@
 .creditCardForm {
     max-width: 600px;
     background-color: #fff;
-    margin: 20px auto;
-    margin-left: 10px;
+    margin: 40px auto;
+    margin-left: 350px;
     overflow: hidden;
     padding: 10px;
     color: #4c4e56;
+    
 }
 .creditCardForm .payment-label {
     width: 100%;
     margin-bottom: 5px;
     margin-left: 20px;
+}
+.card-error-text{
+    color:#e74c3c;
+    font-family:'Open Sans', sans-serif ;
+    font-size: smaller;
 }
 .creditCardForm .heading h1 {
     text-align: center;
@@ -42,7 +48,7 @@
     width: 28%;
 }
 .creditCardForm #card-number-field {
-    width: 100%;
+    width: 93%;
 }
 .creditCardForm #expiration-date {
     width: 49%;
@@ -73,9 +79,10 @@
     opacity: 0.2;
 }
 #add-new-card{
-    color: #A77B0E;
-    font-size: 25px;
-    margin-top: 20px;
+    color:white;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 #display-card{
     width: 40%;
