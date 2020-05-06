@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './adminNavbar';
 import axios from "axios";
+import swal from 'sweetalert';
 
  class viewOrdersAdmin extends Component {
      constructor() {
@@ -27,22 +28,46 @@ import axios from "axios";
      }
      
      handleStatusChange = (status, orderid) => {
-
+         const data ={
+             id:orderid,
+             status:status
+         }
+         this.setState({
+             id: orderid,
+             status: status
+         })
+         axios.post('/orderStatusChangeAdmin',data)
+         .then((response) => {
+             if(response.status ===200){
+                 swal({
+                     title: "Changed!",
+                     text: "You Successfully changed order status!",
+                     icon: "success",
+                     button: "OK"
+                 }).then(() => {
+                     window.location.reload();
+                 }).catch(error => console.log(error.response.data));
+             }
+         }).catch(error => {console.log(error)});
      }
     render() {
         
         let orderdetails = this.state.orders.map(order => {
-            if(order){
+            let str =order.orderDate;
+            let date = str.substring(0, str.indexOf('T'));
+            if(order.orderStatus.toUpperCase()
+            .includes(this.state.searchString.toUpperCase())){
                 return(
                     <tr>
                         <td>{order._id}</td>
+                        <td>{date}</td>
                         <td>
                             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {order.orderStatus} </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <button onClick={() => this.handleStatusChange("ongoing", order._id)} class="dropdown-item" >Package arrived</button>
-                                <button onClick={() => this.handleStatusChange("Completed", order._id)} class="dropdown-item" >Out for Delivery</button>
-                                <button onClick={() => this.handleStatusChange("Completed", order._id)} class="dropdown-item" >Delivered</button>
+                                <button onClick={() => this.handleStatusChange("PACKAGE_ARRIVED", order._id)} class="dropdown-item" >Package arrived</button>
+                                <button onClick={() => this.handleStatusChange("OUT_FOR_DELIVERY", order._id)} class="dropdown-item" >Out for Delivery</button>
+                                <button onClick={() => this.handleStatusChange("DELIVERED", order._id)} class="dropdown-item" >Delivered</button>
                             </div>
                         </td>
                     </tr>
@@ -77,6 +102,7 @@ import axios from "axios";
                                             <thead>
                                                 <tr>
                                                     <th>Seller Name</th>
+                                                    <th>Order Date</th>
                                                     <th>Order Status</th>
                                                 </tr>
                                             </thead>

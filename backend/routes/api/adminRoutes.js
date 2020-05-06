@@ -27,6 +27,26 @@ router.post('/addProductCategory', (req, res) => {
     })
 })
 
+router.post('/orderStatusChangeAdmin',(req, res) => {
+    console.log(req.body);
+    kafka.make_request("admin_topic", { "path":"orderStatusChangeAdmin","body":req.body}, function(err, results){
+        console.log("In make request call back", results);
+        if (err) {
+            console.log("Inside err");
+            console.log(err);
+            return res.status(err.status).send(err.message);
+        } else {
+            console.log("Inside else", results);
+            if (results.status === 200) {
+                return res.status(results.status).send(results);
+            } 
+            else {
+                return res.status(results.status).send(results.errors);
+            }
+        }
+    }) 
+})
+
 router.post('/removeProductCategory', (req,res)=> {
     console.log(req.body);
     kafka.make_request("admin_topic", { "path": "removeProductCategory", "body": req.body }, function (err, results) {

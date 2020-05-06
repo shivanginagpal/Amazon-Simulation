@@ -29,10 +29,34 @@ exports.adminService = function adminService(msg, callback) {
             break;
         case "getAdminViewOrders":
             getAdminViewOrders(msg, callback);
-            break;    
+            break;   
+        case "orderStatusChangeAdmin":
+            orderStatusChangeAdmin(msg, callback);
+            break; 
     }
 }; 
 
+async function orderStatusChangeAdmin(msg, callback) {
+    let response = {};
+    let err = {};
+
+    Order.update({
+        "_id":msg.body.id},
+        {
+            $set:{
+                "orderStatus":msg.body.status
+            }
+        }
+        ).then(async result => {
+            response.status=200;
+            response.data="Succesfully changed the order status";
+            return callback(null, response)
+        }).catch(err => {
+            err.status = 400;
+            err.message = "Error in removing category";
+            return callback(err, null);
+        });
+}
 
 async function viewProductsUnderSeller(msg, callback) {
     let response = {};
