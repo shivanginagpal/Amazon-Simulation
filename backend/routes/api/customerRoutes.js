@@ -50,7 +50,24 @@ router.post("/productSearch",passportAuth, async function (req, res) {
     });
   });
 
- 
+  router.get("/getCustomerReview",passportAuth, async function (req, res) {
+    console.log("In getCustomerReview");
+    kafka.make_request("customer_topic", { "path": "getCustomerReview", "user": req.user }, function (err, results) {
+      console.log("in make request call back customer_topic");
+      if (err) {
+        console.log("Inside err");
+        console.log(err);
+        return res.status(err.status).send(err.message);
+      } else {
+        console.log("Inside else", results);
+        if (results.status === 200) {
+          return res.status(results.status).send(results.data);
+        } else {
+          return res.status(results.status).send(results.errors);
+        }
+      }
+    });
+  })
 
   router.post('/addProductReview', passportAuth, async (req,res)=>{
     console.log("In add Product Review");
