@@ -29,19 +29,21 @@ exports.cartService = function cartService(msg, callback) {
 async function addToCart(msg, callback) {
     let response = {};
     let err = {};
-    var newProduct = []
+    var newProduct = [];
+    var productTotal=0;
+	productTotal=(msg.body.productQuantity) * (msg.body.productPrice) 
     newProduct = {
         sellerId: msg.body.sellerId,
         productId: msg.body.productId,
         productPrice: msg.body.productPrice,
         productQuantity: msg.body.productQuantity,
-        productTotal: msg.body.productTotal,
+        productTotal: productTotal,
         cartStatus: 'IN_CART',
     }
     if (msg.body.gift === true) {
         newProduct["gift"] = true;
         newProduct["giftMessage"] = msg.body.giftMessage;
-        msg.body.productTotal += GIFT_CHARGE;
+        productTotal += GIFT_CHARGE;
     }
 
     console.log(msg.user);
@@ -51,30 +53,30 @@ async function addToCart(msg, callback) {
             if (existingProduct) {
                 //do not handle gift for same product being added multiple times
                 if (msg.body.gift === true)
-                    msg.body.productTotal -= GIFT_CHARGE;
+                    productTotal -= GIFT_CHARGE;
 
-                cart.totalAmount += msg.body.productTotal;
+                cart.totalAmount += productTotal;
                 existingProduct.productQuantity += msg.body.productQuantity;
-                existingProduct.productTotal += msg.body.productTotal,
+                existingProduct.productTotal += productTotal;
 
                 cart.save().then(result => {
                     response = prepareSuccess(result);
                     return callback(null, response);
                 }).catch(error => {
                     err = prepareInternalServerError(error);
-                    return callback(err, null);
+                    return callback(null, err);
                 })
             }
             else {
                 // add product to existing cart
-                cart.totalAmount += msg.body.productTotal;
+                cart.totalAmount += productTotal;
                 cart.products.push(newProduct);
                 cart.save().then(result => {
                     response = prepareSuccess(result);
                     return callback(null, response);
                 }).catch(error => {
                     err = prepareInternalServerError(error);
-                    return callback(err, null);
+                    return callback(null, err);
                 })
             }
         } else {
@@ -82,7 +84,7 @@ async function addToCart(msg, callback) {
             var newCart = new Cart({
                 customerEmail: msg.user.email,
                 products: newProduct,
-                totalAmount: msg.body.productTotal,
+                totalAmount: productTotal,
             })
             newCart.save().then(result => {
                 response = prepareSuccess(result);
@@ -94,6 +96,7 @@ async function addToCart(msg, callback) {
         }
     })
 }
+
 
 async function fetchCart(msg, callback) {
     let response = {};

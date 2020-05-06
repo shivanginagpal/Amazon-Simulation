@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.sellerService = function sellerService(msg, callback) {
-    console.log("In seller topic Service path:", msg.path);
+    //console.log("In seller topic Service path:", msg.path);
     switch (msg.path) {
         case "addProduct":
             addProduct(msg, callback);
