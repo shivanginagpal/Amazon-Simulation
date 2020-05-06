@@ -14,6 +14,8 @@ import adminHome from './Components/Admin/adminHome';
 import inventory from './Components/Admin/inventory';
 import viewSellerList from './Components/Admin/viewSellerList';
 import viewOrdersAdmin from './Components/Admin/viewOrdersAdmin';
+import viewProductsUnderCategory from './Components/Admin/viewProductsUnderCategory';
+import viewProductsUnderSeller from './Components/Admin/viewProductsUnderSeller';
 //Products
 import AddProduct from './Components/Products/AddProduct';
 import EditName from './Components/User/editName';
@@ -22,6 +24,21 @@ import SellerOptions from './Components/Seller/sellerOptions';
 import AddNewAddress from './Components/Addresses/addNewAddress';
 import PaymentInfo from './Components/PaymentOptions/paymentInfo';
 import SavedAddresses from './Components/Addresses/savedAddresses';
+import EditSellerAddress from './Components/User/editSellerAddress';
+import SellerProfile from './Components/Seller/sellerProfile';
+import Checkout from './Components/Cart/Checkout';
+import CustomerProfile from './Components/Customer/customerProfile';
+import EditSavedAddress from './Components/Addresses/editSavedAddress';
+import EditCardDetail from './Components/PaymentOptions/editCardDetail';
+import AddNewCard from './Components/PaymentOptions/addNewCard';
+import ProductSearch from './Components/Products/productSearch';
+import ProductPage from './Components/Products/ProductPage';
+import OrderSummary from './Components/Order/OrderSummary';
+import CustomerOrders from './Components/Order/CustomerOrders';
+import sellerProductPage from './Components/Products/SellerProductPage';
+import editProduct from './Components/Products/EditProduct';
+import UpdateProductImages from './Components/Products/UpdateProductImages';
+
 
 class Main extends Component {
     render() {
@@ -46,6 +63,22 @@ class Main extends Component {
                     <Route path="/paymentInfo" component={PaymentInfo}/>
                     <Route path="/savedAddresses" component={SavedAddresses}/>
                     <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
+                    <Route path="/viewProductsUnderCategory/:category" component={viewProductsUnderCategory} />
+                    <Route path="/viewProductsUnderSeller/:id" component={viewProductsUnderSeller} />
+                    <Route path="/editSellerAddress" component={EditSellerAddress}/>
+                    <Route path="/sellerProfile/:seller" component={SellerProfile}/>
+                    <Route path="/checkout" component={Checkout}/>
+                    <Route path="/customerProfile" component={CustomerProfile}/>
+                    <Route path="/EditSavedAddress" component={EditSavedAddress}/>
+                    <Route path="/EditCardDetail" component={EditCardDetail}/>
+                    <Route path="/AddNewCard" component={AddNewCard}/>
+                    <Route path='/productSearch' component={ProductSearch}/>
+                    <Route path='/productPage/:id' component={ProductPage}/>
+                    <Route path='/orderSummary/:id' component={OrderSummary}/>
+                    <Route path='/customerOrders' component={CustomerOrders}/>
+                    <Route path='/sellerProductPage/:id' component={sellerProductPage}/>
+                    <Route path='/editProduct' component={editProduct}/>
+                    <Route path='/updateProductImages' component={UpdateProductImages}/>
                 </div>
         )
     }

@@ -22,8 +22,8 @@ router.get(
   '/getSellerProfile',
   passportAuth,
   (req, res) => {
-    console.log("In getSellerProfile API", req.user);
-    kafka.make_request("sellerProfile_topic", { "path": "getSellerProfile", "user": req.user }, function (err, results) {
+    console.log("In getSellerProfile API", req.query);
+    kafka.make_request("sellerProfile_topic", { "path": "getSellerProfile", "user": req.user, "body": req.query }, function (err, results) {
       console.log("In make request call back", results);
       if (err) {
         console.log("Inside err");
@@ -85,7 +85,7 @@ router.post(
   }
 );
 
-router.post('/updateSellerProfilePic',
+router.post('/updateSellerProfilePic/:type',
   helper.upload.single('file'),
   passportAuth,
   async (req, res) => {
@@ -97,7 +97,7 @@ router.post('/updateSellerProfilePic',
       "sellerProfilePicture": req.file.filename,
       "seller": req.user._id
     }
-    kafka.make_request("sellerProfile_topic", { "path": "updateSellerProfilePic", "user": req.user, "sellerProfile": sellerProfile }, function (err, results) {
+    kafka.make_request("sellerProfile_topic", { "path": "updateSellerProfile", "user": req.user, "profileFields": sellerProfile }, function (err, results) {
       console.log("In make request call back", results);
       if (err) {
         console.log("Inside err");

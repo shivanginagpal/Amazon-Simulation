@@ -24,6 +24,8 @@ var sellerRoutes = require('./routes/api/sellerRoutes');
 var adminRoutes = require('./routes/api/adminRoutes');
 var customerRoutes = require('./routes/api/customerRoutes');
 var cartRoutes = require('./routes/api/cartRoutes');
+var orderRoutes = require('./routes/api/orderRoutes');
+var analytics = require('./routes/api/adminanalytics');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -61,6 +63,8 @@ app.use('/', sellerRoutes);
 app.use('/', adminRoutes);
 app.use('/', customerRoutes);
 app.use('/', cartRoutes);
+app.use('/', orderRoutes);
+app.use('/', analytics)
 
 app.get('/',(req,res) => res.send('Hello World!!'));
 

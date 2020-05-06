@@ -10,20 +10,20 @@ const helper = require('./helperFunctions');
 // @desc    Post new product
 // @access  Private
 
-router.post("/addProduct/:type", helper.upload.array('productImage',5),passportAuth, async function (req, res) {
- 
+router.post("/addProduct/:type", helper.upload.array('productImage', 5), passportAuth, async function (req, res) {
+
   console.log(req.files);
- 
+
   const reqFiles = [];
   const url = req.protocol + '://' + req.get('host')
   for (var i = 0; i < req.files.length; i++) {
-      reqFiles.push( req.files[i].filename)
+    reqFiles.push(req.files[i].filename)
   }
 
   console.log(reqFiles);
 
   var images = {
-    "productImage" : reqFiles,
+    "productImage": reqFiles,
   }
   console.log(images);
 
@@ -37,7 +37,7 @@ router.post("/addProduct/:type", helper.upload.array('productImage',5),passportA
 
   console.log("in add product route");
   console.log(req.body);
-  kafka.make_request("seller_topic", { "path": "addProduct", "user": req.user, "body": req.body , images}, function (err, results) {
+  kafka.make_request("seller_topic", { "path": "addProduct", "user": req.user, "body": req.body, images }, function (err, results) {
     console.log("in make request call back seller_topic");
     console.log(results);
     console.log(err);
@@ -55,5 +55,112 @@ router.post("/addProduct/:type", helper.upload.array('productImage',5),passportA
     }
   });
 });
+
+router.post("/sellerProductSearch", passportAuth, async function (req, res) {
+
+  console.log("in product search  seller route");
+  console.log(req.body);
+  kafka.make_request("seller_topic", { "path": "sellerProductSearch", "user": req.user, "body": req.body }, function (err, results) {
+
+
+    if (err) {
+      console.log("Inside err REDIS test");
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      console.log("Inside else", results);
+      if (results.status === 200) {
+        return res.status(results.status).send(results.data);
+      } else {
+        return res.status(results.status).send(results.errors);
+      }
+    }
+  });
+});
+
+router.post("/updateProduct", passportAuth, async function (req, res) {
+  
+  console.log("in update product route");
+  console.log(req.body);
+  kafka.make_request("seller_topic", { "path": "productUpdate", "user": req.user, "body": req.body }, function (err, results) {
+    console.log("in make request call back seller_topic");
+    console.log(results);
+    console.log(err);
+    if (err) {
+      console.log("Inside err");
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      console.log("Inside else", results);
+      if (results.status === 200) {
+        return res.status(results.status).send(results.data);
+      } else {
+        return res.status(results.status).send(results.errors);
+      }
+    }
+  });
+});
+
+router.post("/updateProductImage/:type", helper.upload.array('productImage', 5),passportAuth, async function (req, res) {
+  
+  console.log(req.files);
+
+  const reqFiles = [];
+  const url = req.protocol + '://' + req.get('host')
+  for (var i = 0; i < req.files.length; i++) {
+    reqFiles.push(req.files[i].filename)
+  }
+
+  console.log(reqFiles);
+
+  var images = {
+    "productImage": reqFiles,
+  }
+  console.log(images);
+
+  console.log("in update product route");
+  console.log(req.body);
+  kafka.make_request("seller_topic", { "path": "productImageUpdate", "user": req.user,"body":req.body, images}, function (err, results) {
+    console.log("in make request call back seller_topic");
+    console.log(results);
+    console.log(err);
+    if (err) {
+      console.log("Inside err");
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      console.log("Inside else", results);
+      if (results.status === 200) {
+        return res.status(results.status).send(results.data);
+      } else {
+        return res.status(results.status).send(results.errors);
+      }
+    }
+  });
+});
+
+router.post("/removeProduct", passportAuth, async function (req, res) {
+  
+  console.log("in remove product route");
+  console.log(req.body);
+  kafka.make_request("seller_topic", { "path": "removeProduct", "user": req.user, "body": req.body }, function (err, results) {
+    console.log("in make request call back seller_topic");
+    console.log(results);
+    console.log(err);
+    if (err) {
+      console.log("Inside err");
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      console.log("Inside else", results);
+      if (results.status === 200) {
+        return res.status(results.status).send(results.data);
+      } else {
+        return res.status(results.status).send(results.errors);
+      }
+    }
+  });
+});
+
 
 module.exports = router;

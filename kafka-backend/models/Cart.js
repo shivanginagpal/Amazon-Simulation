@@ -5,8 +5,8 @@ var product = {
   productId: {type: Schema.Types.ObjectId},
   sellerId: {type: Schema.Types.ObjectId},
   productQuantity: {type: Number},
-  productPrice: {type: String},
-  productTotal: {type: String},
+  productPrice: {type: Number},
+  productTotal: {type: Number},
 	gift: {type: Boolean, default: false},
 	giftMessage: {type: String, default: ""},
   giftCharge: {type: Number, default: 2},
@@ -18,6 +18,9 @@ var product = {
 
 const CartSchema = new Schema({
   customerEmail: {
+    type: String,
+  },
+  customerName: {
     type: String,
   },
   products: [product],

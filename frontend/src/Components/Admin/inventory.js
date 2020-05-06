@@ -4,7 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import swal from 'sweetalert';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import './admin.css'
+import './admin.css';
+
 
 class inventory extends Component {
     constructor() {
@@ -55,7 +56,7 @@ class inventory extends Component {
         axios.post("/removeProductCategory", data)
         .then(res => {
             console.log(res);
-            if(res.status==200){
+            if(res.status === 200){
             swal({
                 title: "Deleted!",
                 text: "You Successfully deleted product category!",
@@ -66,7 +67,7 @@ class inventory extends Component {
                     window.location.reload();
                 })
             .catch(error => console.log(error.response.data));
-            } else if (res.status == 201) {
+            } else if (res.status === 201) {
                 swal({
                     title: "Sorry!",
                     text: "cannot delete product category!",
@@ -93,7 +94,7 @@ class inventory extends Component {
             data: data
         }).then((response) => {
             console.log(response);
-            if(response.status==200){
+            if(response.status === 200){
                 swal({
                     title:"Success",
                     text: "Product category added successfully",
@@ -116,13 +117,14 @@ class inventory extends Component {
             </button>
         );
         let productCategory = this.state.categories.map(category => {
+            let url = "http://localhost:3000/viewProductsUnderCategory/" + category.productCategoryName;
             if (
                 category.productCategoryName.toUpperCase()
                     .includes(this.state.searchString.toUpperCase())
             ) {
                 return (
                     <tr>
-                        <td>{category.productCategoryName}</td>
+                        <td><a href={url}>{category.productCategoryName}</a></td>
                         <td>
                             <Link
                                 className="btn btn-danger btn-sm"
@@ -141,7 +143,6 @@ class inventory extends Component {
                 <Navbar />
                 <div className="container">
                     <button type="button" class="btn btn-success" onClick={() => this.showModal()}>Add Product Category</button>
-
                     <nav class="navbar navbar-light bg-light">
                         <form class="form-inline">
                             <input

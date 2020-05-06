@@ -14,18 +14,22 @@ exports.sellerProfileService = function sellerProfileService(msg, callback) {
             updateSellerProfile(msg, callback);
             break;
 
-        case "updateSellerProfilePic":
-            updateSellerProfilePic(msg, callback);
-            break;
     }
 };
 
 function getSellerProfile(msg, callback) {
     let err = {};
     let response = {};
+    let sellerId = null;
+    if (msg.body.sellerId) {
+        sellerId = msg.body.sellerId
+    }
+    else {
+        sellerId = msg.user._id
+    }
     console.log("In getSellerProfile. Msg: ", msg);
-    console.log(msg.user._id);
-    Seller.findOne({ seller: msg.user._id })
+    console.log(sellerId);
+    Seller.findOne({ seller: sellerId })
         .populate('seller', ['name', 'email'])
         .then(profile => {
 
@@ -63,28 +67,6 @@ function updateSellerProfile(msg, callback) {
         } else {
             // Save Profile
             new Seller(msg.profileFields).save().then(profile => {
-                response.data = profile;
-                response.status = 200;
-                return callback(null, response);
-            }).catch(err => console.log(err));
-        }
-    });
-}
-
-async function updateSellerProfilePic(msg, callback) {
-    let err = {};
-    let response = {};
-    console.log("In updateSellerProfilePic. Msg: ", msg);
-
-    Seller.findOne({ seller: msg.user._id }).then(profile => {
-        console.log(profile);
-        if (profile) {
-            // Update
-            Seller.findOneAndUpdate(
-                { seller: msg.user._id },
-                { $set: msg.sellerProfile },
-                { new: true }
-            ).then(profile => {
                 response.data = profile;
                 response.status = 200;
                 return callback(null, response);

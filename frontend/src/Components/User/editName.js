@@ -32,7 +32,7 @@ class editName extends Component {
     }
 
     render() {
-        console.log(this.state.name);
+        
         return (
             <div>
                 <Navbar/>

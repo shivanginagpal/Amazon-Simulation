@@ -2,12 +2,36 @@ import axios from 'axios';
 
 import { GET_PROFILE, PROFILE_LOADING, GET_ERRORS, CLEAR_CURRENT_PROFILE } from './types';
 
-export const getCustomerProfile = (id) => dispatch => {
+export const getCustomerProfile = () => dispatch => {
     dispatch(setProfileLoading());
-    console.log("id", id);
+    
     axios('/getCustomerProfile',
         {
             method: 'get',
+        })
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+        }
+        )
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: {}
+            })
+        );
+}
+
+export const getSellerProfile = (id) => dispatch => {
+    dispatch(setProfileLoading());
+
+    axios('/getSellerProfile',
+        {
+            method: 'get',
+            params: { "sellerId": id }
         })
         .then(res => {
             console.log(res.data);
@@ -95,3 +119,34 @@ export const deleteAddress = id => dispatch => {
             })
         );
 };
+
+//Update Seller Addr
+export const updateSellerAddr = (newAddr, history) => dispatch => {
+    axios.post('/updateSellerProfile', newAddr)
+        .then(res => history.push('/userProfile'))
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            }))
+}
+
+export const updateCustomerAddress = (newAddr, history) => dispatch => {
+    axios.post('/updateAddress', newAddr )
+        .then(res => history.push('/savedAddresses'))
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            }))
+}
+
+export const updateCustomerCardInfo = (newCard, history) => dispatch => {
+    axios.post('/updatePaymentInfo', newCard )
+        .then(res => history.push('/paymentInfo'))
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            }))
+}
