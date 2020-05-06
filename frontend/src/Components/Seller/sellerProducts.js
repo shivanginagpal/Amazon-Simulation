@@ -23,6 +23,7 @@ class SellerProducts extends Component {
             priceHigh: 99999,
             productCategoryName: '',
             message: '',
+            sellerId: '',
             currentPage: 1
         }
 
@@ -92,8 +93,9 @@ class SellerProducts extends Component {
 
     onSubmit = async () => {
         let sellerId;
-        if (this.props.match){
-            sellerId = this.props.match.params.sellerId;
+        
+        if (this.props.id){
+            sellerId = this.props.id;
         }else{
             sellerId = this.props.auth.user.id;
         }

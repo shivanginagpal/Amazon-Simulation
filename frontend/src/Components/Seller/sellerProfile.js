@@ -89,7 +89,7 @@ class sellerProfile extends Component {
                             </div>
                         </div>
                     </div>
-                    <SellerProducts />
+                    <SellerProducts id={this.props.match.params.seller}/>
                 </div>
             )
         }
