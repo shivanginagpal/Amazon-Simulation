@@ -86,7 +86,7 @@ class viewProductsUnderCategory extends Component {
                                 <div className="card" id="cardadminclass" >
                                     {unknown}
                                     <div className="card-block" id="cardadmin-title-text">
-                                        <h6 className="card-title" id="cardadmin-title">SellerName</h6>
+                                         <h6 className="card-title" id="cardadmin-title">{product.sellerName}</h6>
                                         <p className="card-text" id="cardadmin-text">{product.products.productName}</p>
                                         <span>
                                             <p className="card-text" id="cardadmin-text">{product.products.productPrice}</p>

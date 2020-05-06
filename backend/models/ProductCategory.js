@@ -1,17 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const ProductSchema = require('./Product');
+const { ProductSchema } = require('./Product');
 
 const ProductCategorySchema = new Schema({
-    productCategoryName : {
-        type:String,
+    productCategoryName: {
+        type: String,
         required: true
     },
-    seller : {
+    seller: {
         type: Schema.Types.ObjectId
-    },
-    sellerName : {
-        type:String,
     },
     products: [ProductSchema]
 })
