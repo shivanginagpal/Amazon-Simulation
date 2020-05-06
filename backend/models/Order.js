@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var productsSchema = new Schema({
-    productName : {
+    productName: {
         type: String,
         required: true
     },
@@ -10,39 +10,39 @@ var productsSchema = new Schema({
         type: String,
         required: true
     },
-    productQuantity:{
+    productQuantity: {
         type: String,
         required: true
     },
-    productSellerName: {
-        type: String, 
+    productSellerId: {
+        type: Schema.Types.ObjectId,
         required: true
     },
     productOrderStatus: {
-        type: String, 
-        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "DELIVERED", "CANCELLED"]
+        type: String,
+        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "PACKAGE_ARRIVED", "OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED"]
     }
 })
 
 const OrderSchema = new Schema({
-    customerId : {
+    customerId: {
         type: Schema.Types.ObjectId
     },
     products: [productsSchema],
     orderStatus: {
         type: String,
-        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "DELIVERED", "CANCELLED"]
+        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "Package_Arrived", "OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED"]
     },
     orderDate: {
         type: Date,
         default: Date.now
     },
-    subTotal:{ 
+    subTotal: {
         type: String,
         required: true
     },
     discount: {
-        type: String, 
+        type: String,
         required: true
     },
     tax: {

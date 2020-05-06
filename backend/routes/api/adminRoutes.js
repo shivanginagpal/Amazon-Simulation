@@ -1,5 +1,4 @@
 'use strict'
-
 const express = require('express');
 const router = express.Router();
 const kafka = require('../../kafka/client');
@@ -71,6 +70,7 @@ router.get('/getProductCategories', (req, res) => {
         }
     })
 })
+
 router.put('/getProductsUnderProductCategory',(req,res) => {
 console.log("IN GET PRODUCT UNDER CATEGORY ", req.body);
 kafka.make_request("admin_topic", {"path": "viewProducts", "body":req.body}, function (err, results){
@@ -130,7 +130,26 @@ router.put("/viewProductsUnderSeller", (req,res) => {
             }
         }
     })
-    
+})
+
+router.get("/getAdminViewOrders", (req, res) => {
+    console.log(req.body);
+    kafka.make_request("admin_topic", { "path": "getAdminViewOrders"}, function (err, results){
+        console.log("In make request viewProductsUnderseller call back", results);
+        if (err) {
+            console.log("Inside err");
+            console.log(err);
+            return res.status(err.status).send(err.message);
+        } else {
+            console.log("Inside else", results);
+            if (results.status === 200) {
+                return res.status(results.status).send(results.data);
+            }
+            else {
+                return res.status(results.status).send(results.errors);
+            }
+        }
+    })
 })
 
 

@@ -73,7 +73,6 @@ import { Link } from "react-router-dom";
                                             <thead>
                                                 <tr>
                                                     <th>Seller Name</th>
-                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>{sellerProfile}</tbody>

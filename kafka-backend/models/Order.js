@@ -20,7 +20,7 @@ var productsSchema = new Schema({
     },
     productOrderStatus: {
         type: String,
-        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "DELIVERED", "CANCELLED"]
+        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING","PACKAGE_ARRIVED","OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED"]
     }
 })
 

@@ -8,8 +8,7 @@ const SellerSchema = new Schema({
         ref: 'user'
     },
     salesTotal: {
-        type: String,
-        default: "0"
+        type: Number,
     },
     sellerAddress: {
         type: String,

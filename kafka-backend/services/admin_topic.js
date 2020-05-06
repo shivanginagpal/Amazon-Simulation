@@ -3,6 +3,7 @@ var { addProductCat } = require('../models/addProductCat');
 var { ProductCategory } = require('../models/ProductCategory');
 const {prepareSuccess,prepareInternalServerError,prepareNoContent} = require('./responses');
 const User = require('../models/User');
+const Order = require('../models/Order');
 const ObjectId = mongoose.Types.ObjectId;
 
 exports.adminService = function adminService(msg, callback) {
@@ -26,8 +27,12 @@ exports.adminService = function adminService(msg, callback) {
         case "viewProductsUnderSeller":
             viewProductsUnderSeller(msg, callback);
             break;
+        case "getAdminViewOrders":
+            getAdminViewOrders(msg, callback);
+            break;    
     }
 }; 
+
 
 async function viewProductsUnderSeller(msg, callback) {
     let response = {};
@@ -66,14 +71,72 @@ async function viewProductsUnderSeller(msg, callback) {
 }
 
 
+// async function viewProducts(msg, callback) {
+//     let response = {};
+//     let err = {};
+//     let product = {};
+//     var pageLimit = 20;
+//     var currentPage = msg.body.currentPage;
+//     console.log("In admin topic service. Msg: ", msg);
+//     var query=[];
+//     query.push(
+//         {
+//             $match: {
+//                 "productCategoryName": { $regex: msg.body.productCategory, $options: "i" }
+//             }
+//         },
+//         {
+//             $unwind: "$products"
+//         },
+//     )
+//     await ProductCategory.aggregate(query)
+//     .then(async product => {
+//         await User.findOne({_id: product[0].seller})
+//         .then(result => {
+//             if(result){
+//                 sellerName = result.name
+//             }
+//             //product.push(sellerName);
+//             let pageMax = Math.ceil(product.length / pageLimit);
+//             if (currentPage > pageMax) {
+//                 currentPage = pageMax;
+//             }
+//             let start = (currentPage - 1) * pageLimit;
+//             let end = currentPage * pageLimit;
+//             product = product.slice(start, end);
+//             response.status = 200;
+//             response.data = product;
+//             return callback(null, response); 
+//         }).catch(error => {
+//             console.log(error);
+//             err = prepareInternalServerError();
+//             return callback(null, err);
+//         })
+//     }).catch(error => {
+//         console.log(error);
+//         err = prepareInternalServerError();
+//         return callback(null, err);
+//     })
+//     // let pageMax = Math.ceil(product.length / pageLimit);
+//     // if (currentPage > pageMax) {
+//     //     currentPage = pageMax;
+//     // }
+//     // let start = (currentPage - 1) * pageLimit;
+//     // let end = currentPage * pageLimit;
+//     // product = product.slice(start, end);
+//     // response.status = 200;
+//     // response.data = product;
+//     // return callback(null, response);    
+// }
+
 async function viewProducts(msg, callback) {
     let response = {};
     let err = {};
-    let result = {};
+    let product = {};
     var pageLimit = 20;
     var currentPage = msg.body.currentPage;
     console.log("In admin topic service. Msg: ", msg);
-    var query=[];
+    var query = [];
     query.push(
         {
             $match: {
@@ -84,21 +147,54 @@ async function viewProducts(msg, callback) {
             $unwind: "$products"
         },
     )
-    result = await ProductCategory.aggregate(query).catch(error => {
-        console.log(error);
-        err = prepareInternalServerError();
-        return callback(null, err);
-    })
-    let pageMax = Math.ceil(result.length / pageLimit);
-    if (currentPage > pageMax) {
-        currentPage = pageMax;
-    }
-    let start = (currentPage - 1) * pageLimit;
-    let end = currentPage * pageLimit;
-    result = result.slice(start, end);
-    response.status = 200;
-    response.data = result;
-    return callback(null, response);    
+    await ProductCategory.aggregate(query)
+        .then(async product => {
+            let pdata = async() => {return Promise.all(product[0].map(async item => {
+                return User.findOne({"_id":item.seller})
+                .then(user =>{
+                    sellerName = user.name;
+
+                    sname ={
+                        sellerName: sellerName
+                    }
+                    product.push(sname);
+                })
+            }))}
+            pdata().then(data => {
+                result = {
+                    product:product
+                }
+                let pageMax = Math.ceil(product.length / pageLimit);
+                if (currentPage > pageMax) {
+                    currentPage = pageMax;
+                }
+                let start = (currentPage - 1) * pageLimit;
+                let end = currentPage * pageLimit;
+                product = product.slice(start, end);
+                response.status = 200;
+                response.data = product;
+                return callback(null, response);
+            })
+            .catch(error => {
+                    console.log(error);
+                    err = prepareInternalServerError();
+                    return callback(null, err);
+                })
+        }).catch(error => {
+            console.log(error);
+            err = prepareInternalServerError();
+            return callback(null, err);
+        })
+    // let pageMax = Math.ceil(product.length / pageLimit);
+    // if (currentPage > pageMax) {
+    //     currentPage = pageMax;
+    // }
+    // let start = (currentPage - 1) * pageLimit;
+    // let end = currentPage * pageLimit;
+    // product = product.slice(start, end);
+    // response.status = 200;
+    // response.data = product;
+    // return callback(null, response);    
 }
 
 function addProductCategory(msg, callback) {
@@ -207,4 +303,20 @@ async function viewSellersList(msg,callback){
             err.data = error;
             return callback(err, null);
         });
+}
+
+async function getAdminViewOrders(msg, callback) {
+    let response = {};
+    let err = {};
+    return await Order.find().then((result) => {
+        response.status = 200;
+        response.message = "successfully retrieved sellers";
+        response.data = result;
+        return callback(null, response);
+    }).catch((error) => {
+        err.status = 400;
+        err.message = "error in getting sellers";
+        err.data = error;
+        return callback(err, null);
+    });
 }

@@ -84,18 +84,12 @@ import './admin.css';
                                         <p className="card-text" id="cardadmin-text">{product.products.productName}</p>
                                         <span>
                                             <p className="card-text" id="cardadmin-text">{product.products.productPrice}</p>
-                                            {/* <input id="quant-text" type="number" readOnly value={itemQuantity} /> */}
-
                                         </span>
-                                        {/* <button id="btn-item-add-to-cart" onClick={() => this.props.togglePopup(itemName, itemPrice, itemId, restId, itemQuantity)} className="btn btn-success">Add to cart </button> */}
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-
                 )
             })
         }
@@ -147,6 +141,7 @@ import './admin.css';
                 <div>
                     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
                     <div className="container">
+                        {this.state.productdetails.length > 0 ? (
                         <div className="row ">
                             <div className="col">
                                 <br />
@@ -156,6 +151,11 @@ import './admin.css';
                             </div>
                             {pageBar}
                         </div>
+                        ) : (
+                                <div>
+                                    <h4 style={{ margin: "3em" }}>No products to display!</h4>
+                                </div>
+                            )}
                     </div>
                 </div> 
             </div>
