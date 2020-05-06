@@ -8,6 +8,12 @@ exports.orderService = function orderService(msg, callback) {
         case "placeOrder":
             placeOrder(msg, callback);
             break;
+        case "getOrderById":
+            fetchOrder(msg, callback);
+            break;
+        case "getCustomerOrdersById":
+            fetchAllCustomerOrders(msg, callback);
+            break;
     }
 };
 
@@ -29,11 +35,8 @@ async function placeOrder(msg, callback) {
     });
     insertOrder.save()
     .then(async newOrder => {
-        console.log("placeOrder response =====" +newOrder);
-        console.log("customerEmail::",msg.body.customerEmail);
         await Cart.findOneAndDelete({ "customerEmail": msg.body.customerEmail })
         .then(async cart => {
-            console.log("placeOrder cart delete =====" +JSON.stringify(cart));
             result = {
                 status : true,
                 id : newOrder._id
@@ -42,10 +45,41 @@ async function placeOrder(msg, callback) {
             return callback(null, response);
         })
         .catch(error => {
-            console.log(error);
             err = prepareInternalServerError(error);
             return callback(err, null);
         });
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+async function fetchOrder(msg, callback) {
+    let response = {};
+    let err = {};
+    console.log("KAFKA BACKEND fetchOrder =========="+JSON.stringify(msg));
+    Order.findById(msg.id)
+    .then(async newOrder => {
+        console.log("GET ORDER RESULT!!!!!!!!!!!!!!!!!"+JSON.stringify(newOrder))
+        response = prepareSuccess(newOrder);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+async function fetchAllCustomerOrders(msg, callback) {
+    let response = {};
+    let err = {};
+    console.log("KAFKA BACKEND fetchAllCustomerOrders =========="+JSON.stringify(msg));
+    Order.find({"customerId" : msg.id})
+    .then(async orders => {
+        console.log("GET ALL CUSTOMER ORDER RESULT!!!!!!!!!!!!!!!!!"+JSON.stringify(orders))
+        response = prepareSuccess(orders);
+        return callback(null, response);
     }).catch(error => {
         console.log(error);
         err = prepareInternalServerError(error);

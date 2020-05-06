@@ -34,6 +34,7 @@ import AddNewCard from './Components/PaymentOptions/addNewCard';
 import ProductSearch from './Components/Products/productSearch';
 import ProductPage from './Components/Products/ProductPage';
 import OrderSummary from './Components/Order/OrderSummary';
+import CustomerOrders from './Components/Order/CustomerOrders';
 import sellerProductPage from './Components/Products/SellerProductPage';
 import editProduct from './Components/Products/EditProduct';
 import UpdateProductImages from './Components/Products/UpdateProductImages';
@@ -73,7 +74,8 @@ class Main extends Component {
                     <Route path="/AddNewCard" component={AddNewCard}/>
                     <Route path='/productSearch' component={ProductSearch}/>
                     <Route path='/productPage/:id' component={ProductPage}/>
-                    <Route path='/orderSummary' component={OrderSummary}/>
+                    <Route path='/orderSummary/:id' component={OrderSummary}/>
+                    <Route path='/customerOrders' component={CustomerOrders}/>
                     <Route path='/sellerProductPage/:id' component={sellerProductPage}/>
                     <Route path='/editProduct' component={editProduct}/>
                     <Route path='/updateProductImages' component={UpdateProductImages}/>

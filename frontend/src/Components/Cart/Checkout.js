@@ -68,6 +68,7 @@ class Checkout extends Component {
         }
         else
         {
+           // alert("SHOW INPUT "+JSON.stringify(this.state.cartDetails.data))
             let productList = [];
             let product = {};
             this.state.cartDetails.data.products.map((prd,key)=> {
@@ -75,7 +76,9 @@ class Checkout extends Component {
                     productName: prd.productName,
                     productPrice: prd.productPrice,
                     productQuantity: prd.productQuantity,
-                    productSellerId: prd.sellerId
+                    productSellerId: prd.sellerId,
+                    productSellerName: prd.sellerName,
+                    productOrderStatus: "NEW"
                 };
                 productList.push(product);
             });
@@ -89,7 +92,7 @@ class Checkout extends Component {
                 deliveryAddress: this.state.addressId,
                 paymentInfo: this.state.paymentId
             };
-            alert("PLACE ORDER --"+JSON.stringify(order))
+           // alert("PLACE ORDER --"+JSON.stringify(order))
             this.props.placeOrder(order)
         }
     }
@@ -114,8 +117,9 @@ class Checkout extends Component {
         let redirectVar = null;
         //alert("ORDER STATUS!!!"+this.props.orderStatus)
         if (this.props.orderStatus) {
-            localStorage.setItem("orderId", this.props.orderId);
-            redirectVar = <Redirect to='/orderSummary' />
+            //localStorage.setItem("orderId", this.props.orderId);
+            let pathRoute = "/orderSummary/"+this.props.orderId;
+            redirectVar = <Redirect to={pathRoute} />
         }
         let cartResult = "";
         if(this.state.cartDetails && this.state.cartDetails.status){
