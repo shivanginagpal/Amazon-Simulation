@@ -140,7 +140,7 @@ async function fetchCart(msg, callback) {
                         product = {
                             itemId : item._id,
                             sellerId : item.sellerId,
-                            sellerName: sellerName,
+                            sellerName: item.sellerName,
                             productQuantity: item.productQuantity,
                             productPrice: item.productPrice,
                             totalPrice : item.productPrice*item.productQuantity,

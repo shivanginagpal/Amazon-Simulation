@@ -10,7 +10,7 @@ export default class customer extends Component {
 
                 <div class="row profile">
                     <div class="col-md ya-card-cell">
-                        <a href="#" class="ya-card__whole-card-link">
+                        <a href="/customerOrders" class="ya-card__whole-card-link">
                           <div data-card-identifier="YourOrders" class="a-box ya-card--rich"><div class="a-box-inner">
                             <div class="a-row">
                               <div class="a-column a-span3">
