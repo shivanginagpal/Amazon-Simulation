@@ -1,13 +1,19 @@
 import axios from 'axios';
 
-import { GET_ERRORS, GET_PRODUCT_CATEGORIES, GET_PRODUCTS, PRODUCT_LOADING, GET_PRODUCT } from './types';
+import { GET_ERRORS, GET_PRODUCT_CATEGORIES, GET_PRODUCTS, PRODUCT_LOADING, GET_PRODUCT, POST_PRODUCT, GET_CUSTOMER_NAME, POST_REVIEW, DELETE_PRODUCT, UPDATE_PRODUCT ,UPDATE_IMAGE_PRODUCT} from './types';
 
 export const postProduct = (formdata, history) => dispatch => {
     console.log("Inside post product actions")
     console.log(formdata);
 
-    axios.post('/addProduct/productImage', formdata)
-        .then(res => history.push('/sellerHome'))
+  return  axios.post('/addProduct/productImage', formdata)
+        .then(res => {
+            dispatch({
+                type: POST_PRODUCT,
+                payload: res.status
+            })
+            history.push('/sellerHome');
+    })
         .catch(err => {
             console.log("Got an error", err);
             dispatch({
@@ -17,6 +23,28 @@ export const postProduct = (formdata, history) => dispatch => {
         }
         );
 };
+
+export const postReviewToProduct = (data) => dispatch => {
+    console.log("Inside post product actions")
+    console.log(data);
+
+  return  axios.post('/addProductReview', data)
+        .then(res => {
+            dispatch({
+                type: POST_REVIEW,
+                payload: res.status
+            })
+    })
+        .catch(err => {
+            console.log("Got an error", err);
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        }
+        );
+};
+
 
 export const getProductCategoryNames = () => dispatch => {
     dispatch(setProductLoading());
@@ -54,23 +82,61 @@ export const productSearch = (data) => dispatch => {
         );
 };
 
-export const sellerProducts = (data) => dispatch => {
-    dispatch(setProductLoading());
-    axios.post('/sellerProductSearch', data)
+export const updateProduct = (data, history) => dispatch => {
+    axios.post('/updateProduct', data)
         .then(res => {
-            console.log(res.data);
+            //console.log(res.data);
             dispatch({
-                type: GET_PRODUCTS,
+                type: UPDATE_PRODUCT,
                 payload: res.data
             })
+            history.push('/sellerHome');
         })
         .catch(err =>
             dispatch({
-                type: GET_PRODUCTS,
+                type: GET_ERRORS,
                 payload: {}
             })
         );
 };
+
+export const updateProductImage= (data, history) => dispatch => {
+    axios.post('/updateProductImage/ProductImage', data)
+        .then(res => {
+            //console.log(res.data);
+            dispatch({
+                type: UPDATE_IMAGE_PRODUCT,
+                payload: res.data
+            })
+            history.push('/sellerHome');
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: {}
+            })
+        );
+};
+
+export const deleteProduct = (productId, history) => dispatch => {
+  return  axios.post('/removeProduct', productId)
+        .then(res => {
+            //console.log(res.data);
+            dispatch({
+                type: DELETE_PRODUCT,
+                payload: res.status
+            })
+            history.push('/sellerHome');
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: {}
+            })
+        );
+};
+
+
 
 export const getProduct = (id) => dispatch => {
     dispatch(setProductLoading());
@@ -93,6 +159,44 @@ export const getProduct = (id) => dispatch => {
         );
 };
 
+export const getCustomerName = (id) => dispatch => {
+    dispatch(setProductLoading());
+    return axios('/getCustomerName', {
+        method : 'get',
+        params: { "customerId": id }
+    })
+        .then(res => {
+            //console.log(res.data);
+            dispatch({
+                type: GET_CUSTOMER_NAME,
+                payload: res.data
+            })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_CUSTOMER_NAME,
+                payload: {}
+            })
+        );
+};
+
+export const sellerProducts = (data) => dispatch => {
+    dispatch(setProductLoading());
+    axios.post('/sellerProductSearch', data)
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: GET_PRODUCTS,
+                payload: res.data
+            })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_PRODUCTS,
+                payload: {}
+            })
+        );
+};
 
 
 //loading product

@@ -7,11 +7,11 @@ var productsSchema = new Schema({
         required: true
     },
     productPrice: {
-        type: String,
+        type: Number,
         required: true
     },
     productQuantity:{
-        type: String,
+        type: Number,
         required: true
     },
     productSellerId: {
@@ -20,7 +20,7 @@ var productsSchema = new Schema({
     },
     productOrderStatus: {
         type: String,
-        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "DELIVERED", "CANCELLED"]
+        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING","PACKAGE_ARRIVED","OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED"]
     }
 })
 
@@ -31,26 +31,26 @@ const OrderSchema = new Schema({
     products: [productsSchema],
     orderStatus: {
         type: String,
-        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING", "DELIVERED", "CANCELLED"]
+        enum: ["NEW", "PACKING", "OUT_FOR_SHIPPING","Package_Arrived","OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED"]
     },
     orderDate: {
         type: Date,
         default: Date.now
     },
     subTotal:{ 
-        type: String,
+        type: Number,
         required: true
     },
     discount: {
-        type: String, 
-        required: true
+        type: Number, 
+        required: false
     },
     tax: {
-        type: String,
+        type: Number,
         required: true
     },
     totalAmount: {
-        type: String,
+        type: Number,
         required: true
     },
     deliveryAddress: {
@@ -64,3 +64,4 @@ const OrderSchema = new Schema({
 });
 
 module.exports = mongoose.model('order', OrderSchema);
+

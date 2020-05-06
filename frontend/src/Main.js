@@ -14,6 +14,8 @@ import adminHome from './Components/Admin/adminHome';
 import inventory from './Components/Admin/inventory';
 import viewSellerList from './Components/Admin/viewSellerList';
 import viewOrdersAdmin from './Components/Admin/viewOrdersAdmin';
+import viewProductsUnderCategory from './Components/Admin/viewProductsUnderCategory';
+import viewProductsUnderSeller from './Components/Admin/viewProductsUnderSeller';
 //Products
 import AddProduct from './Components/Products/AddProduct';
 import EditName from './Components/User/editName';
@@ -32,6 +34,9 @@ import AddNewCard from './Components/PaymentOptions/addNewCard';
 import ProductSearch from './Components/Products/productSearch';
 import ProductPage from './Components/Products/ProductPage';
 import OrderSummary from './Components/Order/OrderSummary';
+import sellerProductPage from './Components/Products/SellerProductPage';
+import editProduct from './Components/Products/EditProduct';
+import UpdateProductImages from './Components/Products/UpdateProductImages';
 
 
 class Main extends Component {
@@ -57,6 +62,8 @@ class Main extends Component {
                     <Route path="/paymentInfo" component={PaymentInfo}/>
                     <Route path="/savedAddresses" component={SavedAddresses}/>
                     <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
+                    <Route path="/viewProductsUnderCategory/:category" component={viewProductsUnderCategory} />
+                    <Route path="/viewProductsUnderSeller/:id" component={viewProductsUnderSeller} />
                     <Route path="/editSellerAddress" component={EditSellerAddress}/>
                     <Route path="/sellerProfile" component={SellerProfile}/>
                     <Route path="/checkout" component={Checkout}/>
@@ -67,7 +74,9 @@ class Main extends Component {
                     <Route path='/productSearch' component={ProductSearch}/>
                     <Route path='/productPage/:id' component={ProductPage}/>
                     <Route path='/orderSummary' component={OrderSummary}/>
-                    
+                    <Route path='/sellerProductPage/:id' component={sellerProductPage}/>
+                    <Route path='/editProduct' component={editProduct}/>
+                    <Route path='/updateProductImages' component={UpdateProductImages}/>
                 </div>
         )
     }
