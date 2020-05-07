@@ -9,7 +9,7 @@ export const getCart = () => dispatch => {
      axios.get(url)
       .then(response =>
         { 
-          let flag = Object.keys(response.data).length!==0;
+          let flag = Object.keys(response.data.products).length!==0;
           result = {data : response.data, status : flag}
           dispatch({type: GET_CART, payload: result});  
         })
