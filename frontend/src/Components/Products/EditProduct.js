@@ -3,6 +3,7 @@ import './addProduct.css';
 import Navbar from '../Navbar/Navbar';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import { updateProduct } from '../../actions/productActions';
 
 
@@ -14,11 +15,18 @@ class EditProduct extends Component {
             productDescription: "",
             productName: "",
             productPrice: "",
+            errors:{}
         }
 
         this.onChange = this.onChange.bind(this);
         this.updateProduct = this.updateProduct.bind(this);
+    }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps.errors);
+        if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors })
+        }
     }
 
     onChange = (e) => {
@@ -33,7 +41,7 @@ class EditProduct extends Component {
             productDescription: this.state.productDescription,
             //productName: this.state.productName,
             productCategory: this.props.location.state.productInfo.productCategoryName,
-            productId : this.props.location.state.productInfo.products[0]._id,
+            productId: this.props.location.state.productInfo.products[0]._id,
         }
 
         await this.props.updateProduct(data, this.props.history)
@@ -45,6 +53,8 @@ class EditProduct extends Component {
     render() {
 
         var product = this.props.location.state.productInfo;
+        const { errors } = this.state;
+        console.log(errors);
 
         return (
             <div>
@@ -68,6 +78,7 @@ class EditProduct extends Component {
                                                 <div className="card-body text-center">
                                                     <h2>Please Enter Product details</h2>
                                                     <hr />
+                                                    <form noValidate onSubmit={this.onSubmit}>
                                                     <div className="card-body border">
                                                         <div className="form-row ">
                                                             <div className="form-group col-md-9">
@@ -75,61 +86,69 @@ class EditProduct extends Component {
                                                             </div>
 
                                                             <div className="form-group col-md-9">
-                                                                <input id="productDescription" name="productDescription" onChange={this.onChange} 
-                                                                value={this.state.productDescription} placeholder={product.products[0].productDescription} 
-                                                                className="form-control" required="required" type="text" />
+                                                                <input id="productDescription" name="productDescription" onChange={this.onChange}
+                                                                    value={this.state.productDescription} placeholder={product.products[0].productDescription}
+                                                                    className="form-control" required="required" type="text" />
                                                             </div>
+
 
                                                             <div className="form-group col-md-9">
                                                                 <input id="productPrice" name="productPrice" onChange={this.onChange}
                                                                     value={this.state.productPrice} placeholder={product.products[0].productPrice}
-                                                                    className="form-control" type="text"
-                                                                    pattern="\d+(\.\d{2})?" title="Please enter a valid price" />
-{/* 
-                                                                <input type="text" placeholder="Country" id="add" pattern="^[A-Za-z]{1,32}$" required
-                                                                    title="lease enter characters only"> */}
+                                                                    className={classnames('form-control payment-form-control', {
+                                                                        'is-invalid': errors.productPrice
+                                                                    })} type="text" />
+                                                                {errors.productPrice && (
+                                                                    <div className="invalid-feedback">{errors.productPrice}</div>
+                                                                )}
                                                             </div>
 
-                                                            </div>
                                                         </div>
-
                                                     </div>
+                                                    </form>
 
                                                 </div>
-                                                <div className="form-rows">
-                                                    <div class="text-center"><button type="button" onClick={this.updateProduct} className="btn btn-secondary">Update Product</button></div>
-                                                    {this.state.alert}
-                                                </div>
+                                                
+
                                             </div>
+                                            <div className="form-rows">
+                                                <div class="text-center"><button type="submit" onClick={this.updateProduct} className="btn btn-secondary">Update Product</button></div>
+                                                {this.state.alert}
+                                             
+                                            </div>
+                                            
                                         </div>
-
                                     </div>
+
                                 </div>
                             </div>
                         </div>
-
-
-
-                        <br />
-                        <br />
-
-
                     </div>
 
+
+
+                    <br />
+                    <br />
+
+
                 </div>
+
+            </div>
         )
     }
 
 }
 
 EditProduct.propTypes = {
-                    updateProduct: PropTypes.func.isRequired,
+    updateProduct: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
-                    auth: state.auth,
+    auth: state.auth,
+    errors: state.errors
 
 })
 
-export default connect(mapStateToProps, { updateProduct})(EditProduct);
+export default connect(mapStateToProps, { updateProduct })(EditProduct);
