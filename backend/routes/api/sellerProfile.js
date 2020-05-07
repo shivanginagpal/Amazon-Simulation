@@ -5,10 +5,7 @@ const passport = require('passport');
 const kafka = require('../../kafka/client');
 const helper = require('./helperFunctions');
 const passportAuth = passport.authenticate('jwt', { session: false });
-
-
-// Load Validation
-
+const uploadFileToS3 = require('../../config/awsImageUpload');
 
 // @route   GET api/profile/test
 // @desc    Tests profile route
@@ -93,8 +90,18 @@ router.post('/updateSellerProfilePic/:type',
     console.log("In Update Seller profile picture");
     console.log(req.body);
     console.log(req.file.filename);
+    let imageUrl = "";
+    if (req.file) {
+        try {
+            imageUrl = await uploadFileToS3(req.file, 'profile', req.user._id);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     var sellerProfile = {
-      "sellerProfilePicture": req.file.filename,
+      "sellerProfilePicture": imageUrl.Location,
       "seller": req.user._id
     }
     kafka.make_request("sellerProfile_topic", { "path": "updateSellerProfile", "user": req.user, "profileFields": sellerProfile }, function (err, results) {
