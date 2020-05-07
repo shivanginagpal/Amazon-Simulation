@@ -1,4 +1,4 @@
-import { PLACE_ORDER, GET_ORDER, GET_CUSTOMER_ORDERS } from '../actions/types';
+import { PLACE_ORDER, GET_ORDER, GET_CUSTOMER_ORDERS, DELETE_ORDER_ITEM, DELETE_ORDER } from '../actions/types';
 
 export default function (state = {}, action) {
     switch (action.type) {
@@ -17,6 +17,16 @@ export default function (state = {}, action) {
             return {
                 ...state,
                 allCustomerOrders: action.payload,
+            }
+        case DELETE_ORDER_ITEM:
+            return {
+                ...state,
+                updatedOrderItems: action.payload,
+            }
+        case DELETE_ORDER:
+            return {
+                ...state,
+                updatedOrderItems: action.payload,
             }
         default:
             return state;

@@ -8,7 +8,6 @@ import CustomerHome from './Components/Customer/customerHome';
 import Customer from './Components/Customer/customer';
 import UserProfile from './Components/User/userProfile';
 //import CustomerAddresses from './Components/Customer/customerAddresses';
-import Cart from './Components/Cart/Cart';
 //admin
 import adminHome from './Components/Admin/adminHome';
 import inventory from './Components/Admin/inventory';
@@ -26,18 +25,24 @@ import PaymentInfo from './Components/PaymentOptions/paymentInfo';
 import SavedAddresses from './Components/Addresses/savedAddresses';
 import EditSellerAddress from './Components/User/editSellerAddress';
 import SellerProfile from './Components/Seller/sellerProfile';
-import Checkout from './Components/Cart/Checkout';
 import CustomerProfile from './Components/Customer/customerProfile';
 import EditSavedAddress from './Components/Addresses/editSavedAddress';
 import EditCardDetail from './Components/PaymentOptions/editCardDetail';
 import AddNewCard from './Components/PaymentOptions/addNewCard';
 import ProductSearch from './Components/Products/productSearch';
 import ProductPage from './Components/Products/ProductPage';
-import OrderSummary from './Components/Order/OrderSummary';
-import CustomerOrders from './Components/Order/CustomerOrders';
 import sellerProductPage from './Components/Products/SellerProductPage';
 import editProduct from './Components/Products/EditProduct';
 import UpdateProductImages from './Components/Products/UpdateProductImages';
+//Cart
+import Cart from './Components/Cart/Cart';
+//CheckOut
+import Checkout from './Components/Cart/Checkout';
+//Orders
+import OrderSummary from './Components/Order/OrderSummary';
+import CustomerOrders from './Components/Order/CustomerOrders';
+import CancelledOrders from './Components/Order/CancelledOrders';
+import OrderView from './Components/Order/OrderView';
 
 
 class Main extends Component {
@@ -75,7 +80,9 @@ class Main extends Component {
                     <Route path='/productSearch' component={ProductSearch}/>
                     <Route path='/productPage/:id' component={ProductPage}/>
                     <Route path='/orderSummary/:id' component={OrderSummary}/>
+                    <Route path='/viewOrder/:id' component={OrderView}/>
                     <Route path='/customerOrders' component={CustomerOrders}/>
+                    <Route path='/cancelledOrders' component={CancelledOrders}/>
                     <Route path='/sellerProductPage/:id' component={sellerProductPage}/>
                     <Route path='/editProduct' component={editProduct}/>
                     <Route path='/updateProductImages' component={UpdateProductImages}/>

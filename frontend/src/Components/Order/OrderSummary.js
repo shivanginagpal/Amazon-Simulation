@@ -57,13 +57,42 @@ class OrderSummary extends Component {
                 <div className="container" id= "movecenter">
                     <div className="row">
                         <div className="col-md-12" >
-                            <h3 style={{color: "#0D865D", fontWeight: "bold"}}>ORDER SUMMARY</h3>
+                            <h3 style={{color: "#0D865D", fontWeight: "bold"}}>ORDER SUMMARY</h3><br/>
+                            
                             <br/>
-                            <div style={{fontWeight: "bold", textAlign: "left"}}>
+                            <div className="row" >
+                                <div className="col-sm" style={{fontWeight: "bold", fontSize: "16px"}} id="movecenter">
                                 Order Number : {this.state.order.data && this.state.order.data._id}<br/>
-                                Ordered Date : {this.state.order.data && this.state.order.data.orderDate.slice(0,10)}<br/>
-                                Order Status : {this.state.order.data && this.state.order.data.orderStatus}
+                                <br/>
+                                </div>
+                                <div className="col-sm" style={{fontWeight: "bold", fontSize: "16px"}} id="movecenter">
+                                    Ordered Date : {this.state.order.data && this.state.order.data.orderDate.slice(0,10)}
+                                
+                                </div>
                             </div>
+                            <div className="row panel panel-body border-bottom border-dark">
+                                <div className="col-sm" style={{ fontWeight: "bold", fontSize: "16px"}}>
+                                    <span style={{paddingRight: "($spacer * .5)"}}></span>
+                                </div>
+                            </div><br/><br/>
+                            <div className="row panel panel-body border-bottom border-dark">
+                                <div className="col-sm" style={{ fontWeight: "bold", fontSize: "16px"}}>
+                                    <span style={{paddingRight: "($spacer * .5)"}}>Order Status : {this.state.order.data && this.state.order.data.orderStatus}</span>
+                                </div><br/><br/>
+                            </div><br/><br/>
+                            <div className="row panel panel-body border-bottom border-dark">
+                                <div className="col-sm" style={{ fontWeight: "bold", fontSize: "16px"}}>
+                                    <span style={{paddingRight: "($spacer * .5)"}}>Delivery Address: {this.state.order.data && this.state.order.data.deliveryAddress} </span>
+                                </div><br/><br/>
+                            </div><br/><br/>
+                            <div className="row panel panel-body border-bottom border-dark">
+                                <div className="col-sm" style={{fontWeight: "bold", fontSize: "16px"}}>
+                                    <span style={{paddingRight: "($spacer * .5)"}}>Payment Method: {this.state.order.data && this.state.order.data.paymentInfo}</span>
+                                </div><br/><br/>
+                            </div><br/><br/>
+                                
+                                
+                                
                             <div>{orderResult}</div>
                             <div style={{color: "#DC143C", fontWeight: "bold", textAlign: "right"}}>
                                 Total Price : {this.state.order.data && this.state.order.data.totalAmount}

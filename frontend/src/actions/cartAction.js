@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { GET_CART, DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, CHECKOUT_ADD_PAYMENT, GET_PROFILE,POST_CART,GET_ERRORS} from './types';
+import { GET_CART, DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, CHECKOUT_ADD_PAYMENT, GET_PROFILE,POST_CART,GET_ERRORS, GET_SAVED_FOR_LATER, DELETE_SAVED_FOR_LATER} from './types';
 import {getEmail} from '../Components/SignUp/helperApis';
 
 export const getCart = () => dispatch => {
@@ -85,6 +85,22 @@ export const saveForLater = (payload) => dispatch => {
             result = {data : response.data, status : flag}
             dispatch({type: GET_CART, payload: result});  
           })
+        .then(getCartResponse =>
+          { 
+            let url = '/getSavedForLater/'+getEmail();
+            axios.get(url)
+            .then(getCartResponse =>
+              { 
+                let flag = Object.keys(getCartResponse.data).length!==0;
+                result = {data : getCartResponse.data, status : flag}
+                dispatch({type: GET_SAVED_FOR_LATER, payload: result});  
+              })
+            .catch(err => {
+              console.log("GET SABED ITEMS ERROR -- ",err);
+              result = {data : err, status : false}
+              dispatch({type: GET_SAVED_FOR_LATER, payload: result})}
+              ); 
+          })
         .catch(err => {
           console.log("GET CART ERROR -- ",err);
           result = {data : err, status : false}
@@ -157,4 +173,46 @@ export const addPaymentOption = (newCard) => dispatch => {
       {
         dispatch({type: CHECKOUT_ADD_PAYMENT, payload: {}})
       });
+};
+
+export const getSavedForLater = () => dispatch => {
+  let url = '/getSavedForLater/'+getEmail();
+  let result = {};
+   axios.get(url)
+    .then(response =>
+      { 
+        let flag = Object.keys(response.data).length!==0;
+        result = {data : response.data, status : flag}
+        dispatch({type: GET_SAVED_FOR_LATER, payload: result});  
+      })
+    .catch(err => {
+      console.log("GET SAVED FOR LATER ERROR -- ",err);
+      result = {data : err, status : false}
+      dispatch({type: GET_SAVED_FOR_LATER, payload: result})}
+      );
+};
+
+export const deleteSavedItem = (payload) => dispatch => {
+  let url = '/deleteSavedItem';
+  let result = {};
+   axios.put(url, payload)
+    .then(response =>
+      { 
+        let url = '/getSavedForLater/'+getEmail();
+        axios.get(url)
+        .then(response =>
+          { 
+            let flag = Object.keys(response.data).length!==0;
+            result = {data : response.data, status : flag}
+            dispatch({type: GET_SAVED_FOR_LATER, payload: result});  
+          })
+        .catch(err => {
+          console.log("GET SABED FOR LATER ERROR -- ",err);
+          result = {data : err, status : false}
+          dispatch({type: GET_SAVED_FOR_LATER, payload: result})}
+          );
+      })
+    .catch(err => {
+      dispatch({type: DELETE_SAVED_FOR_LATER, payload: err})}
+      );
 };

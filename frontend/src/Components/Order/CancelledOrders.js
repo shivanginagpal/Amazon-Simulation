@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {getMyOrders} from '../../actions/orderAction';
 
 
-class CustomerOrders extends Component {
+class CancelledOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,7 +31,8 @@ class CustomerOrders extends Component {
         if(this.state.orders){
             //alert("UI INSIDE IF"+JSON.stringify(this.state.orders))
             ordersResult = this.state.orders.filter(item => 
-                Object.keys(item).some(key => !item['orderStatus'].includes('CANCELLED') && !item['orderStatus'].includes('DELIVERED'))).map((item,key)=>
+                Object.keys(item).some(key => item['orderStatus'].includes('CANCELLED')))
+                .map((item,key)=>
             <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>
                 <div class="card-body" >
                     <div className="row">
@@ -60,11 +61,10 @@ class CustomerOrders extends Component {
                 <Navbar />
                 <br />
                 <br />
-                <Link to={{pathname: "/cancelledOrders"}} ><h6 style={{color : "#DC143C", fontWeight: "bold", textAlign: "right", marginRight: "30px"}}>Cancelled Orders</h6></Link>
                 <div className="container" id= "movecenter">
                     <div className="row">
                         <div className="col-md-12" >
-                            <h3 style={{fontWeight: "bold"}}>YOUR ORDERS</h3>
+                            <h3 style={{fontWeight: "bold", color : "#DC143C"}}>CANCELLED ORDERS</h3>
                             <br/>
                             {ordersResult}
                             
@@ -92,4 +92,4 @@ function mapDispatchToProps (dispatch)
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerOrders);
+export default connect(mapStateToProps, mapDispatchToProps)(CancelledOrders);

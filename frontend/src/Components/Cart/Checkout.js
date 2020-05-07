@@ -73,6 +73,7 @@ class Checkout extends Component {
             let product = {};
             this.state.cartDetails.data.products.map((prd,key)=> {
                 product = {
+                    productId: prd.productId,
                     productName: prd.productName,
                     productPrice: prd.productPrice,
                     productQuantity: prd.productQuantity,

@@ -4,6 +4,7 @@ import Navbar from '../Navbar/Navbar';
 import { connect } from 'react-redux';
 import './cart.css';
 import {getCart, deleteCartItem, saveForLater, changeQuantity} from '../../actions/cartAction';
+import SaveForLater from '../Cart/SaveForLater';
 
 class Cart extends Component {
     constructor(props) {
@@ -14,10 +15,6 @@ class Cart extends Component {
         this.deleteItem=this.deleteItem.bind(this);
         this.saveForLater=this.saveForLater.bind(this);
         this.changeQuantity=this.changeQuantity.bind(this);
-    }
-
-    handleChange = e => {
-        this.setState({ ...this.state, [e.target.name] : e.target.value} );
     }
 
     deleteItem = item => event =>{
@@ -92,6 +89,11 @@ class Cart extends Component {
                                     <option value="3" >3</option>
                                     <option value="4" >4</option>
                                     <option value="5" >5</option>
+                                    <option value="6" >6</option>
+                                    <option value="7" >7</option>
+                                    <option value="8" >8</option>
+                                    <option value="9" >9</option>
+                                    <option value="10" >10</option>
                                 </select>
                                 <i class="a-icon a-icon-text-separator sc-action-separator" role="img" aria-label="|"></i>
                                 <a href="#" onClick={this.deleteItem(item)}>Delete</a>
@@ -135,9 +137,8 @@ class Cart extends Component {
                             }
                         </div>
                     </div>
-
                 </div>
-                
+                <SaveForLater/>
             </div>
         );
     }
@@ -156,7 +157,7 @@ function mapDispatchToProps (dispatch)
         getCart: data => dispatch(getCart(data)),
         deleteCartItem: data => dispatch(deleteCartItem(data)),
         saveForLater: data => dispatch(saveForLater(data)),
-        changeQuantity: data => dispatch(changeQuantity(data)),
+        changeQuantity: data => dispatch(changeQuantity(data))
     };
 }
 
