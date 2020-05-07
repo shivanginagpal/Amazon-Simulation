@@ -166,7 +166,7 @@ class SellerProducts extends Component {
                     <tr key={product.products._id}>
 
                         <td class="image"><img src={imgSource} alt="" /></td>
-                        <td class="product"><strong> <Link to={{ pathname: `/productPage/${product.products._id}` }}>{product.products.productName}</Link></strong>
+                        <td class="product"><strong>  <Link to={{ pathname: `/sellerProductPage/${product.products._id}` }}>{product.products.productName}</Link></strong>
                             <br />{product.products.productDescription}</td>
                         <td>  <StarRatings rating={avgrating} starRatedColor="orange" starDimension="15px" starSpacing="2px" /></td>
                         <td class="price text-right">${product.products.productPrice}</td>
