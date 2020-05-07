@@ -40,7 +40,9 @@ class CustomerReviews extends Component {
         const { products_items = [], loading } = this.props.products;
 
         if (products_items === null || loading) {
-            return "Products Loading";
+            
+            return "Product Loading";
+           
         }
         else {
             products_items.map(product => {
@@ -49,7 +51,7 @@ class CustomerReviews extends Component {
 
             let imgSource = isFieldEmpty(item.productImage[0]) ?
                     "https://via.placeholder.com/400x300" :
-                    backendURL + "/downloadProductImg/" + product.products.productImage[0];
+                    backendURL + "/downloadProductImg/" + item.productImage[0];
 
                 if (item.productReview.length > 0) {
                     item.productReview.map(review => {

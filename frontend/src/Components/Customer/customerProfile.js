@@ -21,24 +21,28 @@ class customerProfile extends Component {
         if (profile === null || loading) {
             return (
                 <div>
-                <Navbar />
-                <div className="container">
-                <br />
-                <h2>No exsisting profile.</h2>
-                <a
-                    type="button"
-                    className="btn btn-primary"
-                    href = "/userProfile">
-                Set Up Profile
-                </a>
+                    <Navbar />
+                    <div className="container">
+                        <br />
+                        <h2>No exsisting profile.</h2>
+                        <a
+                            type="button"
+                            className="btn btn-primary"
+                            href="/userProfile">
+                            Set Up Profile
+                         </a>
+                        <div>
+                            <h2>Your Comments and Ratings</h2>
+                            <CustomerReviews />
+                        </div>
+                    </div>
                 </div>
-                </div>
-                );
+            );
         } else {
 
             profileImg = isFieldEmpty(profile.customerProfilePicture) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
-                backendURL + "/downloadProfileImg/" + profile.customerProfilePicture;
+                profile.customerProfilePicture;
 
             return (
                 <div>
@@ -58,7 +62,7 @@ class customerProfile extends Component {
                             <div className="text-center">
                                 <h1 className="text-center profile-text">{profile.customer.name}
                                 </h1>
-                                
+
                             </div>
                         </div>
                         <div>

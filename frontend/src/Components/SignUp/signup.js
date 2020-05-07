@@ -76,7 +76,7 @@ class signup extends Component {
 
                     <div class="login-container">
                         <input type="text"
-                            className={classnames('form-control form-control-lg', {
+                            className={classnames('form-control form-control-lg login-form-control login-text', {
                                 'is-invalid': errors.name
                             })} 
                             placeholder="Enter Name or UserName"
@@ -88,7 +88,7 @@ class signup extends Component {
                         )}
 
                         <input type="email" 
-                            className={classnames('form-control form-control-lg', {
+                            className={classnames('form-control form-control-lg login-form-control login-text', {
                                 'is-invalid': errors.email
                               })}
                             placeholder="Enter email" 
@@ -100,7 +100,7 @@ class signup extends Component {
                         )}
 
                         <input type="password"
-                            className={classnames('form-control form-control-lg', {
+                            className={classnames('form-control form-control-lg login-form-control login-text', {
                                 'is-invalid': errors.password
                               })} 
                             placeholder="Enter Password" 

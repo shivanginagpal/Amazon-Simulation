@@ -25,12 +25,13 @@ export const getCustomerProfile = () => dispatch => {
         );
 }
 
-export const getSellerProfile = () => dispatch => {
+export const getSellerProfile = (id) => dispatch => {
     dispatch(setProfileLoading());
 
     axios('/getSellerProfile',
         {
             method: 'get',
+            params: { "sellerId": id }
         })
         .then(res => {
             console.log(res.data);

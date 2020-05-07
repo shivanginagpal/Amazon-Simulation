@@ -8,17 +8,25 @@ import SellerProducts from './sellerProducts'
 class sellerProfile extends Component {
 
     componentDidMount() {
-        this.props.getSellerProfile();
+        let sellerId = null;
+        
+        if (this.props.match && this.props.auth.user.userType === "customer"){
+            sellerId = this.props.match.params.seller; 
+        }
+        this.props.getSellerProfile(sellerId);
+        
     }
 
     render() {
         const { profile = [], loading } = this.props.profile;
-        console.log(this.props);
-        console.log("Profile:")
+        // console.log(this.props);
+        //console.log("Profile:")
         let profileImg;
         let sellerAddr = null;
 
+
         if (profile === null || loading) {
+            if(this.props.auth.user.userType === "seller"){
             return (
                 <div>
                     <Navbar />
@@ -34,11 +42,23 @@ class sellerProfile extends Component {
                     </div>
                 </div>
             );
+            }else{
+                return(
+                    <div>
+                    <Navbar />
+                    <div className="container">
+                        <br />
+                        <h2>No exsisting profile for this seller.</h2>
+                       
+                    </div>
+                </div>
+                );
+             }
     } else {
 
             profileImg = isFieldEmpty(profile.sellerProfilePicture) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
-                backendURL + "/downloadProfileImg/" + profile.sellerProfilePicture;
+                 profile.sellerProfilePicture;
 
             if (!isFieldEmpty(profile.sellerAddress)) {
                 sellerAddr = (<h2 className="profile-text text-center">
@@ -69,7 +89,7 @@ class sellerProfile extends Component {
                             </div>
                         </div>
                     </div>
-                    <SellerProducts />
+                    <SellerProducts id={this.props.match.params.seller}/>
                 </div>
             )
         }

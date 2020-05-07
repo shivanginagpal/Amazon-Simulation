@@ -279,7 +279,7 @@ class ProductPage extends Component {
 
 									<dl class="item-property">
 										<dt>Seller</dt>
-										<dd><p><Link to={{ pathname: `/GenSellerProfile/${seller}` }}>{sellerName}</Link></p></dd>
+										<dd><p><Link to={{ pathname: `/sellerProfile/${seller}` }}>{sellerName}</Link></p></dd>
 									</dl>
 									<dl class="param param-feature">
 										<dt>Avg Rating#</dt>
