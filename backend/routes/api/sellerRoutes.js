@@ -5,6 +5,8 @@ const passport = require('passport');
 var kafka = require('../../kafka/client');
 const passportAuth = passport.authenticate('jwt', { session: false });
 const helper = require('./helperFunctions');
+const validate = require('../../validation/validationProduct');
+
 
 // @route   POST api/addProduct
 // @desc    Post new product
@@ -13,7 +15,11 @@ const helper = require('./helperFunctions');
 router.post("/addProduct/:type", helper.upload.array('productImage', 5), passportAuth, async function (req, res) {
 
   console.log(req.files);
-
+  const { errors, isValid } = validate.validateAddProduct(req.body);
+  if (!isValid) {
+      
+      return res.status(400).json(errors);
+  }
   const reqFiles = [];
   const url = req.protocol + '://' + req.get('host')
   for (var i = 0; i < req.files.length; i++) {
@@ -33,7 +39,6 @@ router.post("/addProduct/:type", helper.upload.array('productImage', 5), passpor
 
   // var stringObj = JSON.stringify(filenamearray);
   // console.log(stringObj);
-
 
   console.log("in add product route");
   console.log(req.body);
@@ -82,6 +87,14 @@ router.post("/updateProduct", passportAuth, async function (req, res) {
   
   console.log("in update product route");
   console.log(req.body);
+
+  const { errors, isValid } = validate.validateProduct(req.body);
+
+  if (!isValid) {
+      
+      return res.status(400).json(errors);
+  }
+
   kafka.make_request("seller_topic", { "path": "productUpdate", "user": req.user, "body": req.body }, function (err, results) {
     console.log("in make request call back seller_topic");
     console.log(results);

@@ -95,7 +95,7 @@ export const updateProduct = (data, history) => dispatch => {
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,
-                payload: {}
+                payload: err.response.data
             })
         );
 };
