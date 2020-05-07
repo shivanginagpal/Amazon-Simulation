@@ -104,9 +104,9 @@ class Navbar extends Component {
 
 
 
-                            <li class="nav-item">
+                            {/* <li class="nav-item">
                                 <a class="nav-link disabled text-light" href="#">Disabled</a>
-                            </li>
+                            </li> */}
                         </ul>
                         {isAuthenticated ? authLinks : guestLinks}
                         <form class="form-inline my-2 my-lg-0">

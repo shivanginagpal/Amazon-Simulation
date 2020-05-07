@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import ReactDropzone from "react-dropzone";
 import swal from 'sweetalert';
 import { Redirect } from 'react-router';
+import classnames from 'classnames';
 import { postProduct, getProductCategoryNames } from '../../actions/productActions';
 
 const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
@@ -27,6 +28,7 @@ class AddProduct extends Component {
             added: false,
             alert: null,
             productStatus:null,
+            errors:{}
 
         }
 
@@ -66,8 +68,10 @@ class AddProduct extends Component {
 			this.setState({
 				productStatus:status
 			})
-		}
-
+        }
+        if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors })
+        }
     }
 
     verifyFile = (files) => {
@@ -169,6 +173,10 @@ class AddProduct extends Component {
         let redirectVar = null;
         var productCategoryDropDown = [];
 
+        const { errors } = this.state;
+        console.log(errors);
+
+
         if (this.state.added) {
             redirectVar = <Redirect to="/sellerHome" />
         }
@@ -209,22 +217,48 @@ class AddProduct extends Component {
                                                     <div className="card-body border">
                                                         <div className="form-row ">
                                                             <div className="form-group col-md-9">
-                                                                <input id="productName" name="productName" onChange={this.onChange} value={this.state.productName} placeholder="Product Name" className="form-control" required="required" type="text" />
+                                                                <input id="productName" name="productName" onChange={this.onChange} 
+                                                                value={this.state.productName} placeholder="Product Name" 
+                                                                className={classnames('form-control payment-form-control', {
+                                                                    'is-invalid': errors.productName
+                                                                })} required="required" type="text" />
+                                                                {errors.productName && (
+                                                                    <div className="invalid-feedback">{errors.productName}</div>
+                                                                )}
                                                             </div>
 
                                                             <div className="form-group col-md-9">
-                                                                <input id="productDescription" name="productDescription" onChange={this.onChange} value={this.state.productDescription} placeholder="Product Description" className="form-control" required="required" type="text" />
+                                                                <input id="productDescription" name="productDescription"
+                                                                 onChange={this.onChange} value={this.state.productDescription}
+                                                                  placeholder="Product Description"    className={classnames('form-control payment-form-control', {
+                                                                    'is-invalid': errors.productDescription
+                                                                })} required="required" type="text" />
+                                                                  {errors.productDescription && (
+                                                                    <div className="invalid-feedback">{errors.productDescription}</div>
+                                                                )}
                                                             </div>
 
                                                             <div className="form-group col-md-9">
-                                                                <input id="productPrice" name="productPrice" onChange={this.onChange} value={this.state.productPrice} placeholder="Product Price" className="form-control" required="required" type="text" />
+                                                                <input id="productPrice" name="productPrice" onChange={this.onChange} 
+                                                                value={this.state.productPrice} placeholder="Product Price" 
+                                                                className={classnames('form-control payment-form-control', {
+                                                                    'is-invalid': errors.productPrice
+                                                                })} required="required" type="text" />
+                                                                  {errors.productPrice && (
+                                                                    <div className="invalid-feedback">{errors.productPrice}</div>
+                                                                )}
                                                             </div>
                                                             <div className="form-group col-md-6">
-                                                                <select className="form-control" style={{ width: "100%" }} onChange={this.productCategoryChangeHandler}>
+                                                                <select    className={classnames('form-control payment-form-control', {
+                                                                    'is-invalid': errors.productCategory
+                                                                })} style={{ width: "100%" }} onChange={this.productCategoryChangeHandler}>
                                                                     <option style={{ color: "#ccc", }} value="" hidden>Product Category</option>
                                                                     {productCategoryDropDown}
 
                                                                 </select><br />
+                                                                {errors.productCategory && (
+                                                                    <div className="invalid-feedback">{errors.productCategory}</div>
+                                                                )}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -293,13 +327,15 @@ AddProduct.propTypes = {
     getProductCategoryNames: PropTypes.func.isRequired,
     postProduct: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
+    errors : PropTypes.object.isRequired
 
 }
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
     productCategoryResults: state.products.product_categories,
-    status: state.products.status
+    status: state.products.status,
+    errors: state.errors
 })
 
 export default connect(mapStateToProps, { postProduct, getProductCategoryNames })(AddProduct);
