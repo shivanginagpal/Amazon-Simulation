@@ -133,37 +133,35 @@ async function fetchCart(msg, callback) {
     .then(async cart => {
         console.log(JSON.stringify(cart));
         if (cart.length > 0) {
-            var productSellerName = "";
+            var productSellerName = [];
             var products =[];
             var product = {};
             let pdata = async() => { return Promise.all(cart[0].products.map(async item =>{ 
-                //console.log("ITEM HAS === ",JSON.stringify(item))
                return User.findOne({ "_id": item.sellerId})
                 .then(user => { 
-                    //console.log("USER ---", JSON.stringify(user));
-                    productSellerName = user.name;
-                    //console.log("ITEM IN PRODUCT-ID ---", JSON.stringify(item));
-                   // console.log("PRODUCT-ID ---", JSON.stringify(item.productId));
+                    console.log("SELLER NAME IS : " +user.name);
+                    productSellerName.push(user.name);
+                    console.log("SELLER NAME BEING SET : "+productSellerName);
+                })
+                .then(fp => {
                     return ProductCategory.find({ "products._id" : item.productId },{"products.$" : 1})
                     .then( p => {
-                        //console.log("PRODUCT INFORMATION ------ ", JSON.stringify(p));
+                        console.log("WHEN ARE COMING HERE?");
                         product = {
                             itemId : item._id,
                             productId: item.productId,
                             sellerId : item.sellerId,
-                            sellerName: productSellerName,
+                            sellerName: productSellerName.shift(),
                             productQuantity: item.productQuantity,
                             productPrice: item.productPrice,
                             totalPrice : item.productPrice*item.productQuantity,
                             productName: p[0].products[0].productName
                         };
-                        //console.log("before push----",JSON.stringify(product));
                         products.push(product);
                     });
                 });
              }))}
              pdata().then(data => {
-                // console.log("DATA IS ----", data);
                 result = {
                     customerEmail : cart[0].customerEmail,
                     totalAmount : cart[0].totalAmount,
