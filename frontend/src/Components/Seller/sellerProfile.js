@@ -58,7 +58,7 @@ class sellerProfile extends Component {
 
             profileImg = isFieldEmpty(profile.sellerProfilePicture) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
-                backendURL + "/downloadProfileImg/" + profile.sellerProfilePicture;
+                 profile.sellerProfilePicture;
 
             if (!isFieldEmpty(profile.sellerAddress)) {
                 sellerAddr = (<h2 className="profile-text text-center">

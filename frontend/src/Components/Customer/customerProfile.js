@@ -42,7 +42,7 @@ class customerProfile extends Component {
 
             profileImg = isFieldEmpty(profile.customerProfilePicture) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
-                backendURL + "/downloadProfileImg/" + profile.customerProfilePicture;
+                profile.customerProfilePicture;
 
             return (
                 <div>
