@@ -14,6 +14,12 @@ exports.orderService = function orderService(msg, callback) {
         case "getCustomerOrdersById":
             fetchAllCustomerOrders(msg, callback);
             break;
+        case "deleteOrderItem":
+            deleteOrderItem(msg, callback);
+            break;
+        case "deleteOrder":
+            cancelOrder(msg, callback);
+            break;
     }
 };
 
@@ -79,6 +85,47 @@ async function fetchAllCustomerOrders(msg, callback) {
     .then(async orders => {
         console.log("GET ALL CUSTOMER ORDER RESULT!!!!!!!!!!!!!!!!!"+JSON.stringify(orders))
         response = prepareSuccess(orders);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+async function deleteOrderItem(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    console.log("KAFKA BACKEND DELETE ORDER ITEM=========="+JSON.stringify(msg))
+    await Order.update(
+        {"_id": msg.item.itemId, "products._id" : msg.item.productId },
+        {$set : {"products.$.productOrderStatus" : "CANCELLED"}}
+    )
+    .then(async updatedOrder => {
+        console.log("UPDATED ORDER =====" +JSON.stringify(updatedOrder));
+        response = prepareSuccess(updatedOrder);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+async function cancelOrder(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    console.log("KAFKA BACKEND CANCEL ORDER=========="+JSON.stringify(msg.id))
+    await Order.updateOne(
+        {"_id": msg.id},
+        {$set : {"orderStatus" : "CANCELLED", "products.$[].productOrderStatus": "CANCELLED"}}
+        //, "products.$[].productOrderStatus": "CANCELLED"
+    )
+    .then(async updatedOrder => {
+        console.log("UPDATED ORDER =====" +JSON.stringify(updatedOrder));
+        response = prepareSuccess(updatedOrder);
         return callback(null, response);
     }).catch(error => {
         console.log(error);

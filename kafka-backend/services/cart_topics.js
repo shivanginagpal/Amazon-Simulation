@@ -4,7 +4,6 @@ const GIFT_CHARGE = 2;
 const Seller = require('../models/Seller');
 const User = require('../models/User');
 var { ProductCategory } = require('../models/ProductCategory');
-const redisClient = require("../utils/redisConfig");
 
 exports.cartService = function cartService(msg, callback) {
     console.log("In cart topic Service path:", msg.path);
@@ -24,6 +23,12 @@ exports.cartService = function cartService(msg, callback) {
         case "cartChangeProductQuantity":
             cartChangeProductQuantity(msg, callback);
             break;
+        case "getSavedForLater":
+            fetchSavedCart(msg, callback);
+            break;
+        case "deleteSavedItem":
+            deleteSavedItem(msg, callback);
+            break;
     }
 };
 
@@ -31,8 +36,8 @@ async function addToCart(msg, callback) {
     let response = {};
     let err = {};
     var newProduct = [];
-    var productTotal = 0;
-    productTotal = (msg.body.productQuantity) * (msg.body.productPrice)
+    var productTotal=0;
+	productTotal=(msg.body.productQuantity) * (msg.body.productPrice) 
     newProduct = {
         sellerId: msg.body.sellerId,
         productId: msg.body.productId,
@@ -61,11 +66,6 @@ async function addToCart(msg, callback) {
                 existingProduct.productTotal += productTotal;
 
                 cart.save().then(result => {
-                    redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
-                        if (error) {
-                            console.log(error);
-                        }
-                    });
                     response = prepareSuccess(result);
                     return callback(null, response);
                 }).catch(error => {
@@ -78,11 +78,6 @@ async function addToCart(msg, callback) {
                 cart.totalAmount += productTotal;
                 cart.products.push(newProduct);
                 cart.save().then(result => {
-                    redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
-                        if (error) {
-                            console.log(error);
-                        }
-                    });
                     response = prepareSuccess(result);
                     return callback(null, response);
                 }).catch(error => {
@@ -91,7 +86,7 @@ async function addToCart(msg, callback) {
                 })
             }
         } else {
-            //creating new cart
+          //creating new cart
             var newCart = new Cart({
                 customerEmail: msg.user.email,
                 customerName: msg.user.name,
@@ -99,11 +94,6 @@ async function addToCart(msg, callback) {
                 totalAmount: productTotal,
             })
             newCart.save().then(result => {
-                redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
-                    if (error) {
-                        console.log(error);
-                    }
-                });
                 response = prepareSuccess(result);
                 return callback(null, response);
             }).catch(error => {
@@ -121,112 +111,113 @@ async function fetchCart(msg, callback) {
     let err = {};
     await Cart.aggregate([
         {
-            $match: { "customerEmail": msg.user }
+            $match : {"customerEmail": msg.user}
         },
         {
-            $project: {
-                "customerEmail": 1,
-                "totalAmount": 1,
+            $project: {  
+                "customerEmail" : 1,
+                "totalAmount" : 1,
                 products: {
-                    $filter: {
-                        input: "$products",
-                        as: "product",
-                        cond: {
-                            "$eq": ["$$product.cartStatus", "IN_CART"]
-                        }
-                    }
+                   $filter: {
+                      input: "$products",
+                      as: "product",
+                      cond: { 
+                        "$eq": [ "$$product.cartStatus", "IN_CART" ]
+                      }
+                   }
                 }
-            }
-
+             }
+    
         }
     ])
-        .then(async cart => {
-            console.log(JSON.stringify(cart));
-            if (cart.length > 0) {
-                var sellerName = "";
-                var products = [];
-                var product = {};
-                let pdata = async () => {
-                    return Promise.all(cart[0].products.map(async item => {
-                        //console.log("ITEM HAS === ",JSON.stringify(item))
-                        return User.findOne({ "_id": item.sellerId })
-                            .then(user => {
-                                //console.log("USER ---", JSON.stringify(user));
-                                sellerName = user.name;
-                                //console.log("ITEM IN PRODUCT-ID ---", JSON.stringify(item));
-                                // console.log("PRODUCT-ID ---", JSON.stringify(item.productId));
-                                return ProductCategory.find({ "products._id": item.productId }, { "products.$": 1 })
-                                    .then(p => {
-                                        //console.log("PRODUCT INFORMATION ------ ", JSON.stringify(p));
-                                        product = {
-                                            itemId: item._id,
-                                            sellerId: item.sellerId,
-                                            sellerName: item.sellerName,
-                                            productQuantity: item.productQuantity,
-                                            productPrice: item.productPrice,
-                                            totalPrice: item.productPrice * item.productQuantity,
-                                            productName: p[0].products[0].productName
-                                        };
-                                        //console.log("before push----",JSON.stringify(product));
-                                        products.push(product);
-                                    });
-                            });
-                    }))
-                }
-                pdata().then(data => {
-                    // console.log("DATA IS ----", data);
-                    result = {
-                        customerEmail: cart[0].customerEmail,
-                        totalAmount: cart[0].totalAmount,
-                        products: products
-                    };
-                    //end
-                    console.log(result);
-                    response = prepareSuccess(result);
-                    return callback(null, response);
+    .then(async cart => {
+        console.log(JSON.stringify(cart));
+        if (cart.length > 0) {
+            var productSellerName = "";
+            var products =[];
+            var product = {};
+            let pdata = async() => { return Promise.all(cart[0].products.map(async item =>{ 
+                //console.log("ITEM HAS === ",JSON.stringify(item))
+               return User.findOne({ "_id": item.sellerId})
+                .then(user => { 
+                    //console.log("USER ---", JSON.stringify(user));
+                    productSellerName = user.name;
+                    //console.log("ITEM IN PRODUCT-ID ---", JSON.stringify(item));
+                   // console.log("PRODUCT-ID ---", JSON.stringify(item.productId));
+                    return ProductCategory.find({ "products._id" : item.productId },{"products.$" : 1})
+                    .then( p => {
+                        //console.log("PRODUCT INFORMATION ------ ", JSON.stringify(p));
+                        product = {
+                            itemId : item._id,
+                            productId: item.productId,
+                            sellerId : item.sellerId,
+                            sellerName: productSellerName,
+                            productQuantity: item.productQuantity,
+                            productPrice: item.productPrice,
+                            totalPrice : item.productPrice*item.productQuantity,
+                            productName: p[0].products[0].productName
+                        };
+                        //console.log("before push----",JSON.stringify(product));
+                        products.push(product);
+                    });
                 });
-
-            }
-            else {
+             }))}
+             pdata().then(data => {
+                // console.log("DATA IS ----", data);
+                result = {
+                    customerEmail : cart[0].customerEmail,
+                    totalAmount : cart[0].totalAmount,
+                    products : products
+                 };
+                //end
+                console.log(result);
                 response = prepareSuccess(result);
                 return callback(null, response);
-            }
-        }).catch(error => {
-            console.log(error);
-            err = prepareInternalServerError(error);
-            return callback(err, null);
-        })
+             });
+             
+        } 
+        else
+        {
+            response = prepareSuccess(result);
+            return callback(null, response);
+        }
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    })
 }
 
 async function deleteCartItem(msg, callback) {
     let response = {};
     let result = {};
     let err = {};
-    console.log("KAFKA BACKEND DELETE ==========" + JSON.stringify(msg))
+    console.log("KAFKA BACKEND DELETE =========="+JSON.stringify(msg))
     await Cart.update(
-        {},
-        { $pull: { products: { _id: msg.item.itemId } } }
+        {"customerEmail" : msg.item.email},
+        {$pull : {"products" : {"_id" : msg.item.itemId}}}
     )
-        .then(async cart => {
-            await Cart.update(
-                { "customerEmail": msg.item.email },
-                { $set: { "totalAmount": msg.item.totalAmount } }
-            )
-                .then(updatedCart => {
-                    console.log("UPDATED CART =====" + updatedCart);
-                    response = prepareSuccess(updatedCart);
-                    return callback(null, response);
-                })
-                .catch(error => {
-                    console.log(error);
-                    err = prepareInternalServerError(error);
-                    return callback(err, null);
-                });
-        }).catch(error => {
+    .then(async cart => {
+        console.log("AFTER DELETING CART ITEM RESULT IS ---"+JSON.stringify(cart))
+        await Cart.update(
+            { "customerEmail" : msg.item.email },
+            {$set : {"totalAmount" : msg.item.totalAmount}}
+        )
+        .then( updatedCart => {
+            console.log("UPDATED CART =====" +JSON.stringify(updatedCart));
+            response = prepareSuccess(updatedCart);
+            return callback(null, response);
+        })
+        .catch(error => {
             console.log(error);
             err = prepareInternalServerError(error);
             return callback(err, null);
         });
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
 }
 
 
@@ -234,38 +225,141 @@ async function saveCartItem(msg, callback) {
     let response = {};
     let result = {};
     let err = {};
-    console.log("KAFKA BACKEND SAVE ==========" + JSON.stringify(msg))
+    console.log("KAFKA BACKEND SAVE =========="+JSON.stringify(msg))
     await Cart.update(
-        { "customerEmail": msg.item.email, "products._id": msg.item.itemId },
-        { $set: { "totalAmount": msg.item.totalAmount, "products.$.cartStatus": msg.item.cartStatus } }
+        { "customerEmail" : msg.item.email, "products._id" : msg.item.itemId },
+        {$set : {"totalAmount" : msg.item.totalAmount, "products.$.cartStatus" : msg.item.cartStatus}}
     )
-        .then(async updatedCart => {
-            console.log("SAVED UPDATED CART =====" + updatedCart);
-            response = prepareSuccess(updatedCart);
-            return callback(null, response);
-        }).catch(error => {
-            console.log(error);
-            err = prepareInternalServerError(error);
-            return callback(err, null);
-        });
+    .then(async updatedCart => {
+        console.log("SAVED UPDATED CART =====" +updatedCart);
+        response = prepareSuccess(updatedCart);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
 }
 
 async function cartChangeProductQuantity(msg, callback) {
     let response = {};
     let result = {};
     let err = {};
-    console.log("KAFKA BACKEND SAVE ==========" + JSON.stringify(msg))
+    console.log("KAFKA BACKEND SAVE =========="+JSON.stringify(msg))
     await Cart.update(
-        { "customerEmail": msg.item.email, "products._id": msg.item.itemId },
-        { $set: { "totalAmount": msg.item.totalAmount, "products.$.productTotal": msg.item.totalPrice, "products.$.productQuantity": msg.item.productQuantity } }
+        { "customerEmail" : msg.item.email, "products._id" : msg.item.itemId },
+        {$set : {"totalAmount" : msg.item.totalAmount, "products.$.productTotal" : msg.item.totalPrice, "products.$.productQuantity" : msg.item.productQuantity}}
     )
-        .then(async updatedCart => {
-            console.log("CHANGED UPDATED CART =====" + updatedCart);
-            response = prepareSuccess(updatedCart);
+    .then(async updatedCart => {
+        console.log("CHANGED UPDATED CART =====" +updatedCart);
+        response = prepareSuccess(updatedCart);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+async function fetchSavedCart(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    await Cart.aggregate([
+        {
+            $match : {"customerEmail": msg.user}
+        },
+        {
+            $project: {  
+                "customerEmail" : 1,
+                "totalAmount" : 1,
+                products: {
+                   $filter: {
+                      input: "$products",
+                      as: "product",
+                      cond: { 
+                        "$eq": [ "$$product.cartStatus", "SAVED_FOR_LATER" ]
+                      }
+                   }
+                }
+             }
+    
+        }
+    ])
+    .then(async cart => {
+        console.log(JSON.stringify(cart));
+        if (cart.length > 0) {
+            var productSellerName = "";
+            var products =[];
+            var product = {};
+            let pdata = async() => { return Promise.all(cart[0].products.map(async item =>{ 
+                //console.log("ITEM HAS === ",JSON.stringify(item))
+               return User.findOne({ "_id": item.sellerId})
+                .then(user => { 
+                    //console.log("USER ---", JSON.stringify(user));
+                    productSellerName = user.name;
+                    //console.log("ITEM IN PRODUCT-ID ---", JSON.stringify(item));
+                   // console.log("PRODUCT-ID ---", JSON.stringify(item.productId));
+                    return ProductCategory.find({ "products._id" : item.productId },{"products.$" : 1})
+                    .then( p => {
+                        //console.log("PRODUCT INFORMATION ------ ", JSON.stringify(p));
+                        product = {
+                            itemId : item._id,
+                            productId: item.productId,
+                            sellerId : item.sellerId,
+                            sellerName: productSellerName,
+                            productQuantity: item.productQuantity,
+                            productPrice: item.productPrice,
+                            totalPrice : item.productPrice*item.productQuantity,
+                            productName: p[0].products[0].productName
+                        };
+                        //console.log("before push----",JSON.stringify(product));
+                        products.push(product);
+                    });
+                });
+             }))}
+             pdata().then(data => {
+                // console.log("DATA IS ----", data);
+                result = {
+                    customerEmail : cart[0].customerEmail,
+                    totalAmount : cart[0].totalAmount,
+                    products : products
+                 };
+                //end
+                console.log(result);
+                response = prepareSuccess(result);
+                return callback(null, response);
+             });
+             
+        } 
+        else
+        {
+            response = prepareSuccess(result);
             return callback(null, response);
-        }).catch(error => {
-            console.log(error);
-            err = prepareInternalServerError(error);
-            return callback(err, null);
-        });
+        }
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    })
+}
+
+async function deleteSavedItem(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    console.log("KAFKA BACKEND DELETE =========="+JSON.stringify(msg))
+    await Cart.update(
+        {"customerEmail" : msg.item.email},
+        {$pull : {"products" : {"_id" : msg.item.itemId}}}
+    )
+    .then(async cart => {
+        console.log("UPDATED CART =====" +JSON.stringify(cart));
+        response = prepareSuccess(cart);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
 }
