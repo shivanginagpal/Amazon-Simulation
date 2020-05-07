@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { PLACE_ORDER, GET_ORDER, GET_CUSTOMER_ORDERS} from './types';
+import { PLACE_ORDER, GET_ORDER, GET_CUSTOMER_ORDERS, DELETE_ORDER_ITEM, DELETE_ORDER} from './types';
 import {getEmail, getID} from '../Components/SignUp/helperApis';
 
 export const placeOrder = (payload) => dispatch => {
@@ -42,4 +42,62 @@ export const getMyOrders = (payload) => dispatch => {
        // alert("IN getMyOrders ACTION ERROR "+JSON.stringify(err));
         dispatch({type: GET_CUSTOMER_ORDERS, payload: {}})
       });
+};
+
+export const deleteOrderItem = (payload) => dispatch => {
+  let result = {};
+   axios.put("/deleteOrderItem", payload)
+    .then(response =>
+      { 
+        let url = '/getOrderById/'+payload.itemId;
+        axios.get(url)
+        .then(response =>
+          { 
+            let flag = Object.keys(response.data).length!==0;
+            result = {data : response.data, status : flag}
+            dispatch({type: GET_ORDER, payload: result});  
+          })
+        .catch(err => {
+          console.log("GET ORDER ERROR -- ",err);
+          result = {data : err, status : false}
+          dispatch({type: GET_ORDER, payload: result})}
+          );
+        //dispatch({type: DELETE_CART_ITEM, payload: result});  
+      })
+    .catch(err => {
+      // console.log("GET CART ERROR -- ",err);
+      // result = {data : err, status : false}
+      dispatch({type: DELETE_ORDER_ITEM, payload: err})}
+      );
+};
+
+export const deleteOrder = (payload) => dispatch => {
+  let result = {};
+  alert("PAYLOD is "+payload)
+  let outerUrl = '/deleteOrder/'+payload;
+   axios.put(outerUrl)
+    .then(response =>
+      { 
+        alert("DELTED ORDER RESPONSE SUCCES "+JSON.stringify(response))
+        let url = '/getOrderById/'+payload;
+        axios.get(url)
+        .then(res =>
+          { 
+            alert("GET ORDER RESPONSE SUCCES "+JSON.stringify(res))
+            let flag = Object.keys(res.data).length!==0;
+            result = {data : res.data, status : flag}
+            dispatch({type: GET_ORDER, payload: result});  
+          })
+        .catch(err => {
+          console.log("GET ORDER ERROR -- ",err);
+          result = {data : err, status : false}
+          dispatch({type: GET_ORDER, payload: result})}
+          );
+        //dispatch({type: DELETE_CART_ITEM, payload: result});  
+      })
+    .catch(err => {
+      // console.log("GET CART ERROR -- ",err);
+      // result = {data : err, status : false}
+      dispatch({type: DELETE_ORDER, payload: err})}
+      );
 };

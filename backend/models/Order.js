@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var productsSchema = new Schema({
+    productId : {
+        type: Schema.Types.ObjectId, 
+        required: true
+    },
     productName: {
         type: String,
         required: true
@@ -19,7 +23,7 @@ var productsSchema = new Schema({
         required: true
     },
     productSellerName: {
-        type: Schema.Types.ObjectId,
+        type: String,
         required: false
     },
     productOrderStatus: {
