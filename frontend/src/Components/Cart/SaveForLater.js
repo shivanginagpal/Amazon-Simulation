@@ -50,7 +50,7 @@ class SaveForLater extends Component {
 
     render() {
         let savedResult = "";
-        if(this.state.savedDetails && this.state.savedDetails.status){
+        if(this.state.savedDetails && this.state.savedDetails.status && Object.keys(this.state.savedDetails.data.products).length!==0){
             savedResult = this.state.savedDetails.data.products.map((item,key)=>
             <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>
                 <div class="card-body">

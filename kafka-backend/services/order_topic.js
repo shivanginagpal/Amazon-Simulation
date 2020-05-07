@@ -41,7 +41,17 @@ async function placeOrder(msg, callback) {
     });
     insertOrder.save()
     .then(async newOrder => {
-        await Cart.findOneAndDelete({ "customerEmail": msg.body.customerEmail })
+        await Cart.update(
+            {"customerEmail" : msg.body.customerEmail},
+            {$pull : {"products" : {"cartStatus" : "IN_CART"}}}
+        )
+        .then( async amount => {
+            await Cart.update(
+                {"customerEmail" : msg.body.customerEmail},
+                {$set : {"totalAmount" : 0}}
+            )
+        }
+        )
         .then(async cart => {
             result = {
                 status : true,
