@@ -69,7 +69,7 @@ class Cart extends Component {
 
     render() {
         let cartResult = "";
-        if(this.state.cartDetails && this.state.cartDetails.status){
+        if(this.state.cartDetails && this.state.cartDetails.status && Object.keys(this.state.cartDetails.data.products).length!==0){
         cartResult = this.state.cartDetails.data.products.map((item,key)=>
             <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>
                 <div class="card-body">
@@ -123,7 +123,7 @@ class Cart extends Component {
                             <br/><h3>Shopping Cart</h3><br/>
                             {cartResult}
                             <br/>
-                            {this.state.cartDetails && this.state.cartDetails.status &&
+                            {this.state.cartDetails && this.state.cartDetails.status && Object.keys(this.state.cartDetails.data.products).length!==0 &&
                                 <div style={{color: "#DC143C", fontWeight: "bold", fontSize: "16px"}}>
                                     <div className="row">
                                         <div className="col-sm" style={{textAlign: "right"}}>
