@@ -118,7 +118,6 @@ class SellerProducts extends Component {
 
             this.setState({
                 result: true,
-                // rating: 0
             })
         }
     }
@@ -136,9 +135,6 @@ class SellerProducts extends Component {
             sort: '',
             message: '',
             currentPage: 1
-            // },
-            //      () => {
-            //     this.onSubmit();
         });
     }
 
