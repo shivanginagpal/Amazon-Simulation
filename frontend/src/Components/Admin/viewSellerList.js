@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './adminNavbar';
 import axios from "axios";
+import { hostaddress } from './settings';
 import { Link } from "react-router-dom";
 
  class viewSellerList extends Component {
@@ -27,7 +28,7 @@ import { Link } from "react-router-dom";
      }
     render() {
         let sellerProfile = this.state.sellers.map(seller => {
-            let url = "http://localhost:3000/viewProductsUnderSeller/" + seller._id
+            let url = 'http://'+ hostaddress +':3000/viewProductsUnderSeller/' + seller._id
             if(
                 seller.name.toUpperCase()
                 .includes(this.state.searchString.toUpperCase())

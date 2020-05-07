@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import swal from 'sweetalert';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './admin.css';
+import { hostaddress } from './settings';
 
 
 class inventory extends Component {
@@ -116,7 +117,7 @@ class inventory extends Component {
             </button>
         );
         let productCategory = this.state.categories.map(category => {
-            let url = "http://localhost:3000/viewProductsUnderCategory/" + category.productCategoryName;
+            let url = 'http://'+ hostaddress + ':3000/viewProductsUnderCategory/' + category.productCategoryName;
             if (
                 category.productCategoryName.toUpperCase()
                     .includes(this.state.searchString.toUpperCase())
