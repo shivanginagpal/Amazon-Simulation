@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require("path");
 const validate = require('../../validation/validateAddress');
 const validatePayment = require('../../validation/validatePaymentInfo');
+const uploadFileToS3 = require('../../config/awsImageUpload');
 // Load Validation
 
 router.get('/test', (req, res) => res.json({ msg: 'Profile Works' }));
@@ -222,14 +223,31 @@ router.delete('/deletePaymentInfo/:_id', passportAuth, (req, res) => {
 }
 );
 
-router.post('/updateCustomerProfilePic/:type', helper.upload.single('file'), passportAuth, (req, res) => {
+router.post('/updateCustomerProfilePic/:type', helper.upload.single('file'), passportAuth, async(req, res) => {
     console.log("In Update Customer profile picture");
     console.log(req.body);
     console.log(req.file.filename);
+    
+
+    if (req.file) {
+        uploadFileToS3(req.file.filename, 'profile', req.user._id);
+    }
+    
+    let imageUrl = "";
+    if (req.file) {
+        try {
+            imageUrl = await uploadFileToS3(req.file, 'profile', req.user._id);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+ 
     var customerProfile = {
         "customer": req.user._id,
-        "customerProfilePicture": req.file.filename,
+        "customerProfilePicture": imageUrl.Location,
     }
+
     kafka.make_request("customerProfile_topic", { "path": "updateCustomerProfilePic", "user": req.user, "customerProfile": customerProfile }, function (err, results) {
         //console.log("In make request call back", results);
         if (err) {

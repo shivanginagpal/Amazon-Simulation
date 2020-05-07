@@ -75,7 +75,8 @@ class userProfile extends Component {
 
             profileImg = isFieldEmpty(profilePic) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
-                backendURL + "/downloadProfileImg/" + profilePic;
+                profilePic;
+            console.log("Here", user.userType);
 
             sellerAddr = profile.sellerAddress;
         }
@@ -130,7 +131,7 @@ class userProfile extends Component {
                                             style={{ marginTop: "2em" }}
                                         >
                                             Upload
-                        </button>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
