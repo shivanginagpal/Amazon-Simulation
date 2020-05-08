@@ -85,7 +85,7 @@ import { getID } from "../SignUp/helperApis";
                                     </div>
                                 ) : (
                                         <div>
-                                            <h4 style={{ margin: "3em" }}>No sellers to display!</h4>
+                                            <h4 style={{ margin: "3em" }}>No statistics to display!</h4>
                                         </div>
                                     )}
                             </div>
