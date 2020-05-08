@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { GET_CART, DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, CHECKOUT_ADD_PAYMENT, GET_PROFILE,POST_CART,GET_ERRORS, GET_SAVED_FOR_LATER, DELETE_SAVED_FOR_LATER} from './types';
+import { GET_CART, DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, CHECKOUT_ADD_PAYMENT, GET_PROFILE,POST_CART,GET_ERRORS, GET_SAVED_FOR_LATER, DELETE_SAVED_FOR_LATER,CART_MAKE_PRODUCT_GIFT, UPDATE_GIFT_MESSAGE} from './types';
 import {getEmail} from '../Components/SignUp/helperApis';
 
 export const getCart = () => dispatch => {
@@ -142,6 +142,34 @@ export const changeQuantity = (payload) => dispatch => {
       );
 };
 
+export const updateGift = (payload) => dispatch => {
+  let url = '/cartMakeProductGift';
+  let result = {};
+   axios.put(url, payload)
+    .then(response =>
+      { 
+        let url = '/getCart/'+getEmail();
+        axios.get(url)
+        .then(response =>
+          { 
+            let flag = Object.keys(response.data).length!==0;
+            result = {data : response.data, status : flag}
+            dispatch({type: GET_CART, payload: result});  
+          })
+        .catch(err => {
+          console.log("GET CART ERROR -- ",err);
+          result = {data : err, status : false}
+          dispatch({type: GET_CART, payload: result})}
+          ); 
+      })
+    .catch(err => {
+      console.log("GET CART ERROR -- ",err);
+      result = {data : err, status : false}
+      dispatch({type: CART_MAKE_PRODUCT_GIFT, payload: result})}
+      );
+};
+
+
 export const addPaymentOption = (newCard) => dispatch => {
   axios.post('/addPaymentInfo', newCard)
       .then(res => 
@@ -211,5 +239,32 @@ export const deleteSavedItem = (payload) => dispatch => {
       })
     .catch(err => {
       dispatch({type: DELETE_SAVED_FOR_LATER, payload: err})}
+      );
+};
+
+export const updateGiftMessage = (payload) => dispatch => {
+  let url = '/updateGiftMessage';
+  let result = {};
+   axios.put(url, payload)
+    .then(response =>
+      { 
+        let url = '/getCart/'+getEmail();
+        axios.get(url)
+        .then(response =>
+          { 
+            let flag = Object.keys(response.data).length!==0;
+            result = {data : response.data, status : flag}
+            dispatch({type: GET_CART, payload: result});  
+          })
+        .catch(err => {
+          console.log("GET CART ERROR -- ",err);
+          result = {data : err, status : false}
+          dispatch({type: GET_CART, payload: result})}
+          ); 
+      })
+    .catch(err => {
+      console.log("GET CART ERROR -- ",err);
+      result = {data : err, status : false}
+      dispatch({type: UPDATE_GIFT_MESSAGE, payload: result})}
       );
 };

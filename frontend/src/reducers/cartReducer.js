@@ -1,4 +1,4 @@
-import { GET_CART , DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, POST_CART, GET_SAVED_FOR_LATER, DELETE_SAVED_FOR_LATER } from '../actions/types';
+import { GET_CART , DELETE_CART_ITEM, SAVE_CART_ITEM, CART_CHANGE_PRODUCT_QUANTITY, POST_CART, GET_SAVED_FOR_LATER, DELETE_SAVED_FOR_LATER,CART_MAKE_PRODUCT_GIFT, UPDATE_GIFT_MESSAGE } from '../actions/types';
 
 export default function (state = {}, action) {
     switch (action.type) {
@@ -37,6 +37,16 @@ export default function (state = {}, action) {
                 ...state,
                 updatedSavedItems: action.payload,
             }
+        case CART_MAKE_PRODUCT_GIFT:
+            return {
+                ...state,
+                updatedSavedItems: action.payload,
+            }   
+        case UPDATE_GIFT_MESSAGE:
+            return {
+                ...state,
+                updatedSavedItems: action.payload,
+            }   
         default:
             return state;
     }
