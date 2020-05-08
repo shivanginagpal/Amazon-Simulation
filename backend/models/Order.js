@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var productsSchema = new Schema({
-    productId : {
-        type: Schema.Types.ObjectId, 
+    productId: {
+        type: Schema.Types.ObjectId,
         required: true
     },
     productName: {
@@ -36,11 +36,11 @@ const OrderSchema = new Schema({
     customerId: {
         type: Schema.Types.ObjectId
     },
-    customerName : {
+    customerName: {
         type: String,
         required: false
     },
-    customerEmail : {
+    customerEmail: {
         type: String,
         required: false
     },
