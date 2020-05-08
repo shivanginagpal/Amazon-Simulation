@@ -42,6 +42,7 @@ async function placeOrder(msg, callback) {
     console.log("KAFKA BACKEND placeOrder =========="+JSON.stringify(msg));
     var insertOrder= new Order({
         "customerId" : msg.body.customerId,
+        "customerName" : msg.body.customerName,
         "products" : msg.body.products,
         "orderStatus": "NEW",
         "orderDate": new Date,

@@ -139,6 +139,7 @@ async function fetchCart(msg, callback) {
             $project: {  
                 "customerEmail" : 1,
                 "totalAmount" : 1,
+                "customerName" : 1,
                 products: {
                    $filter: {
                       input: "$products",
@@ -189,6 +190,7 @@ async function fetchCart(msg, callback) {
                 result = {
                     customerEmail : cart[0].customerEmail,
                     totalAmount : cart[0].totalAmount,
+                    customerName : cart[0].customerName,
                     products : products
                  };
                 //end
