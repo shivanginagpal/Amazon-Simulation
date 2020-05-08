@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { PLACE_ORDER, GET_ORDER, GET_CUSTOMER_ORDERS, DELETE_ORDER_ITEM, DELETE_ORDER, GET_SELLER_ORDERS, UPDATE_ORDER_STATUS_BY_SELLER} from './types';
+import { PLACE_ORDER, GET_ORDER, GET_CUSTOMER_ORDERS, DELETE_ORDER_ITEM, DELETE_ORDER, GET_SELLER_ORDERS, UPDATE_ORDER_STATUS_BY_SELLER, CANCEL_ORDER_BY_SELLER} from './types';
 import {getEmail, getID} from '../Components/SignUp/helperApis';
 
 export const placeOrder = (payload) => dispatch => {
@@ -128,5 +128,28 @@ export const updateOrderStatusBySeller = (payload) => dispatch => {
       })
     .catch(err => {
       dispatch({type: UPDATE_ORDER_STATUS_BY_SELLER, payload: err})}
+      );
+};
+
+export const cancelOrderBySeller = (payload) => dispatch => {
+  let result = {};
+   axios.put("/cancelOrderBySeller", payload)
+    .then(response =>
+      { 
+        alert("ACTION RESPONSE "+ JSON.stringify(response))
+        //dispatch({type: CANCEL_ORDER_BY_SELLER, payload: response})
+        let url = '/getSellerOrders/'+getID();
+        axios.get(url)
+            .then(res => 
+            {
+              dispatch({type: GET_SELLER_ORDERS, payload: res});
+            })
+            .catch(err => 
+            {
+              dispatch({type: GET_SELLER_ORDERS, payload: {}})
+            });
+      })
+    .catch(err => {
+      dispatch({type: CANCEL_ORDER_BY_SELLER, payload: err})}
       );
 };

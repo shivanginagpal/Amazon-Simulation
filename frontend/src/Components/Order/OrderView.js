@@ -44,8 +44,15 @@ class OrderView extends Component {
     }
 
     render() {
+        let cancelFlag = false;
+        let somevar = "";
         let orderResult = "";
         if(Object.keys(this.state.order).length !== 0){
+            somevar = this.state.order.data.products.map((prdct,prdctkey)=>
+                {
+                    cancelFlag = (prdct.productOrderStatus==="DELIVERED") ? true : cancelFlag;
+                }
+            );
             orderResult = this.state.order.data.products.map((item,key)=>
                 <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>
                     <div class="card-body">
@@ -103,7 +110,7 @@ class OrderView extends Component {
                                     <span style={{fontWeight: "bold", fontSize: "16px", paddingRight: "($spacer * .5)"}}>Order Status : </span>
                                     <span>{this.state.order.data && this.state.order.data.orderStatus}</span>
                                     <i class="a-icon a-icon-text-separator sc-action-separator" role="img" aria-label="|"></i>
-                                    {this.state.order.data && this.state.order.data.orderStatus!=="DELIVERED" && this.state.order.data.orderStatus!=="CANCELLED" && ( <a href="#" onClick={this.cancelOrder}>Cancel Order</a>  )}
+                                    {this.state.order.data && this.state.order.data.orderStatus!=="DELIVERED" && this.state.order.data.orderStatus!=="CANCELLED" && !cancelFlag && ( <a href="#" onClick={this.cancelOrder}>Cancel Order</a>  )}
                                 </div><br/><br/>
                             </div><br/><br/>
                             <div className="row panel panel-body border-bottom border-dark">

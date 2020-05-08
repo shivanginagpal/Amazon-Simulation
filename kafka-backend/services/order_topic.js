@@ -28,6 +28,10 @@ exports.orderService = function orderService(msg, callback) {
         case "updateOrderStatusBySeller":
             updateOrderStatusBySeller(msg, callback);
             break;
+        case "cancelOrderBySeller":
+            cancelOrderBySeller(msg, callback);
+            break;
+            
     }
 };
 
@@ -159,8 +163,6 @@ async function fetchSellerOrders(msg, callback) {
     console.log("KAFKA BACKEND FETCH SELLER ORDERS=========="+JSON.stringify(msg.id))
     await Order.aggregate([
         {
-            $unwind: "$products"
-        }, {
             $match: {
                 "products.productSellerId": ObjectId(msg.id)
             }
@@ -187,6 +189,26 @@ async function updateOrderStatusBySeller(msg, callback) {
     await Order.update(
         {"_id": msg.item.itemId, "products._id" : msg.item.productId },
         {$set : {"products.$.productOrderStatus" : msg.item.status}}
+    )
+    .then(async updatedOrder => {
+        console.log("UPDATED ORDER =====" +JSON.stringify(updatedOrder));
+        response = prepareSuccess(updatedOrder);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+async function cancelOrderBySeller(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    console.log("KAFKA BACKEND CANCEL ORDER BY SELLER=========="+JSON.stringify(msg))
+    await Order.update(
+        {"_id": msg.item.order_id, "products.productSellerId" : msg.item.seller_id },
+        {$set : {"products.$[].productOrderStatus" : "CANCELLED"}}
     )
     .then(async updatedOrder => {
         console.log("UPDATED ORDER =====" +JSON.stringify(updatedOrder));
