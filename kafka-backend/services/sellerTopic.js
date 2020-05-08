@@ -55,6 +55,13 @@ function prepareQuery(request) {
             }
         );
     }
+    query.push(
+        {
+            $match: {
+                "products.productRemoved": false
+            }
+        }
+    )
     console.log('query is', query);
     return query;
 }

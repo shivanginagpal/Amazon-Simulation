@@ -20,53 +20,59 @@ exports.signUpLoginService = function signUpLoginService(msg, callback) {
     }
 };
 
-function userSignUp(msg, callback) {
+async function userSignUp(msg, callback) {
     let err = {};
     let response = {};
     console.log("In sellerSignUp topic service. Msg: ", msg);
-    User.findOne({ email: msg.body.email })
+    
+    
+    await User.findOne({ name: msg.body.name }).then(async (user) => {
+            if (user && user.userType == 'seller') {
+                err.status = 400;
+                err.errors = { name: "Seller exists with this name, please try a different name." };
+                console.log(err);
+                console.log("Returning error");
+                return callback(null, err);
+            }
+        else {
+
+    await User.findOne({ email: msg.body.email })
         .then(user => {
+
             if (user) {
                 err.status = 400;
                 err.errors = { email: "Email already exists" };
                 console.log(err);
                 console.log("Returning error");
-                callback(null, err);
-            } else if( msg.body.userType == 'seller' )
-            {
-                User.findOne({ name: msg.body.name}).then(user =>{
-                    err.status = 400;
-                    err.errors = { name: "Seller exists this name, please try a different name." };
-                    console.log(err);
-                    console.log("Returning error");
-                    callback(null, err);
-                })
+                return callback(null, err);
             }
-            else {
-                const newSeller = new User({
-                    name: msg.body.name,
-                    email: msg.body.email,
-                    password: msg.body.password,
-                    userType: msg.body.userType
-                });
+            else{
+            const newSeller = new User({
+                name: msg.body.name,
+                email: msg.body.email,
+                password: msg.body.password,
+                userType: msg.body.userType
+            });
 
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(newSeller.password, salt, (err, hash) => {
-                        if (err) throw err;
-                        newSeller.password = hash;
-                        newSeller
-                            .save()
-                            .then(user => console.log(user))
-                            .catch(err => console.log(err));
-                    });
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newSeller.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newSeller.password = hash;
+                    newSeller
+                        .save()
+                        .then(user => console.log(user))
+                        .catch(err => console.log(err));
                 });
+            });
 
-                console.log("User registered successfully");
-                response.status = 200;
-                response.message = "User Signup Success";
-                return callback(null, response);
-            }
-        });
+            console.log("User registered successfully");
+            response.status = 200;
+            response.message = "User Signup Success";
+            return callback(null, response);
+        }
+
+        });}
+    })
 }
 
 async function loginUser(msg, callback) {
