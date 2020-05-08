@@ -257,7 +257,7 @@ function addProductCategory(msg, callback) {
                 return callback(err, null);
             });
         } else {
-            response.status = 401;
+            response.status = 201;
             response.message = "Product category already exists";
             return callback(null, response);
         }
@@ -291,15 +291,23 @@ function getProductCategories(msg, callback) {
         })
 }
 
-function removeProductCategory(msg,callback){
+function removeProductCategory(msg, callback) {
     let response = {};
     let err = {};
-    console.log("In admin topic service. Msg: ", msg);
+    ProductCategory.aggregate([
+        {
+            $match:{
+                "productCategoryName": msg.body.productCategory
+            }
+        },{
+            $unwind: "$products"
+        },{
+            $match:{
+                "products.productRemoved": false
+            }
+        }
 
-    //match catname....get products...unwind...length of the products flag marked...flag false cannot remove...$count
-    
-    ProductCategory.find({"productCategoryName": msg.body.productCategory
-    }).select().then(async result => {
+    ]).then(async result => {
         if(result.length === 0){
             addProductCat.deleteOne({ "_id": msg.body.id})
             .then(result => {
@@ -328,7 +336,6 @@ function removeProductCategory(msg,callback){
 async function viewSellersList(msg,callback){
     let response = {};
     let err = {};
-    console.log("In admin topic service. Msg: ", msg);
     return await User.find({ "userType": "seller"})
         .then((result) => {
             response.status = 200;
@@ -350,6 +357,11 @@ async function getAdminViewOrders(msg, callback) {
         {
             $unwind: "$products"
         },{
+            $match:{
+                "products.productOrderStatus": { $ne: "CANCELLED" }
+            }
+        },
+        {
             $project:{
             customerName: "$customerName",
             products: "$products",
