@@ -18,15 +18,15 @@ import Top10ProductsRating from './Top10ProductsRating';
                     <div className='rowC' style={{ display: "flex", flexDirection: "row" }}>
 
                         <div className="container">
-                            <div className="row mt-4">
-                                <div className="card card-custom mx-4 mb-5" style={{ boxShadow: "2px 2px 2px #888888", "height": "18em", "width": "30em" }}>
+                            <div className="row mt-8">
+                                <div className="card card-custom mx-4 mb-5" style={{ boxShadow: "2px 2px 2px #888888", "height": "28em", "width": "30em" }}>
 
-                                    <div className="card-body" >
+                                    <div className="card-body" style={{"height":"28em", "width":"30em"}} >
                                         <NoOfOrdersPerDay />
                                     </div>
                                 </div>
 
-                                <div className="card card-custom mx-4 mb-5" style={{ boxShadow: "2px 2px 2px #888888", "height": "18em", "width": "30em" }}>
+                                <div className="card card-custom mx-4 mb-5" style={{ boxShadow: "2px 2px 2px #888888", "height": "28em", "width": "30em" }}>
 
                                     <div className="card-body" >
                                         <Top5SoldProducts />

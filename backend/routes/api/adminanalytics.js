@@ -47,7 +47,7 @@ router.get("/top5Customers", (req, res) => {
     Order.aggregate([
         {
             $group: {
-                _id: "$customerId",
+                _id: "$customerName",
                 amount: {
                     $sum: "$totalAmount"
                 }
@@ -91,7 +91,7 @@ router.get("/top5Sellers", (req, res) => {
         },
         {
             $group: {
-                _id: "$products.productSellerId",
+                _id: "$products.productSellerName",
                 amount: {
                     $sum: {
                         $multiply: ["$products.productPrice",
@@ -127,6 +127,38 @@ router.put("/sellerStatistics", (req, res) => {
                 },
                 totalAmount: {
                     $sum: { $multiply: ["$products.productPrice", "$products.productQuantity"] }
+                }
+            }
+        }
+    ]).then(result => {
+        res.end(JSON.stringify(result));
+    }).catch(err => {
+        res.end("could not get messages");
+    })
+})
+
+router.put("/monthlySellerAmount", (req,res) => {
+    var sellerId = req.body.id;
+    Order.aggregate([
+        {
+            $unwind: "$products"
+        },{
+            $match: {
+                "products.productSellerId": ObjectId(sellerId)
+            }
+        },{
+            $project:{
+                month: { "$month": "$orderDate" },
+                products: "$products"
+            }
+        },{
+            $group:{
+                _id: "$month",
+                totalAmount: {
+                    $sum: {
+                        $multiply: ["$products.productPrice",
+                            "$products.productQuantity"]
+                    }
                 }
             }
         }

@@ -1,47 +1,54 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
+import {getID} from '../SignUp/helperApis' 
 
 
- class Top10ProductsRating extends Component {
+ class MonthlySalesAmount extends Component {
      constructor(props) {
          super(props);
          this.state = {
-             products: [],
+             months: [],
              count: []
          }
      }
-
      componentDidMount() {
-         axios.get("/top10ProductsBasedOnRating")
+         const sellerId = getID();
+         const data = {
+             id: sellerId
+         }
+
+         axios("/monthlySellerAmount",{
+             method:'put',
+             data:data
+         })
              .then((response) => {
                  console.log("THIS IS RESPONSE", response);
-                 let sellersArr = [];
+                 let monthsArr = [];
                  let valArr = [];
                  response.data.forEach((item) => {
-                     sellersArr.push(item.productName);
-                     valArr.push(item.productRating)
+                     monthsArr.push(item._id);
+                     valArr.push(item.totalAmount)
                  });
                  this.setState({
-                     products: sellersArr,
+                     months: monthsArr,
                      count: valArr
                  });
              })
      }
 
+
     render() {
-        // const months=[
-        //     "January",
-        //    "Feb"]
-        // temp=[]
-        // for(i=0;i<length(this.state.products.month;i++)){ 
-        //  temp.append(months[this.state.products.month[i]-1]))
-        // }
+        const monthnames =["Jan","Feb","Mar","April","May","June","July","Aug","Sept","Oct","Nov","Dec"]
+        var temp=[]
+        for(var i=0;i<this.state.months.length;i++){
+            temp.push(monthnames[this.state.months[i]-1])
+        }
         const data = {
-            labels: this.state.products,
+            labels: temp,
             datasets: [
                 {
-                    label: 'Top 10 products based on Rating.',
+                    label: 'Monthly Amount Earned By Sales.',
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: 'rgba(75,192,192,0.4)',
@@ -63,6 +70,7 @@ import axios from 'axios';
                 }
             ]
         }
+
         return (
             <div>
                 <div style={{ background: "#fafafa" }}>
@@ -78,14 +86,15 @@ import axios from 'axios';
                                 }]
                             }, title: {
                                 display: true,
-                                text: 'Top 10 products based on Rating'
+                                text: 'Monthly Amount Earned By Sales'
                             }
                         }} />
                 </div>
+
                 
             </div>
         )
     }
 }
 
-export default Top10ProductsRating;
+export default MonthlySalesAmount;

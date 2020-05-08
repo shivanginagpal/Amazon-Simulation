@@ -40,11 +40,12 @@ async function orderStatusChangeAdmin(msg, callback) {
     let response = {};
     let err = {};
 
-    Order.update({
-        "_id":msg.body.id},
+    await Order.update(
+        
+        {"_id": msg.body.id ,  "products.productId": msg.body.productId},
         {
             $set:{
-                "orderStatus":msg.body.status
+                "products.productOrderStatus":msg.body.status
             }
         }
         ).then(async result => {
@@ -260,7 +261,17 @@ async function viewSellersList(msg,callback){
 async function getAdminViewOrders(msg, callback) {
     let response = {};
     let err = {};
-    return await Order.find().then((result) => {
+    return await Order.aggregate([
+        {
+            $unwind: "$products"
+        },{
+            $project:{
+            customerName: "$customerName",
+            products: "$products",
+            orderDate: "$orderDate"
+            }
+        }
+    ]).then((result) => {
         response.status = 200;
         response.message = "successfully retrieved sellers";
         response.data = result;
