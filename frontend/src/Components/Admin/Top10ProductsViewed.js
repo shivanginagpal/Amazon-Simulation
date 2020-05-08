@@ -36,8 +36,8 @@ import axios from 'axios';
                     label: 'Top 10 products viewed.',
                     fill: false,
                     lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: 'rgba(75,192,192,1)',
+                    backgroundColor: 'rgba(235, 64, 52)',
+                    borderColor: 'rgba(0,0,0)',
                     borderCapStyle: 'butt',
                     borderDash: [],
                     borderDashOffset: 0.0,
@@ -70,7 +70,7 @@ import axios from 'axios';
                                 }]
                             }, title: {
                                 display: true,
-                                text: 'Top 10 products viewed'
+                                text: 'Top 10 products Viewed'
                             }
                         }} />
                 </div>

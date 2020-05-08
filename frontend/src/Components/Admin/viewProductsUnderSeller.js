@@ -91,6 +91,7 @@ import './admin.css';
              })
      }
     render() {
+        const sellerName = this.props.match.params.sellerName;
         const monthnames = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
         var temp = []
         for (var i = 0; i < this.state.months.length; i++) {
@@ -204,7 +205,9 @@ import './admin.css';
                     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
                     <div className="container">
 
-
+                        <div className="dash-one">
+        <h3 className="display-4">{sellerName}{"'s  "}Products</h3>
+                        </div>
 
                         <div className="container">
                             <div className="row mt-4">
