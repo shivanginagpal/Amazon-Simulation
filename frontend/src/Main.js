@@ -43,6 +43,9 @@ import OrderSummary from './Components/Order/OrderSummary';
 import CustomerOrders from './Components/Order/CustomerOrders';
 import CancelledOrders from './Components/Order/CancelledOrders';
 import OrderView from './Components/Order/OrderView';
+import SellerOrders from './Components/Order/SellerOrders';
+import SellerOrderView from './Components/Order/SellerOrderView';
+import SellerOrdersOptions from './Components/Order/SellerOrdersOptions';
 
 
 class Main extends Component {
@@ -82,6 +85,9 @@ class Main extends Component {
                     <Route path='/orderSummary/:id' component={OrderSummary}/>
                     <Route path='/viewOrder/:id' component={OrderView}/>
                     <Route path='/customerOrders' component={CustomerOrders}/>
+                    <Route path='/sellerOrders' component={SellerOrders}/>
+                    <Route path='/viewSoldOrder/:id' component={SellerOrderView}/>
+                    <Route path='/otherOrders' component={SellerOrdersOptions}/>
                     <Route path='/cancelledOrders' component={CancelledOrders}/>
                     <Route path='/sellerProductPage/:id' component={sellerProductPage}/>
                     <Route path='/editProduct' component={editProduct}/>
