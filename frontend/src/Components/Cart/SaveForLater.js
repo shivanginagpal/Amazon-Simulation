@@ -59,7 +59,7 @@ class SaveForLater extends Component {
                             <b>Seller :</b> {item.sellerName}
                         </div>
                         <div className="col-md-3" id= "movecenter">
-                            Unit Price : {item.productPrice}
+                            Unit Price : ${item.productPrice}
                         </div>
                         <div className="col-md-3" id= "movecenter">
                             <div className="form-group">

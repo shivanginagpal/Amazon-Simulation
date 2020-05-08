@@ -153,4 +153,27 @@ router.post("/placeOrder", async function (req, res) {
     });
   });
 
+  
+  router.put("/cancelOrderBySeller", async function (req, res) {
+    console.log("in cancel order by seller route");
+    console.log(JSON.stringify(req.body));
+    kafka.make_request("order_topic", { "path": "cancelOrderBySeller", "item": req.body}, function (err, results) {
+      console.log("in make request call back order_topic");
+      console.log(results);
+      console.log(err);
+      if (err) {
+        console.log("Inside err");
+        console.log(err);
+        return res.status(err.status).send(err.message);
+      } else {
+        console.log("Inside else", results);
+        if (results.status === 200) {
+          return res.status(results.status).send(results.data);
+        } else {
+          return res.status(results.status).send(results.errors);
+        }
+      }
+    });
+  });
+
   module.exports = router;

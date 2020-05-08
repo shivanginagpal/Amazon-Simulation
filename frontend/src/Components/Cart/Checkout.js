@@ -130,13 +130,13 @@ class Checkout extends Component {
                             <b>Seller :</b> {item.sellerName}
                         </div>
                         <div className="col-md" id= "movecenter">
-                            Unit Price : {item.productPrice}
+                            Unit Price : ${item.productPrice}
                         </div>
                         <div className="col-md" id= "movecenter">
                             Quantity : {item.productQuantity}
                         </div>
                         <div className="col-md" id= "movecenter" style={{color: "#DC143C", fontWeight: "bold"}}>
-                            Price : {item.totalPrice}
+                            Price : ${item.totalPrice}
                         </div>
                     </div>
                 </div>
@@ -173,7 +173,7 @@ class Checkout extends Component {
                                     <div>
                                         <div className="row panel panel-body border-bottom border-dark">
                                             <div className="col-sm" style={{color: "#DC143C", fontWeight: "bold", fontSize: "16px", textAlign: "right"}}>
-                                                <span style={{paddingRight: "($spacer * .5)"}}>Total Price : {this.state.cartDetails.data.totalAmount}</span>
+                                                <span style={{paddingRight: "($spacer * .5)"}}>Total Price : ${this.state.cartDetails.data.totalAmount}</span>
                                             </div><br/><br/>
                                         </div><br/><br/>
                                         <div className="row panel panel-body border-bottom border-dark">
