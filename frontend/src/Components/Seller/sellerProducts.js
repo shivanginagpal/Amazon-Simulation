@@ -24,6 +24,7 @@ class SellerProducts extends Component {
             productCategoryName: '',
             message: '',
             sellerId: '',
+            //productList: '',
             currentPage: 1
         }
 
@@ -34,9 +35,15 @@ class SellerProducts extends Component {
 
     }
     async componentDidMount() {
+        var sellerId = null;
+        if (this.props.id) {
+            sellerId = this.props.id;
+        } else {
+            sellerId = this.props.auth.user.id;
+        }
         var data = {
             currentPage: this.state.currentPage,
-            id: this.props.auth.user.id
+            id: sellerId
         }
         await this.props.getProductsUnderSeller(data);
         await this.props.getProductCategoryNames();
@@ -170,6 +177,7 @@ class SellerProducts extends Component {
 
     render() {
         var productCategory = [], pageBar, showPageBar;
+        var imgSource="https://via.placeholder.com/400x300";
         var items = [],
             avgrating = 0;
 
@@ -184,24 +192,47 @@ class SellerProducts extends Component {
         if (this.state && this.state.productList) {
             showPageBar = true;
             items = this.state.productList.map(product => {
-                let imgSource = isFieldEmpty(product.products.productImage[0]) ?
+                let tempProduct = product.products;
+                if(product.products[0]){
+
+                    tempProduct = product.products[0]
+                }
+                console.log(product);
+
+                imgSource = isFieldEmpty(tempProduct.productImage[0]) ?
                     "https://via.placeholder.com/400x300" :
-                    product.products.productImage[0];
+                    tempProduct.productImage[0];
 
                 avgrating = 0;
-                if (product.products.productReview.length > 0) {
-                    avgrating = product.products.productRating;
+                if (tempProduct.productReview.length > 0) {
+                    avgrating = tempProduct.productRating;
                 }
+
+                if( this.props.auth.user.userType === 'seller'){
                 return (
-                    <tr key={product.products._id}>
+                    <tr key={tempProduct._id}>
 
                         <td class="image"><img src={imgSource} alt="" /></td>
-                        <td class="product"><strong>  <Link to={{ pathname: `/sellerProductPage/${product.products._id}` }}>{product.products.productName}</Link></strong>
-                            <br />{product.products.productDescription}</td>
+                        <td class="product"><strong>  <Link to={{ pathname: `/sellerProductPage/${tempProduct._id}` }}>{tempProduct.productName}</Link></strong>
+                            <br />{tempProduct.productDescription}</td>
                         <td>  <StarRatings rating={avgrating} starRatedColor="orange" starDimension="15px" starSpacing="2px" /></td>
-                        <td class="price text-right">${product.products.productPrice}</td>
+                        <td class="price text-right">${tempProduct.productPrice}</td>
                     </tr>
                 )
+                }
+                else if( this.props.auth.user.userType === 'customer'){
+                    return (
+                        <tr key={tempProduct._id}>
+    
+                            <td class="image"><img src={imgSource} alt="" /></td>
+                            <td class="product"><strong>  <Link to={{ pathname: `/ProductPage/${tempProduct._id}` }}>{tempProduct.productName}</Link></strong>
+                                <br />{tempProduct.productDescription}</td>
+                            <td>  <StarRatings rating={avgrating} starRatedColor="orange" starDimension="15px" starSpacing="2px" /></td>
+                            <td class="price text-right">${tempProduct.productPrice}</td>
+                        </tr>
+                    )
+
+                }
             })
         }
         if (showPageBar) {

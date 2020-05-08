@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { connect } from 'react-redux';
-import {getSellerOrders} from '../../actions/orderAction';
+import {getSellerOrders, cancelOrderBySeller} from '../../actions/orderAction';
+import { getID } from '../SignUp/helperApis';
 
 
 class SellerOrdersOptions extends Component {
@@ -11,6 +12,16 @@ class SellerOrdersOptions extends Component {
         this.state = {
             orders: null
         };     
+        this.cancelSellerProductsInOrder = this.cancelSellerProductsInOrder.bind(this);
+    }
+
+    cancelSellerProductsInOrder = item => event => {
+        event.preventDefault();
+        let payload = {
+            order_id: item._id,
+            seller_id: getID()
+        }
+        this.props.cancelOrderBySeller(payload);
     }
 
     componentDidMount(){
@@ -26,10 +37,28 @@ class SellerOrdersOptions extends Component {
     }
 
     render() {
+        let cancelFlag = false;
+        let somevar = "";
+        let ordFil = "";
         let openOrdersList = "";
         let deliveredOrdersList="";
         let cancelledOrdersList = "";
+        let arr = [];
         if(this.state.orders && Object.keys(this.state.orders).length !== 0){
+            ordFil = this.state.orders.data.map((item,key)=> 
+            {
+                somevar = item.products.map((prdct,prdctkey)=>
+                 {
+                   cancelFlag = (prdct.productOrderStatus!=="CANCELLED") ? true : cancelFlag;
+                 }
+                );
+                if(cancelFlag){ 
+                   arr.push(item._id);
+                   cancelFlag = false;
+                }  
+            }
+            );
+            
             cancelledOrdersList = this.state.orders.data.filter(item => 
                 Object.keys(item).some(key => item['orderStatus'].includes('CANCELLED'))).map((item,key)=>
                 <div class="card" style={{width: "20rem", "backgroundColor" : "#ffff"}}>
@@ -44,7 +73,6 @@ class SellerOrdersOptions extends Component {
                             <div id= "movecenter" >
                                 Order Status : {item.orderStatus}
                             </div><br/>
-
                         </div> 
                     </Link> 
                 </div> 
@@ -72,19 +100,22 @@ class SellerOrdersOptions extends Component {
             openOrdersList = this.state.orders.data.filter(item => 
                 Object.keys(item).some(key => item['orderStatus'].includes('NEW'))).map((item,key)=>
                 <div class="card" style={{width: "20rem", "backgroundColor" : "#ffff"}}>
-                    <Link to={{pathname: "/viewSoldOrder/"+item._id}} style={{ textDecoration: "none", color : "black" }}>
                         <div class="card-body" >
+                        <Link to={{pathname: "/viewSoldOrder/"+item._id}} style={{ textDecoration: "none", color : "black" }}>
                             <div id= "movecenter" style={{fontWeight: "bold"}}>
                                 Order Number : {item._id} <br/>
                             </div><br/>
                             <div id= "movecenter" >
                                 Ordered Date : {item.orderDate.slice(0,10)}<br/>
-                            </div><br/>
+                            </div>
+                            <br/>
+                            </Link>
                             <div id="movecenter">
-                                {item.orderStatus!=="CANCELLED" && item.orderStatus!=="DELIVERED" && <button className="btn btn-danger btn-sm" >cancel</button>}
+                                
+                                {item.orderStatus!=="CANCELLED" && item.orderStatus!=="DELIVERED" && arr.indexOf(item._id)!== -1  &&  <button className="btn btn-danger btn-sm" onClick={this.cancelSellerProductsInOrder(item)}>cancel</button>}
                             </div>
                         </div>  
-                    </Link>
+                    
                 </div> 
             );
         }
@@ -126,7 +157,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch)
 {
     return {
-        getSellerOrders: data => dispatch(getSellerOrders(data))
+        getSellerOrders: data => dispatch(getSellerOrders(data)),
+        cancelOrderBySeller: data => dispatch(cancelOrderBySeller(data))
     };
 }
 
