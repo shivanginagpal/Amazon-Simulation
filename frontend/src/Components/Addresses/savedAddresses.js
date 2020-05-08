@@ -33,8 +33,8 @@ class savedAddresses extends Component {
 
         if (profile === null || loading) {
             profileContent = (<div className="container">
-                                "Address Book Loading"
-                                </div>);
+                            "No Address Added yet"
+                            </div>);
         } else {
             let { savedAddresses } = profile;
             console.log(savedAddresses);

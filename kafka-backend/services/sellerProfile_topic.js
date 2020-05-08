@@ -4,7 +4,7 @@ const keys = require('../config/keys');
 const Seller = require('../models/Seller');
 
 exports.sellerProfileService = function sellerProfileService(msg, callback) {
-    console.log("In seller Profile Service path:", msg.path);
+    //console.log("In seller Profile Service path:", msg.path);
     switch (msg.path) {
         case "getSellerProfile":
             getSellerProfile(msg, callback);
@@ -17,7 +17,7 @@ exports.sellerProfileService = function sellerProfileService(msg, callback) {
     }
 };
 
-function getSellerProfile(msg, callback) {
+async function getSellerProfile(msg, callback) {
     let err = {};
     let response = {};
     let sellerId = null;
@@ -27,9 +27,9 @@ function getSellerProfile(msg, callback) {
     else {
         sellerId = msg.user._id
     }
-    console.log("In getSellerProfile. Msg: ", msg);
-    console.log(sellerId);
-    Seller.findOne({ seller: sellerId })
+    //console.log("In getSellerProfile. Msg: ", msg);
+    //console.log(sellerId);
+    await Seller.findOne({ seller: sellerId })
         .populate('seller', ['name', 'email'])
         .then(profile => {
 
@@ -50,7 +50,7 @@ function getSellerProfile(msg, callback) {
 function updateSellerProfile(msg, callback) {
     let err = {};
     let response = {};
-    console.log("In update Seller Profile Msg: ", msg);
+    //console.log("In update Seller Profile Msg: ", msg);
 
     Seller.findOne({ seller: msg.user._id }).then(profile => {
         if (profile) {

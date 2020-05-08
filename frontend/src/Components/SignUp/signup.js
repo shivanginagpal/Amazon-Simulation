@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-import Slideshow from '../../slideshow';
 import './../Login/loginTemplate.css';
 import avatar from "./../../images/avatar.png";
 import classnames from 'classnames';
