@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { PLACE_ORDER, GET_ORDER, GET_CUSTOMER_ORDERS, DELETE_ORDER_ITEM, DELETE_ORDER} from './types';
+import { PLACE_ORDER, GET_ORDER, GET_CUSTOMER_ORDERS, DELETE_ORDER_ITEM, DELETE_ORDER, GET_SELLER_ORDERS, UPDATE_ORDER_STATUS_BY_SELLER} from './types';
 import {getEmail, getID} from '../Components/SignUp/helperApis';
 
 export const placeOrder = (payload) => dispatch => {
@@ -96,8 +96,44 @@ export const deleteOrder = (payload) => dispatch => {
         //dispatch({type: DELETE_CART_ITEM, payload: result});  
       })
     .catch(err => {
-      // console.log("GET CART ERROR -- ",err);
-      // result = {data : err, status : false}
       dispatch({type: DELETE_ORDER, payload: err})}
+      );
+};
+
+export const getSellerOrders = () => dispatch => {
+  let url = '/getSellerOrders/'+getID();
+  axios.get(url)
+      .then(res => 
+      {
+        dispatch({type: GET_SELLER_ORDERS, payload: res});
+      })
+      .catch(err => 
+      {
+        //alert("IN CATCH "+JSON.stringify(err))
+        dispatch({type: GET_SELLER_ORDERS, payload: {}})
+      });
+};
+
+export const updateOrderStatusBySeller = (payload) => dispatch => {
+  let result = {};
+   axios.put("/updateOrderStatusBySeller", payload)
+    .then(response =>
+      { 
+        let url = '/getOrderById/'+payload.itemId;
+        axios.get(url)
+        .then(response =>
+          { 
+            let flag = Object.keys(response.data).length!==0;
+            result = {data : response.data, status : flag}
+            dispatch({type: GET_ORDER, payload: result});  
+          })
+        .catch(err => {
+          console.log("GET ORDER ERROR -- ",err);
+          result = {data : err, status : false}
+          dispatch({type: GET_ORDER, payload: result})}
+          );
+      })
+    .catch(err => {
+      dispatch({type: UPDATE_ORDER_STATUS_BY_SELLER, payload: err})}
       );
 };

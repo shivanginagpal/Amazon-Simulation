@@ -147,7 +147,7 @@ class SellerProductPage extends Component {
             for (let i = 0; i < singleProduct.productImage.length; i++) {
                 imgSource.push(isFieldEmpty(singleProduct.productImage[i]) ?
                     "https://via.placeholder.com/150x100" :
-                    backendURL + "/downloadProductImg/" + singleProduct.productImage[i]);
+                    singleProduct.productImage[i]);
 
                 smallImage.push(<div class="item-gallery" key={i}> <img src={imgSource[i]} onClick={() => { this.setState({ bigImageIndex: i }) }} /> </div>);
             }

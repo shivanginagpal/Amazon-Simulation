@@ -178,7 +178,7 @@ class ProductSearch extends Component {
             items = this.state.productList.map(product => {
                 let imgSource = isFieldEmpty(product.products.productImage[0]) ?
                     "https://via.placeholder.com/400x300" :
-                    backendURL + "/downloadProductImg/" + product.products.productImage[0];
+                     product.products.productImage[0];
 
                 avgrating = 0;
                 if (product.products.productReview.length > 0) {

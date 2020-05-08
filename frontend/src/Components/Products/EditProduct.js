@@ -88,7 +88,12 @@ class EditProduct extends Component {
                                                             <div className="form-group col-md-9">
                                                                 <input id="productDescription" name="productDescription" onChange={this.onChange}
                                                                     value={this.state.productDescription} placeholder={product.products[0].productDescription}
-                                                                    className="form-control" required="required" type="text" />
+                                                                    className={classnames('form-control payment-form-control', {
+                                                                        'is-invalid': errors.productDescription
+                                                                    })}required="required" type="text" />
+                                                                    {errors.productDescription && (
+                                                                    <div className="invalid-feedback">{errors.productDescription}</div>
+                                                                )}
                                                             </div>
 
 
