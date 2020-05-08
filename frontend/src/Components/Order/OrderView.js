@@ -71,7 +71,7 @@ class OrderView extends Component {
                                 Quantity : {item.productQuantity}
                             </div>
                             <div className="col-md" id= "movecenter">
-                                Product Price : {item.productPrice}
+                                Product Price : ${item.productPrice}
                             </div>
                         </div>
                     </div>
