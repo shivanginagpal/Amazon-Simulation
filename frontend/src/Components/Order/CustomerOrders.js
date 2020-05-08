@@ -29,7 +29,6 @@ class CustomerOrders extends Component {
         let ordersResult ="";
        
         if(this.state.orders){
-            //alert("UI INSIDE IF"+JSON.stringify(this.state.orders))
             ordersResult = this.state.orders.filter(item => 
                 Object.keys(item).some(key => !item['orderStatus'].includes('CANCELLED') && !item['orderStatus'].includes('DELIVERED'))).map((item,key)=>
             <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>
