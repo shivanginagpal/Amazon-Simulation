@@ -41,7 +41,7 @@ class OrderSummary extends Component {
                                 Quantity : {item.productQuantity}
                             </div>
                             <div className="col-md" id= "movecenter">
-                                Product Price : {item.productPrice}
+                                Product Price : ${item.productPrice}
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@ class OrderSummary extends Component {
                                 
                             <div>{orderResult}</div>
                             <div style={{color: "#DC143C", fontWeight: "bold", textAlign: "right"}}>
-                                Total Price : {this.state.order.data && this.state.order.data.totalAmount}
+                                Total Price : ${this.state.order.data && this.state.order.data.totalAmount}
                             </div>
                             
 

@@ -127,7 +127,7 @@ class Cart extends Component {
                             <b>Seller :</b> {item.sellerName}
                         </div>
                         <div className="col-md" id= "movecenter">
-                            Unit Price : {item.productPrice}
+                            Unit Price : ${item.productPrice}
                         </div>
                         <div className="col-md" id= "movecenter">
                             <div className="form-group">
@@ -150,7 +150,7 @@ class Cart extends Component {
                             </div>
                         </div>
                         <div className="col-md" id= "movecenter" style={{color: "#DC143C", fontWeight: "bold"}}>
-                            Price : {item.totalPrice}
+                            Price : ${item.totalPrice}
                         </div>
                     </div>
                     <div className="row">
@@ -190,7 +190,7 @@ class Cart extends Component {
                                 <div style={{color: "#DC143C", fontWeight: "bold", fontSize: "16px"}}>
                                     <div className="row">
                                         <div className="col-sm" style={{textAlign: "right"}}>
-                                        Total Price : {this.state.cartDetails.data.totalAmount}
+                                        Total Price : ${this.state.cartDetails.data.totalAmount}
                                         </div>
                                         <div className="col-sm" >
                                         <Link to={{pathname: "/checkout"}} class="btn btn-success">Proceed to checkOut</Link>
