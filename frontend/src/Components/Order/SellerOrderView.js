@@ -19,7 +19,6 @@ class SellerOrderView extends Component {
 
     cancelOrder = item => event =>{
         event.preventDefault();
-//        alert("IS THIS _ID? "+this.state.order.data._id)
         let payload = {
             "itemId" : this.state.order.data._id,
             "productId" : item._id
@@ -29,8 +28,6 @@ class SellerOrderView extends Component {
 
     updateOrderStatus = item => event => {
         event.preventDefault();
-        alert("what does it have "+JSON.stringify(item))
-        alert("NEW STATUS IS "+event.target.value)
         let payload = {
             "itemId" : this.state.order.data._id,
             "productId" : item._id,
