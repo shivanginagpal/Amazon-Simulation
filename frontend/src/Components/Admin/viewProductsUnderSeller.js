@@ -104,7 +104,7 @@ import './admin.css';
                     label: 'Monthly Amount Earned By Sales in Dollars($).',
                     fill: false,
                     lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    backgroundColor: 'rgba(16, 184, 196)',
                     borderColor: 'rgba(75,192,192,1)',
                     borderCapStyle: 'butt',
                     borderDash: [],
