@@ -54,8 +54,10 @@ class sellerProfile extends Component {
                 </div>
                 );
              }
-    } else {
+    } else if(profile.seller) {
             console.log(profile);
+            console.log("Params",this.props.match.params.seller);
+            console.log("profile");
 
             profileImg = isFieldEmpty(profile.sellerProfilePicture) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
@@ -94,6 +96,7 @@ class sellerProfile extends Component {
                 </div>
             )
         }
+        else return "Loading";
     }
 }
 const mapStateToProps = state => ({
