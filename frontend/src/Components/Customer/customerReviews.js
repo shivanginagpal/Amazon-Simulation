@@ -51,7 +51,7 @@ class CustomerReviews extends Component {
 
             let imgSource = isFieldEmpty(item.productImage[0]) ?
                     "https://via.placeholder.com/400x300" :
-                    backendURL + "/downloadProductImg/" + item.productImage[0];
+                    item.productImage[0];
 
                 if (item.productReview.length > 0) {
                     item.productReview.map(review => {

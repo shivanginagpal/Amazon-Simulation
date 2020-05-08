@@ -31,10 +31,8 @@ router.post("/productSearch", passportAuth, async function (req, res) {
     }
   });
 });
-
  
   router.get("/getProduct", passportAuth, async function (req, res) {
-
     console.log(req.query);
     kafka.make_request("customer_topic", { "path": "getProduct", "user": req.user, "body": req.query.productId }, function (err, results) {
       console.log("in make request call back seller_topic");
@@ -54,7 +52,7 @@ router.post("/productSearch", passportAuth, async function (req, res) {
   });
 
   
-  router.post("/updateProductViews",passportAuth, async function (req, res) {
+  router.post("/updateProductViews", passportAuth, async function (req, res) {
     console.log("In updateProductViews", req.body);
     
     kafka.make_request("customer_topic", { "path": "updateProductViews", "user": req.user, "body":req.body }, function (err, results) {
@@ -83,7 +81,7 @@ router.post("/productSearch", passportAuth, async function (req, res) {
         console.log(err);
         return res.status(err.status).send(err.message);
       } else {
-        console.log("Inside else", results);
+
         if (results.status === 200) {
           return res.status(results.status).send(results.data);
         } else {
@@ -127,7 +125,6 @@ router.post("/productSearch", passportAuth, async function (req, res) {
   
   router.get("/getCustomerName", passportAuth, async function (req, res) {
   
-    
     kafka.make_request("customer_topic", { "path": "getCustomerName", "body": req.query.customerId }, function (err, results) {
      
       if (err) {

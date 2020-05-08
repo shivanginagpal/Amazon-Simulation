@@ -32,7 +32,7 @@ function handleTopicRequest(topic_name, fname) {
     var producer = connection.getProducer();
     console.log('server is running ');
     consumer.on('message', function (message) {
-        console.log('message received for ' + topic_name + " ", fname);
+        //console.log('message received for ' + topic_name + " ", fname);
         console.log(JSON.stringify(message.value));
         var data = JSON.parse(message.value);
 
@@ -93,7 +93,7 @@ function handleTopicRequest(topic_name, fname) {
 }
 
 function response(data, res, producer) {
-    console.log('after handle', res);
+    //console.log('after handle', res);
     var payloads = [
         {
             topic: data.replyTo,
@@ -105,7 +105,7 @@ function response(data, res, producer) {
         }
     ];
     producer.send(payloads, function (err, data) {
-        console.log('producer send', data);
+        //console.log('producer send', data);
     });
     return;
 }

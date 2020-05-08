@@ -53,7 +53,7 @@ class customerProfile extends Component {
                             <div className="row">
                                 <div className="col-4 col-md-3 m-auto">
                                     <img
-                                        className="rounded-circle"
+                                        className="card-img-top rounded-circle"
                                         src={profileImg}
                                         alt=""
                                     />

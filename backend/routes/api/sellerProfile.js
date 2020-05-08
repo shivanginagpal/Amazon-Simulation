@@ -21,13 +21,12 @@ router.get(
   (req, res) => {
     console.log("In getSellerProfile API", req.query);
     kafka.make_request("sellerProfile_topic", { "path": "getSellerProfile", "user": req.user, "body": req.query }, function (err, results) {
-      console.log("In make request call back", results);
+      
       if (err) {
         console.log("Inside err");
         console.log(err);
         return res.status(err.status).send(err.message);
       } else {
-        console.log("Inside else", results);
         if (results.status === 200) {
           return res.status(results.status).send(results.data);
         } else {
@@ -70,7 +69,7 @@ router.post(
         console.log(err);
         return res.status(err.status).send(err.message);
       } else {
-        console.log("Inside else", results);
+        //console.log("Inside else", results);
         if (results.status === 200) {
           return res.status(results.status).send(results.data);
         } else {
@@ -111,7 +110,7 @@ router.post('/updateSellerProfilePic/:type',
         console.log(err);
         return res.status(err.status).send(err.message);
       } else {
-        console.log("Inside else", results);
+        //console.log("Inside else", results);
         if (results.status === 200) {
           return res.status(results.status).send(results.data);
         } else {

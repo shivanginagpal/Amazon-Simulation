@@ -55,6 +55,7 @@ class sellerProfile extends Component {
                 );
              }
     } else {
+            console.log(profile);
 
             profileImg = isFieldEmpty(profile.sellerProfilePicture) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
@@ -75,7 +76,7 @@ class sellerProfile extends Component {
                                 <div className="row">
                                     <div className="col-4 col-md-2 m-auto">
                                         <img
-                                            className="rounded-circle"
+                                            className="rounded-circle card-img-top"
                                             src={profileImg}
                                             alt=""
                                         />
