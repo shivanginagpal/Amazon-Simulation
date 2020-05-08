@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../Products/productSearch.css';
 import PropTypes from 'prop-types';
-import { backendURL, isFieldEmpty } from '../SignUp/helperApis';
+import { isFieldEmpty } from '../SignUp/helperApis';
 import { connect } from 'react-redux';
 import { sellerProducts, getProductCategoryNames } from '../../actions/productActions';
 import StarRatings from "react-star-ratings";
