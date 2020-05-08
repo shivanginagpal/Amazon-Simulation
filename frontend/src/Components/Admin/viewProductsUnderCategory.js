@@ -122,7 +122,7 @@ class viewProductsUnderCategory extends Component {
                             <li className="page-item ">
                                 <div className="page-link" onClick={this.prevPage} aria-label="Previous"><span aria-hidden="true">&laquo;</span></div>
                             </li>
-                            {threedotone}
+                            {/* {threedotone}
                             {one}
                             <li className="page-item ">
                                 <div className="page-link" ><span className="active" aria-hidden="true">{this.state.currentPage}</span></div>
@@ -130,7 +130,7 @@ class viewProductsUnderCategory extends Component {
                             <li className="page-item ">
                                 <div className="page-link" onClick={this.nextPage}><span aria-hidden="true">{this.state.currentPage + 1}</span></div>
                             </li>
-                            {threedottwo}
+                            {threedottwo} */}
                             <li className="page-item">
                                 <div className="page-link" onClick={this.nextPage} aria-label="Next"><span aria-hidden="true">&raquo;</span></div>
                             </li>

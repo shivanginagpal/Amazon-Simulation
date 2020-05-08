@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
 
- class Top5SoldProducts extends Component {
+ class Top10ProductsViewed extends Component {
      constructor(props) {
          super(props);
          this.state = {
@@ -10,21 +10,21 @@ import axios from 'axios';
              count: []
          }
      }
+
      componentDidMount() {
-         axios.get("/top5SoldProducts")
+         axios.get("/top10ProductsViewed")
              .then((response) => {
                  console.log("THIS IS RESPONSE", response);
-                 let productsArr = [];
+                 let sellersArr = [];
                  let valArr = [];
                  response.data.forEach((item) => {
-                     productsArr.push(item._id);
+                     sellersArr.push(item.productName);
                      valArr.push(item.count)
                  });
                  this.setState({
-                     products: productsArr,
+                     products: sellersArr,
                      count: valArr
                  });
-                 console.log(this.state.products);
              })
      }
 
@@ -33,7 +33,7 @@ import axios from 'axios';
             labels: this.state.products,
             datasets: [
                 {
-                    label: 'Top 5 Sold Products.',
+                    label: 'Top 10 products viewed.',
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: 'rgba(75,192,192,0.4)',
@@ -55,7 +55,6 @@ import axios from 'axios';
                 }
             ]
         }
-
         return (
             <div>
                 <div style={{ background: "#fafafa" }}>
@@ -66,12 +65,12 @@ import axios from 'axios';
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        stepSize: 10
+                                        stepSize: 1
                                     }
                                 }]
                             }, title: {
                                 display: true,
-                                text: 'Top 5 Sold Products'
+                                text: 'Top 10 products viewed'
                             }
                         }} />
                 </div>
@@ -81,4 +80,4 @@ import axios from 'axios';
     }
 }
 
-export default Top5SoldProducts;
+export default Top10ProductsViewed;

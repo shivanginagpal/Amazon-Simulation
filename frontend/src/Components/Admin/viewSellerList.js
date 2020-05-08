@@ -50,8 +50,9 @@ import { Link } from "react-router-dom";
         return (
             <div>
                 <Navbar/>
-                <div className="container" id="viewSellerList">
-                    <nav class="navbar navbar-light bg-light">
+                <div className="container" >
+                    <div className="dash-header display-4">Seller Profiles</div>
+                    <nav class="navbar navbar-light bg-light" id="viewsellersearch">
                         <form class="form-inline">
                             <input
                                 class="form-control mr-sm-2"
@@ -67,10 +68,10 @@ import { Link } from "react-router-dom";
                     <div className="row justify-content-center align-items-center">
                         <div className="col-12">
                             <div className="dash-one">
-                                <div className="dash-header">Seller Profiles</div>
+                                
                                 {this.state.sellers.length > 0 ? (
                                     <div className="col-10">
-                                        <table className="table table-striped table-bordered">
+                                        <table className="table table-striped table-bordered lead">
                                             <thead>
                                                 <tr>
                                                     <th>Seller Name</th>
