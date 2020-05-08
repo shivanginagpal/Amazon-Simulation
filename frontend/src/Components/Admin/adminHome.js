@@ -15,7 +15,7 @@ import Top10ProductsViewed from './Top10ProductsViewed';
                 <Navbar />
                 <div className="content-wrapper">
                     <div className="dash-one">
-                        <h3 className="dash-header">Admin Dashboard</h3>
+                        <h3 className="display-4">Admin Dashboard</h3>
                     </div>
                     {/* <div className='rowC' style={{ display: "flex", flexDirection: "row" }}> */}
 
