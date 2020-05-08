@@ -86,6 +86,7 @@ class Checkout extends Component {
             let order = {
                 customerId : getID(),
                 customerEmail : getEmail(),
+                customerName : this.state.cartDetails.data.customerName,
                 products : productList,
                 subTotal : this.state.cartDetails.data.totalAmount,
                 tax : 0.07*this.state.cartDetails.data.totalAmount,

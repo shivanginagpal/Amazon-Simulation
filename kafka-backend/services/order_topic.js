@@ -1,6 +1,8 @@
 const { prepareSuccess, prepareInternalServerError } = require('./responses');
 const  Order  = require('../models/Order');
 const {Cart} = require('../models/Cart');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.orderService = function orderService(msg, callback) {
     console.log("In order topic service path:", msg.path);
@@ -19,6 +21,12 @@ exports.orderService = function orderService(msg, callback) {
             break;
         case "deleteOrder":
             cancelOrder(msg, callback);
+            break;
+        case "getSellerOrders":
+            fetchSellerOrders(msg, callback);
+            break;
+        case "updateOrderStatusBySeller":
+            updateOrderStatusBySeller(msg, callback);
             break;
     }
 };
@@ -132,6 +140,53 @@ async function cancelOrder(msg, callback) {
         {"_id": msg.id},
         {$set : {"orderStatus" : "CANCELLED", "products.$[].productOrderStatus": "CANCELLED"}}
         //, "products.$[].productOrderStatus": "CANCELLED"
+    )
+    .then(async updatedOrder => {
+        console.log("UPDATED ORDER =====" +JSON.stringify(updatedOrder));
+        response = prepareSuccess(updatedOrder);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+async function fetchSellerOrders(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    console.log("KAFKA BACKEND FETCH SELLER ORDERS=========="+JSON.stringify(msg.id))
+    await Order.aggregate([
+        {
+            $unwind: "$products"
+        }, {
+            $match: {
+                "products.productSellerId": ObjectId(msg.id)
+            }
+        }, {
+            $sort: { orderDate : -1}
+        }
+    ])
+    .then(async orders => {
+        console.log("SELLER ORDERS =====" +JSON.stringify(orders));
+        response = prepareSuccess(orders);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+async function updateOrderStatusBySeller(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    console.log("KAFKA BACKEND UPDATE ORDER STATUS BY SELLER=========="+JSON.stringify(msg))
+    await Order.update(
+        {"_id": msg.item.itemId, "products._id" : msg.item.productId },
+        {$set : {"products.$.productOrderStatus" : msg.item.status}}
     )
     .then(async updatedOrder => {
         console.log("UPDATED ORDER =====" +JSON.stringify(updatedOrder));

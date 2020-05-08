@@ -62,7 +62,7 @@ class Navbar extends Component {
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="/cart" >Cart</a>
+                            {(userType === 'customer') && <a class="nav-link text-light" href="/cart" >Cart</a>}
                         </li>
     
                         <li class="nav-item">
