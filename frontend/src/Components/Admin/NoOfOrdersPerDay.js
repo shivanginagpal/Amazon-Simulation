@@ -35,7 +35,7 @@ class NoOfOrdersPerDay extends Component {
                     label: 'No. of orders per day.',
                     fill: false,
                     lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    backgroundColor: 'rgba(242, 238, 12)',
                     borderColor: 'rgba(75,192,192,1)',
                     borderCapStyle: 'butt',
                     borderDash: [],

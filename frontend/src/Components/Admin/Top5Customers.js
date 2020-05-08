@@ -35,7 +35,7 @@ import axios from 'axios';
                     label: 'Top 5 Customers.',
                     fill: false,
                     lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    backgroundColor: 'rgba(52, 198, 235)',
                     borderColor: 'rgba(75,192,192,1)',
                     borderCapStyle: 'butt',
                     borderDash: [],

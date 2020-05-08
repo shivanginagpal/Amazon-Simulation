@@ -37,7 +37,7 @@ import axios from 'axios';
                     label: 'Top 10 products based on Rating.',
                     fill: false,
                     lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    backgroundColor: 'rgba(168, 3, 135)',
                     borderColor: 'rgba(75,192,192,1)',
                     borderCapStyle: 'butt',
                     borderDash: [],

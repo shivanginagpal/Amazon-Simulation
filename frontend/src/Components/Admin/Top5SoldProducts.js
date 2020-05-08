@@ -36,7 +36,7 @@ import axios from 'axios';
                     label: 'Top 5 Sold Products.',
                     fill: false,
                     lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    backgroundColor: 'rgba(52, 235, 208)',
                     borderColor: 'rgba(75,192,192,1)',
                     borderCapStyle: 'butt',
                     borderDash: [],
