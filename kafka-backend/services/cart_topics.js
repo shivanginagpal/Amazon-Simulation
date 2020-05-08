@@ -4,6 +4,7 @@ const GIFT_CHARGE = 2;
 const Seller = require('../models/Seller');
 const User = require('../models/User');
 var { ProductCategory } = require('../models/ProductCategory');
+const redisClient = require("../utils/redisConfig");
 
 exports.cartService = function cartService(msg, callback) {
     console.log("In cart topic Service path:", msg.path);
@@ -72,6 +73,11 @@ async function addToCart(msg, callback) {
                 existingProduct.productTotal += productTotal;
 
                 cart.save().then(result => {
+                    redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
+                        if (error) {
+                            console.log(error);
+                        }
+                    });
                     response = prepareSuccess(result);
                     return callback(null, response);
                 }).catch(error => {
@@ -85,6 +91,11 @@ async function addToCart(msg, callback) {
                 cart.products.push(newProduct);
                 cart.save().then(result => {
                     response = prepareSuccess(result);
+                    redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
+                        if (error) {
+                            console.log(error);
+                        }
+                    });
                     return callback(null, response);
                 }).catch(error => {
                     err = prepareInternalServerError(error);
@@ -100,6 +111,11 @@ async function addToCart(msg, callback) {
                 totalAmount: productTotal,
             })
             newCart.save().then(result => {
+                redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
+                    if (error) {
+                        console.log(error);
+                    }
+                });
                 response = prepareSuccess(result);
                 return callback(null, response);
             }).catch(error => {
