@@ -6,12 +6,20 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 router.get("/noOfOrdersPerDay", (req, res) => {
-    console.log("IN NOOF ORDERS PER DAY");
     Order.aggregate([
         {
-            $group: {
-                _id: "$orderDate",
-                orders: { $sum: 1 }
+            $project:{
+                orderId: "$_id",
+                date: { $dateToString: { format: "%Y-%m-%d", date: "$orderDate" } }
+            }
+        },
+        {
+            $group:
+             {
+                _id: "$date",
+                count: {
+                    $sum: 1
+                }
             }
         }])
         .then(result => {
