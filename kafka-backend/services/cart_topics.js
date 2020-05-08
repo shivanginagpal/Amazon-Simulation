@@ -73,7 +73,7 @@ async function addToCart(msg, callback) {
                 existingProduct.productTotal += productTotal;
 
                 cart.save().then(result => {
-                    redisClient.setex(msg.user.name, 36000, JSON.stringify(result), function (error, reply) {
+                    redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
                         if (error) {
                             console.log(error);
                         }
@@ -91,7 +91,7 @@ async function addToCart(msg, callback) {
                 cart.products.push(newProduct);
                 cart.save().then(result => {
                     response = prepareSuccess(result);
-                    redisClient.setex(msg.user.name, 36000, JSON.stringify(result), function (error, reply) {
+                    redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
                         if (error) {
                             console.log(error);
                         }
@@ -111,7 +111,7 @@ async function addToCart(msg, callback) {
                 totalAmount: productTotal,
             })
             newCart.save().then(result => {
-                redisClient.setex(msg.user.name, 36000, JSON.stringify(result), function (error, reply) {
+                redisClient.setex(msg.user.email, 36000, JSON.stringify(result), function (error, reply) {
                     if (error) {
                         console.log(error);
                     }
