@@ -139,10 +139,10 @@ import './admin.css';
                                 <div className="card" id="cardadminclass" >
                                     {unknown}
                                     <div className="card-block" id="cardadmin-title-text">
-                                        <h6 className="card-title" id="cardadmin-title">SellerName</h6>
-                                        <p className="card-text" id="cardadmin-text">{product.products.productName}</p>
+                                        <h6 className="card-title lead" id="cardadmin-title">{product.sellerName}</h6>
+                                        <p className="card-text lead" id="cardadmin-text">{product.products.productName}</p>
                                         <span>
-                                            <p className="card-text" id="cardadmin-text">{product.products.productPrice}</p>
+                                            <p className="card-text lead" id="cardadmin-text">{product.products.productPrice}</p>
                                         </span>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@ import './admin.css';
                             <li className="page-item ">
                                 <div className="page-link" onClick={this.prevPage} aria-label="Previous"><span aria-hidden="true">&laquo;</span></div>
                             </li>
-                            {threedotone}
+                            {/* {threedotone}
                             {one}
                             <li className="page-item ">
                                 <div className="page-link" ><span className="active" aria-hidden="true">{this.state.currentPage}</span></div>
@@ -183,7 +183,7 @@ import './admin.css';
                             <li className="page-item ">
                                 <div className="page-link" onClick={this.nextPage}><span aria-hidden="true">{this.state.currentPage + 1}</span></div>
                             </li>
-                            {threedottwo}
+                            {threedottwo} */}
                             <li className="page-item">
                                 <div className="page-link" onClick={this.nextPage} aria-label="Next"><span aria-hidden="true">&raquo;</span></div>
                             </li>

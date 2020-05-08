@@ -59,13 +59,52 @@ async function orderStatusChangeAdmin(msg, callback) {
         });
 }
 
+// async function viewProductsUnderSeller(msg, callback) {
+//     let response = {};
+//     let err = {};
+//     let result={};
+//     var pageLimit = 20;
+//     var currentPage = msg.body.currentPage;
+//     console.log("In admin topic service. Msg: ", msg);
+//     var sellerId = msg.body.id;
+//     var query = [];
+//     query.push(
+//         {
+//             $match: {
+//                 "seller": ObjectId(sellerId)
+//             }
+//         },
+//         {
+//             $unwind: "$products"
+//         },
+//     )
+//     result = await ProductCategory.aggregate(query).catch(error => {
+//         console.log(error);
+//         err = prepareInternalServerError();
+//         return callback(null, err);
+//     })
+//         let pageMax = Math.ceil(result.length / pageLimit);
+//         if (currentPage > pageMax) {
+//             currentPage = pageMax;
+//         }
+//         let start = (currentPage - 1)* pageLimit;
+//         let end = currentPage * pageLimit;
+//         result = result.slice(start, end);
+//         response.status = 200;
+//         response.data = result;
+//         return callback(null, response);
+// }
+
+
 async function viewProductsUnderSeller(msg, callback) {
     let response = {};
     let err = {};
-    let result={};
+    let result = {};
+    var productArr = [];
+    var len;
+    var count=0;
     var pageLimit = 20;
     var currentPage = msg.body.currentPage;
-    console.log("In admin topic service. Msg: ", msg);
     var sellerId = msg.body.id;
     var query = [];
     query.push(
@@ -76,23 +115,53 @@ async function viewProductsUnderSeller(msg, callback) {
         },
         {
             $unwind: "$products"
-        },
+        }, {
+        $match: {
+            "products.productRemoved": false
+        }
+    }
     )
-    result = await ProductCategory.aggregate(query).catch(error => {
+    await ProductCategory.aggregate(query)
+    .then(async product => { 
+        let pageMax = Math.ceil(product.length / pageLimit);
+        if (currentPage > pageMax) {
+            currentPage = pageMax;
+        }
+        let start = (currentPage - 1) * pageLimit;
+        let end = currentPage * pageLimit;
+        product = product.slice(start, end);
+        len = product.length
+        product.map(async (item) => {
+            await User.findOne({ _id: item.seller })
+                .then(result => {
+
+                    if (result) {
+                        sellerName = result.name
+                    }
+                    const data = {
+                        sellerName: sellerName
+                    }
+                    item['sellerName'] = sellerName;
+                    productArr.push(item);
+                    count++;
+                    if (len === (count)) {
+                        console.log("this is product array in length", productArr);
+                        response.status = 200;
+                        response.data = productArr;
+                        return callback(null, response);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    err = prepareInternalServerError();
+                    return callback(null, err);
+                })
+        })
+    }).catch(error => {
         console.log(error);
         err = prepareInternalServerError();
         return callback(null, err);
     })
-        let pageMax = Math.ceil(result.length / pageLimit);
-        if (currentPage > pageMax) {
-            currentPage = pageMax;
-        }
-        let start = (currentPage - 1)* pageLimit;
-        let end = currentPage * pageLimit;
-        result = result.slice(start, end);
-        response.status = 200;
-        response.data = result;
-        return callback(null, response);
 }
 
 
@@ -101,6 +170,7 @@ async function viewProducts(msg, callback) {
     let err = {};
     var productArr = [];
     var len;
+    var count = 0;
     var pageLimit = 20;
     var currentPage = msg.body.currentPage;
     console.log("In admin topic service. Msg: ", msg);
@@ -113,12 +183,24 @@ async function viewProducts(msg, callback) {
         },
         {
             $unwind: "$products"
-        },
+        }, {
+        $match: {
+            "products.productRemoved": false
+        }
+    }
     )
-    await ProductCategory.aggregate(query).skip((20 * currentPage)-20).limit(20)
+    await ProductCategory.aggregate(query)
     .then(async product => {
+        let pageMax = Math.ceil(product.length / pageLimit);
+        if (currentPage > pageMax) {
+            currentPage = pageMax;
+        }
+        let start = (currentPage - 1) * pageLimit;
+        let end = currentPage * pageLimit;
+        product = product.slice(start, end);
+
         len = product.length
-        product.map(async (item, count) => {
+        product.map(async (item) => {
             await User.findOne({ _id: item.seller })
                 .then(result => {
                     if (result) {
@@ -129,8 +211,9 @@ async function viewProducts(msg, callback) {
                     }
                     item['sellerName']=sellerName;
                     productArr.push(item);
+                    count++;
                     console.log("this is product array", productArr);
-                    if(len === (count+1)){
+                    if(len === (count)){
                         console.log("this is product array", productArr);
                         response.status = 200;
                         response.data = productArr;
@@ -212,6 +295,8 @@ function removeProductCategory(msg,callback){
     let response = {};
     let err = {};
     console.log("In admin topic service. Msg: ", msg);
+
+    //match catname....get products...unwind...length of the products flag marked...flag false cannot remove...$count
     
     ProductCategory.find({"productCategoryName": msg.body.productCategory
     }).select().then(async result => {

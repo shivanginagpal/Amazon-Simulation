@@ -130,7 +130,7 @@ router.get('/viewSellersList', (req,res) => {
             }
         }
     })
-})
+}) 
 
 router.put("/viewProductsUnderSeller", (req,res) => {
     console.log(req.body);
