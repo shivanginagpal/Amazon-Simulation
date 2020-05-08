@@ -72,7 +72,7 @@ class Main extends Component {
                     <Route path="/savedAddresses" component={SavedAddresses}/>
                     <Route path="/viewOrdersAdmin" component={viewOrdersAdmin}/>
                     <Route path="/viewProductsUnderCategory/:category" component={viewProductsUnderCategory} />
-                    <Route path="/viewProductsUnderSeller/:id" component={viewProductsUnderSeller} />
+                    <Route path="/viewProductsUnderSeller/:id/:sellerName" component={viewProductsUnderSeller} />
                     <Route path="/editSellerAddress" component={EditSellerAddress}/>
                     <Route path="/sellerProfile/:seller" component={SellerProfile}/>
                     <Route path="/checkout" component={Checkout}/>

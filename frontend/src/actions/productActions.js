@@ -12,7 +12,7 @@ export const postProduct = (formdata, history) => dispatch => {
                 type: POST_PRODUCT,
                 payload: res.status
             })
-            history.push('/sellerHome');
+           // history.push('/sellerHome');
     })
         .catch(err => {
             console.log("Got an error", err);
@@ -90,7 +90,7 @@ export const updateProduct = (data, history) => dispatch => {
                 type: UPDATE_PRODUCT,
                 payload: res.data
             })
-            history.push('/sellerHome');
+           history.push('/sellerHome');
         })
         .catch(err =>
             dispatch({
@@ -126,7 +126,7 @@ export const deleteProduct = (productId, history) => dispatch => {
                 type: DELETE_PRODUCT,
                 payload: res.status
             })
-            history.push('/sellerHome');
+           // history.push('/sellerHome');
         })
         .catch(err =>
             dispatch({
