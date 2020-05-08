@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { GET_ERRORS, GET_PRODUCT_CATEGORIES, GET_PRODUCTS, PRODUCT_LOADING, GET_PRODUCT, POST_PRODUCT, GET_CUSTOMER_NAME, POST_REVIEW, DELETE_PRODUCT, UPDATE_PRODUCT ,UPDATE_IMAGE_PRODUCT} from './types';
+import { GET_ERRORS, GET_PRODUCT_CATEGORIES, GET_PRODUCTS, PRODUCT_LOADING, GET_PRODUCT, POST_PRODUCT, GET_CUSTOMER_NAME, POST_REVIEW, DELETE_PRODUCT, UPDATE_PRODUCT ,UPDATE_IMAGE_PRODUCT, SET_VIEWCOUNT} from './types';
 
 export const postProduct = (formdata, history) => dispatch => {
     console.log("Inside post product actions")
@@ -154,6 +154,25 @@ export const getProduct = (id) => dispatch => {
         .catch(err =>
             dispatch({
                 type: GET_PRODUCT,
+                payload: {}
+            })
+        );
+};
+
+export const updateProductViews = (id) => dispatch => {
+    dispatch(setProductLoading());
+    axios.post('/updateProductViews', { "productId": id }
+    )
+        .then(res => {
+            //console.log(res.data);
+            dispatch({
+                type: SET_VIEWCOUNT,
+                payload: res.data
+            })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
                 payload: {}
             })
         );
