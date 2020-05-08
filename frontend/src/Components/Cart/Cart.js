@@ -2,19 +2,24 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { connect } from 'react-redux';
+import EdiText from 'react-editext';
 import './cart.css';
-import {getCart, deleteCartItem, saveForLater, changeQuantity} from '../../actions/cartAction';
+import {getCart, deleteCartItem, saveForLater, changeQuantity, updateGift, updateGiftMessage} from '../../actions/cartAction';
 import SaveForLater from '../Cart/SaveForLater';
 
 class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cartDetails : null
+            cartDetails : null,
+            msg: ""
         };
         this.deleteItem=this.deleteItem.bind(this);
         this.saveForLater=this.saveForLater.bind(this);
         this.changeQuantity=this.changeQuantity.bind(this);
+        this.checkGift=this.checkGift.bind(this);
+        this.handleSave=this.handleSave.bind(this);
+        this.saveMsg=this.saveMsg.bind(this);
     }
 
     deleteItem = item => event =>{
@@ -25,6 +30,24 @@ class Cart extends Component {
             "totalAmount" : this.state.cartDetails.data.totalAmount - item.totalPrice
         }
         this.props.deleteCartItem(payload);
+    }
+
+    saveMsg = e => {
+        e.preventDefault();
+        this.setState({
+            ...this.state,
+            msg : e.target.value
+        })
+    }
+
+    handleSave =  item => e => {
+        e.preventDefault();
+        let payload = {
+                "itemId" : item.itemId,
+                "email" : this.state.cartDetails.data.customerEmail,
+                "giftMessage" : this.state.msg
+            }
+        this.props.updateGiftMessage(payload);
     }
 
     saveForLater = item => event =>{
@@ -50,6 +73,32 @@ class Cart extends Component {
         this.props.changeQuantity(payload);
     }
 
+
+   
+    checkGift = (item) => event => {
+        event.preventDefault();
+        let payload = {};
+        if(!event.target.checked){
+         payload = {
+            "itemId" : item.itemId,
+            "email" : this.state.cartDetails.data.customerEmail,
+            "totalPrice" :   item.totalPrice - 2*item.productQuantity,
+            "totalAmount" : this.state.cartDetails.data.totalAmount  - 2*item.productQuantity,
+            "gift" : false
+        }
+        }
+        else{
+             payload = {
+                "itemId" : item.itemId,
+                "email" : this.state.cartDetails.data.customerEmail,
+                "totalPrice" : 2*item.productQuantity + item.totalPrice,
+                "totalAmount" : this.state.cartDetails.data.totalAmount  + 2*item.productQuantity,
+                "gift": true
+            }
+        }
+        this.props.updateGift(payload);
+    }
+
     fetchCartItems(){
         this.props.getCart();
     }
@@ -59,7 +108,6 @@ class Cart extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        //alert(JSON.stringify(nextProps.cartItems));
         this.setState({
           ...this.state,
           cartDetails : !nextProps.updatedCartItems ? (!nextProps.cartItems ? this.state.cartDetails : nextProps.cartItems) : nextProps.updatedCartItems ,  
@@ -75,13 +123,13 @@ class Cart extends Component {
                 <div class="card-body">
                     <h5 class="card-title" >{item.productName}</h5>
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md">
                             <b>Seller :</b> {item.sellerName}
                         </div>
-                        <div className="col-md-3" id= "movecenter">
+                        <div className="col-md" id= "movecenter">
                             Unit Price : {item.productPrice}
                         </div>
-                        <div className="col-md-3" id= "movecenter">
+                        <div className="col-md" id= "movecenter">
                             <div className="form-group">
                                 <select value={item.productQuantity} onChange={this.changeQuantity(item)}>
                                     <option value="1" >1</option>
@@ -101,9 +149,24 @@ class Cart extends Component {
                                 <a href="#" onClick={this.saveForLater(item)}>Save for later</a>
                             </div>
                         </div>
-                        <div className="col-md-3" id= "movecenter" style={{color: "#DC143C", fontWeight: "bold"}}>
+                        <div className="col-md" id= "movecenter" style={{color: "#DC143C", fontWeight: "bold"}}>
                             Price : {item.totalPrice}
                         </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-3" style={{marginLeft : "20px"}}>
+                            <input type="checkbox" class="form-check-input" checked={item.gift} onChange={this.checkGift(item)}/>
+                            <span>make gift</span>
+                        </div>
+                    </div>
+                    <div className="row">
+                    {item.gift &&
+                        <div className="col-md-6" style={{marginLeft : "20px"}}>
+                            {item.giftMessage}
+                            <input type="text" placeholder="add/edit gift message here" onChange={this.saveMsg.bind(this)}/>
+                            <a href="#" onClick={this.handleSave(item)}>save</a>
+                        </div>
+                    }
                     </div>
                 </div>
             </div>
@@ -157,7 +220,9 @@ function mapDispatchToProps (dispatch)
         getCart: data => dispatch(getCart(data)),
         deleteCartItem: data => dispatch(deleteCartItem(data)),
         saveForLater: data => dispatch(saveForLater(data)),
-        changeQuantity: data => dispatch(changeQuantity(data))
+        changeQuantity: data => dispatch(changeQuantity(data)),
+        updateGift: data => dispatch(updateGift(data)),
+        updateGiftMessage: data => dispatch(updateGiftMessage(data))
     };
 }
 

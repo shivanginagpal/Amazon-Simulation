@@ -126,16 +126,16 @@ class Checkout extends Component {
                 <div class="card-body">
                     <h5 class="card-title" >{item.productName}</h5>
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md">
                             <b>Seller :</b> {item.sellerName}
                         </div>
-                        <div className="col-md-3" id= "movecenter">
+                        <div className="col-md" id= "movecenter">
                             Unit Price : {item.productPrice}
                         </div>
-                        <div className="col-md-3" id= "movecenter">
+                        <div className="col-md" id= "movecenter">
                             Quantity : {item.productQuantity}
                         </div>
-                        <div className="col-md-3" id= "movecenter" style={{color: "#DC143C", fontWeight: "bold"}}>
+                        <div className="col-md" id= "movecenter" style={{color: "#DC143C", fontWeight: "bold"}}>
                             Price : {item.totalPrice}
                         </div>
                     </div>
