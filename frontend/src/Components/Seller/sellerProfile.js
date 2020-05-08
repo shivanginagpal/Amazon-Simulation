@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getSellerProfile } from '../../actions/profileAction';
-import { backendURL, isFieldEmpty } from '../SignUp/helperApis';
+import { isFieldEmpty } from '../SignUp/helperApis';
 import Navbar from '../Navbar/Navbar';
 import SellerProducts from './sellerProducts'
 
 class sellerProfile extends Component {
 
-    componentDidMount() {
+    async componentDidMount() {
         let sellerId = null;
         
         if (this.props.match && this.props.auth.user.userType === "customer"){
             sellerId = this.props.match.params.seller; 
         }
-        this.props.getSellerProfile(sellerId);
+        await this.props.getSellerProfile(sellerId);
         
     }
 
@@ -55,6 +55,7 @@ class sellerProfile extends Component {
                 );
              }
     } else {
+            console.log(profile);
 
             profileImg = isFieldEmpty(profile.sellerProfilePicture) ?
                 "https://static.change.org/profile-img/default-user-profile.svg" :
@@ -75,7 +76,7 @@ class sellerProfile extends Component {
                                 <div className="row">
                                     <div className="col-4 col-md-2 m-auto">
                                         <img
-                                            className="rounded-circle"
+                                            className="rounded-circle card-img-top"
                                             src={profileImg}
                                             alt=""
                                         />

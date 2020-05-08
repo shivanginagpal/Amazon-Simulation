@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../Products/productSearch.css';
 import PropTypes from 'prop-types';
-import { backendURL, isFieldEmpty } from '../SignUp/helperApis';
+import { isFieldEmpty } from '../SignUp/helperApis';
 import { connect } from 'react-redux';
-import { sellerProducts, getProductCategoryNames } from '../../actions/productActions';
+import { sellerProducts, getProductCategoryNames, getProductsUnderSeller } from '../../actions/productActions';
 import StarRatings from "react-star-ratings";
 import Dropdown from 'react-dropdown';
 import { Link } from "react-router-dom";
@@ -34,6 +34,11 @@ class SellerProducts extends Component {
 
     }
     async componentDidMount() {
+        var data = {
+            currentPage: this.state.currentPage,
+            id: this.props.auth.user.id
+        }
+        await this.props.getProductsUnderSeller(data);
         await this.props.getProductCategoryNames();
     }
 
@@ -76,9 +81,20 @@ class SellerProducts extends Component {
     nextPage = async (e) => {
         let page = this.state.currentPage;
         page += 1;
-        this.setState({ currentPage: page }, () => {
-            this.onSubmit();
-        });
+
+
+        if (this.state.search === '' && this.state.productCategoryName === '') {
+            var data = {
+                currentPage: this.state.currentPage,
+                id: this.props.auth.user.id
+            }
+            await this.props.getProductsUnderSeller(data);
+        }
+        else {
+            this.setState({ currentPage: page }, () => {
+                this.onSubmit();
+            });
+        }
     }
 
     prevPage = async (e) => {
@@ -86,17 +102,27 @@ class SellerProducts extends Component {
         if (page === 1)
             return;
         page -= 1;
-        this.setState({ currentPage: page }, () => {
-            this.onSubmit();
-        });
+        if (this.state.search === '' && this.state.productCategoryName === '') {
+            var data = {
+                currentPage: this.state.currentPage,
+                id: this.props.auth.user.id
+            }
+            await this.props.getProductsUnderSeller(data);
+        }
+
+        else {
+            this.setState({ currentPage: page }, () => {
+                this.onSubmit();
+            });
+        }
     }
 
     onSubmit = async () => {
         let sellerId;
-        
-        if (this.props.id){
+
+        if (this.props.id) {
             sellerId = this.props.id;
-        }else{
+        } else {
             sellerId = this.props.auth.user.id;
         }
         console.log("In submit");
@@ -112,7 +138,7 @@ class SellerProducts extends Component {
                 priceHigh: (this.state.priceHigh !== '') ? parseInt(this.state.priceHigh) : 99999,
                 sort: this.state.sort,
                 productCategoryName: this.state.productCategoryName,
-                sellerId : sellerId
+                sellerId: sellerId
             }
 
             console.log(data);
@@ -120,6 +146,8 @@ class SellerProducts extends Component {
 
             this.setState({
                 result: true,
+                // search: '',
+                // productCategoryName: ''
             })
         }
     }
@@ -253,6 +281,7 @@ class SellerProducts extends Component {
 
 SellerProducts.propTypes = {
     getProductCategoryNames: PropTypes.func.isRequired,
+    getProductsUnderSeller: PropTypes.func.isRequired,
     sellerProducts: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
 
@@ -264,4 +293,4 @@ const mapStateToProps = (state) => ({
     productCategoryResults: state.products.product_categories,
 
 });
-export default connect(mapStateToProps, { sellerProducts, getProductCategoryNames })(SellerProducts);
+export default connect(mapStateToProps, { sellerProducts, getProductCategoryNames, getProductsUnderSeller })(SellerProducts);
