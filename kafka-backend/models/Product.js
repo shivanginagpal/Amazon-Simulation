@@ -36,7 +36,23 @@ const ProductSchema = new Schema({
         rating: {
             type: Number
         }
-    }]
+    }],
+    productViewCount: {
+        type: Number, 
+        default: 0
+    },
+    productViewDate : {
+        type: String,
+        default:''
+    }
+    // productViews: [{
+    //     viewCount : {
+    //     type: Number
+    // },
+    //     viewDate : {
+    //     type : String
+    // }
+    // }]
 })
 
 var Product = mongoose.model("Product", ProductSchema);

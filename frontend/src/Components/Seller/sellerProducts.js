@@ -100,7 +100,7 @@ class SellerProducts extends Component {
             sellerId = this.props.auth.user.id;
         }
         console.log("In submit");
-        if (this.state.search == '' && this.state.productCategoryName == '') {
+        if (this.state.search === '' && this.state.productCategoryName === '') {
             this.setState({ message: "Please select a product category or search a product" })
         }
         else {
@@ -126,7 +126,7 @@ class SellerProducts extends Component {
 
     onCategoryDropdown = (e) => {
         console.log(e.value);
-        if (e.value == "All") {
+        if (e.value === "All") {
             e.value = '';
         }
         this.setState({

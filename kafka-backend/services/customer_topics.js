@@ -21,6 +21,10 @@ exports.customerService = function customerService(msg, callback) {
             break;
         case "getCustomerName":
             getCustomerName(msg, callback);
+            break;
+        case "updateProductViews":
+            updateProductViews(msg, callback);
+            break;
     }
 };
 
@@ -237,6 +241,7 @@ async function getProduct(msg, callback) {
 
     await ProductCategory.find({ "products._id": msg.body }, { "products.$": 1, "seller": 1, "productCategoryName": 1 })
         .then(async product => {
+
             await User.findOne({ _id: product[0].seller }).then(result => {
                 if (result) {
                     sellerName = result.name;
@@ -249,6 +254,55 @@ async function getProduct(msg, callback) {
                 err = prepareInternalServerError(error);
                 return callback(null, err);
             })
+        }).catch(error => {
+            err = prepareInternalServerError(error);
+            return callback(null, err);
+        })
+}
+
+async function updateProductViews(msg, callback) {
+    let response = {};
+    let err = {};
+    let count;
+    var dateTimeStamp = new Date().toString();
+    var dateToday = dateTimeStamp.split(' ').splice(0, 4).join(' ');
+    console.log(dateToday);
+
+    await ProductCategory.find({ "products._id": msg.body.productId }, {
+        "_id": 0, "products.$": 1
+    })
+        .then(async product => {
+
+            console.log("count", product[0].products[0].productViewCount);
+            if (msg.user.userType === 'customer') {
+
+                if (product[0].products[0].productViewDate === dateToday) {
+                    console.log("In If ......");
+                    count = product[0].products[0].productViewCount;
+                    count++;
+
+                }
+                else {
+                    console.log("In else ......");
+                    count = 1;
+                }
+            }
+        }
+        )
+    console.log(dateToday, count);
+
+    await ProductCategory.updateOne({ "products._id": msg.body.productId },
+        {
+            $set: {
+                'products.$.productViewCount': count,
+                "products.$.productViewDate": dateToday
+            }
+        }
+        ,
+        { new: true })
+        .then((result) => {
+            response = prepareSuccess();
+            return callback(null, response);
         }).catch(error => {
             err = prepareInternalServerError(error);
             return callback(null, err);
