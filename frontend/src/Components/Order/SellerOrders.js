@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { connect } from 'react-redux';
-import {getMyOrders} from '../../actions/orderAction';
+import {getSellerOrders} from '../../actions/orderAction';
 
 
-class CancelledOrders extends Component {
+class SellerOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,7 +14,7 @@ class CancelledOrders extends Component {
     }
 
     componentDidMount(){
-        this.props.getMyOrders();
+        this.props.getSellerOrders();
     }
 
     componentWillReceiveProps(nextProps){
@@ -27,17 +27,15 @@ class CancelledOrders extends Component {
 
     render() {
         let ordersResult ="";
-       
-        if(this.state.orders){
-            ordersResult = this.state.orders.filter(item => 
-                Object.keys(item).some(key => item['orderStatus'].includes('CANCELLED')))
-                .map((item,key)=>
+        if(this.state.orders && Object.keys(this.state.orders).length !== 0){
+            ordersResult = this.state.orders.data.filter(item => 
+                Object.keys(item).some(key => !item['orderStatus'].includes('CANCELLED') && !item['orderStatus'].includes('DELIVERED'))).map((item,key)=>
             <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>
                 <div class="card-body" >
                     <div className="row">
                         <div className="col-md">
                             <div className="row">
-                                <Link to={{pathname: "/viewOrder/"+item._id}}>
+                                <Link to={{pathname: "/viewSoldOrder/"+item._id}}>
                                     <div className="col-md"  id= "movecenter" style={{fontWeight: "bold"}}>
                                         Order Number : {item._id} <br/>
                                     </div>
@@ -60,10 +58,11 @@ class CancelledOrders extends Component {
                 <Navbar />
                 <br />
                 <br />
+                <Link to={{pathname: "/otherOrders"}} ><h6 style={{color : "#DC143C", fontWeight: "bold", textAlign: "right", marginRight: "30px"}}>Filter Orders</h6></Link>
                 <div className="container" id= "movecenter">
                     <div className="row">
                         <div className="col-md-12" >
-                            <h3 style={{fontWeight: "bold", color : "#DC143C"}}>CANCELLED ORDERS</h3>
+                            <h3 style={{fontWeight: "bold"}}>YOUR ORDERS</h3>
                             <br/>
                             {ordersResult}
                             
@@ -79,16 +78,16 @@ class CancelledOrders extends Component {
 
 function mapStateToProps (state) {
     return {
-        allOrders: state.orderReducer.allCustomerOrders
+        allOrders: state.orderReducer.allSellerOrders
     }
 }
 
 function mapDispatchToProps (dispatch)
 {
     return {
-        getMyOrders: data => dispatch(getMyOrders(data)),
+        getSellerOrders: data => dispatch(getSellerOrders(data))
     };
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(CancelledOrders);
+export default connect(mapStateToProps, mapDispatchToProps)(SellerOrders);

@@ -115,4 +115,42 @@ router.post("/placeOrder", async function (req, res) {
     });
   });
 
+  router.get("/getSellerOrders/:id", async function (req, res) {
+    console.log("in get seller orders route");
+    console.log(req.params.id);
+    kafka.make_request("order_topic", { "path": "getSellerOrders", "id": req.params.id}, function (err, results) {
+      if (err) {
+        return res.status(err.status).send(err.message);
+      } else {
+        if (results.status === 200) {
+          return res.status(results.status).send(results.data);
+        } else {
+          return res.status(results.status).send(results.errors);
+        }
+      }
+    });
+  });
+
+  router.put("/updateOrderStatusBySeller", async function (req, res) {
+    console.log("in update order status by seller route");
+    console.log(JSON.stringify(req.body));
+    kafka.make_request("order_topic", { "path": "updateOrderStatusBySeller", "item": req.body}, function (err, results) {
+      console.log("in make request call back order_topic");
+      console.log(results);
+      console.log(err);
+      if (err) {
+        console.log("Inside err");
+        console.log(err);
+        return res.status(err.status).send(err.message);
+      } else {
+        console.log("Inside else", results);
+        if (results.status === 200) {
+          return res.status(results.status).send(results.data);
+        } else {
+          return res.status(results.status).send(results.errors);
+        }
+      }
+    });
+  });
+
   module.exports = router;

@@ -40,7 +40,6 @@ class SaveForLater extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        //alert(JSON.stringify(nextProps.cartItems));
         this.setState({
           ...this.state,
           savedDetails : !nextProps.updatedSavedItems ? (!nextProps.savedItems ? this.state.savedDetails : nextProps.savedItems) : nextProps.updatedSavedItems
@@ -50,7 +49,7 @@ class SaveForLater extends Component {
 
     render() {
         let savedResult = "";
-        if(this.state.savedDetails && this.state.savedDetails.status){
+        if(this.state.savedDetails && this.state.savedDetails.status && Object.keys(this.state.savedDetails.data.products).length!==0){
             savedResult = this.state.savedDetails.data.products.map((item,key)=>
             <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>
                 <div class="card-body">
@@ -76,7 +75,6 @@ class SaveForLater extends Component {
         );
         }
         else{
-            //alert("NO saved items")
             savedResult = <div style={{color: "#DC143C", fontWeight: "bold", fontSize: "16px"}}><h5>No Saved Items!</h5></div>
         }
         return (

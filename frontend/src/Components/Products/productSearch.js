@@ -97,7 +97,7 @@ class ProductSearch extends Component {
 
     onSubmit = async () => {
         console.log("In submit");
-        if (this.state.search == '' && this.state.productCategoryName == '') {
+        if (this.state.search === '' && this.state.productCategoryName === '') {
             this.setState({ message: "Please select a product category or search a product / seller name" })
         }
         else {
@@ -132,7 +132,7 @@ class ProductSearch extends Component {
 
     onCategoryDropdown = (e) => {
         console.log(e.value);
-        if (e.value == "All") {
+        if (e.value === "All") {
             e.value = '';
         }
         this.setState({
@@ -178,7 +178,7 @@ class ProductSearch extends Component {
             items = this.state.productList.map(product => {
                 let imgSource = isFieldEmpty(product.products.productImage[0]) ?
                     "https://via.placeholder.com/400x300" :
-                    backendURL + "/downloadProductImg/" + product.products.productImage[0];
+                     product.products.productImage[0];
 
                 avgrating = 0;
                 if (product.products.productReview.length > 0) {

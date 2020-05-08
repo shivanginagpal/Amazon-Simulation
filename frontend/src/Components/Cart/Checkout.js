@@ -68,7 +68,6 @@ class Checkout extends Component {
         }
         else
         {
-           // alert("SHOW INPUT "+JSON.stringify(this.state.cartDetails.data))
             let productList = [];
             let product = {};
             this.state.cartDetails.data.products.map((prd,key)=> {
@@ -86,6 +85,7 @@ class Checkout extends Component {
             let order = {
                 customerId : getID(),
                 customerEmail : getEmail(),
+                customerName : this.state.cartDetails.data.customerName,
                 products : productList,
                 subTotal : this.state.cartDetails.data.totalAmount,
                 tax : 0.07*this.state.cartDetails.data.totalAmount,
@@ -93,7 +93,6 @@ class Checkout extends Component {
                 deliveryAddress: this.state.addressId,
                 paymentInfo: this.state.paymentId
             };
-           // alert("PLACE ORDER --"+JSON.stringify(order))
             this.props.placeOrder(order)
         }
     }
@@ -105,7 +104,6 @@ class Checkout extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-       // alert("WILL RECEIVE==== "+JSON.stringify(nextProps.profile));
         this.setState({
           ...this.state,
           cartDetails : !nextProps.cartItems ? this.state.cartDetails : nextProps.cartItems,
@@ -116,7 +114,6 @@ class Checkout extends Component {
 
     render() {
         let redirectVar = null;
-        //alert("ORDER STATUS!!!"+this.props.orderStatus)
         if (this.props.orderStatus) {
             //localStorage.setItem("orderId", this.props.orderId);
             let pathRoute = "/orderSummary/"+this.props.orderId;
@@ -146,18 +143,15 @@ class Checkout extends Component {
             </div>
         );
         }
-       // alert("FIRST---"+JSON.stringify(this.state))
-      //  let { savedAddresses } = this.state.addresses;
+
         let addressList = "";
         if (this.state.customerData !== null && this.state.customerData.savedAddresses !== null) {
-           // alert("FIRST---"+JSON.stringify(this.state.customerData.savedAddresses))
             addressList = this.state.customerData.savedAddresses.map((addr) => 
             <option value={addr.fullName + ", "+addr.addrLine1+ ", "+addr.city+ ", "+addr.state+ ", "+addr.zipCode}>{addr.fullName + ", "+addr.addrLine1+ ", "+addr.city+ ", "+addr.state+ ", "+addr.zipCode}</option>         
             );
         }
         let paymentsList = "";
         if (this.state.customerData !== null && this.state.customerData.paymentOptions !== null) {
-            //alert("FIRST---"+JSON.stringify(this.state.customerData.paymentOptions))
             paymentsList = this.state.customerData.paymentOptions.map((paymentOption) => 
             <option value={paymentOption.name+ ", ****-"+paymentOption.cardNumber.slice(-4) + ", "+paymentOption.expiryMonth+"/"+paymentOption.expiryYear}>{paymentOption.name+ ", ****-"+paymentOption.cardNumber.slice(-4) + ", "+paymentOption.expiryMonth+"/"+paymentOption.expiryYear}</option>         
             );

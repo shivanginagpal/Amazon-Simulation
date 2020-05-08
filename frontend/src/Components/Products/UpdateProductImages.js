@@ -95,6 +95,7 @@ class UpdateProductImages extends Component {
         var data = {
             productCategory: this.props.location.state.productInfo.productCategoryName,
             productId: this.props.location.state.productInfo.products[0]._id,
+            productName : this.props.location.state.productInfo.products[0].productName
         }
 
         var formdata = new FormData();
