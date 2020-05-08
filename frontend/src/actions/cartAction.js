@@ -108,7 +108,6 @@ export const saveForLater = (payload) => dispatch => {
           ); 
       })
     .catch(err => {
-      //alert("ACTION ERROR===="+JSON.stringify(err));
       console.log("GET CART ERROR -- ",err);
       result = {data : err, status : false}
       dispatch({type: SAVE_CART_ITEM, payload: result})}
@@ -144,8 +143,6 @@ export const changeQuantity = (payload) => dispatch => {
 };
 
 export const addPaymentOption = (newCard) => dispatch => {
-  //alert("YYYYY"+JSON.stringify(newCard))
-  //alert("ACTION DATA =="+JSON.stringify(newCard));
   axios.post('/addPaymentInfo', newCard)
       .then(res => 
       {

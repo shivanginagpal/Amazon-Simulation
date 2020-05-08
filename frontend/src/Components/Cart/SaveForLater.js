@@ -40,7 +40,6 @@ class SaveForLater extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        //alert(JSON.stringify(nextProps.cartItems));
         this.setState({
           ...this.state,
           savedDetails : !nextProps.updatedSavedItems ? (!nextProps.savedItems ? this.state.savedDetails : nextProps.savedItems) : nextProps.updatedSavedItems
@@ -76,7 +75,6 @@ class SaveForLater extends Component {
         );
         }
         else{
-            //alert("NO saved items")
             savedResult = <div style={{color: "#DC143C", fontWeight: "bold", fontSize: "16px"}}><h5>No Saved Items!</h5></div>
         }
         return (

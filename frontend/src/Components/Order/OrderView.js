@@ -18,7 +18,6 @@ class OrderView extends Component {
 
     cancelProduct = item => event =>{
         event.preventDefault();
-//        alert("IS THIS _ID? "+this.state.order.data._id)
         let payload = {
             "itemId" : this.state.order.data._id,
             "productId" : item._id

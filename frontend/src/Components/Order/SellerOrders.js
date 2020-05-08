@@ -27,9 +27,7 @@ class SellerOrders extends Component {
 
     render() {
         let ordersResult ="";
-       //alert("DATA IS "+JSON.stringify(this.state.orders))
         if(this.state.orders && Object.keys(this.state.orders).length !== 0){
-            //alert("UI INSIDE IF"+JSON.stringify(this.state.orders))
             ordersResult = this.state.orders.data.filter(item => 
                 Object.keys(item).some(key => !item['orderStatus'].includes('CANCELLED') && !item['orderStatus'].includes('DELIVERED'))).map((item,key)=>
             <div class="card" style={{width: "60rem", "backgroundColor" : "#ffff"}}>

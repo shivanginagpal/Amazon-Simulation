@@ -29,10 +29,7 @@ class SellerOrdersOptions extends Component {
         let openOrdersList = "";
         let deliveredOrdersList="";
         let cancelledOrdersList = "";
-        //alert("ORDERS FETCHED "+JSON.stringify(this.state.orders));
         if(this.state.orders && Object.keys(this.state.orders).length !== 0){
-            //alert("UI INSIDE IF"+JSON.stringify(this.state.orders))
-            //
             cancelledOrdersList = this.state.orders.data.filter(item => 
                 Object.keys(item).some(key => item['orderStatus'].includes('CANCELLED'))).map((item,key)=>
                 <div class="card" style={{width: "20rem", "backgroundColor" : "#ffff"}}>
