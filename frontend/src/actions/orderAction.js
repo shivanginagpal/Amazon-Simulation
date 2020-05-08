@@ -136,7 +136,6 @@ export const cancelOrderBySeller = (payload) => dispatch => {
    axios.put("/cancelOrderBySeller", payload)
     .then(response =>
       { 
-        alert("ACTION RESPONSE "+ JSON.stringify(response))
         //dispatch({type: CANCEL_ORDER_BY_SELLER, payload: response})
         let url = '/getSellerOrders/'+getID();
         axios.get(url)

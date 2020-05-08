@@ -3,7 +3,9 @@ module.exports = {
     secret : 'Hello',
     awsBucket: "amazon-grp4",
    // Keys can't be added here because AWS categorizes this as vulnerability.
-    awsAccessKey: "",
-    awsSecretAccessKey: "",
+    awsAccessKey: "AKIAJVFNIRSKY7DXRHUA",
+    awsSecretAccessKey: "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",
     awsPermission: "public-read"
     };
+
+

@@ -21,7 +21,6 @@ class SellerOrdersOptions extends Component {
             order_id: item._id,
             seller_id: getID()
         }
-        alert("PAYLOAD FOR CANCEL IS "+JSON.stringify(payload));
         this.props.cancelOrderBySeller(payload);
     }
 
