@@ -27,18 +27,22 @@ import swal from 'sweetalert';
          });
      }
      
-     handleStatusChange = (status, orderid) => {
+     handleStatusChange = (status, orderid, productId) => {
          const data ={
              id:orderid,
+             productId:productId,
              status:status
          }
+         console.log("IN HANDLE STATUS CHANGE", data);
+        
          this.setState({
              id: orderid,
+             productId: productId,
              status: status
          })
          axios.post('/orderStatusChangeAdmin',data)
          .then((response) => {
-             if(response.status ===200){
+             if(response.status === 200){
                  swal({
                      title: "Changed!",
                      text: "You Successfully changed order status!",
@@ -53,33 +57,42 @@ import swal from 'sweetalert';
     render() {
         
         let orderdetails = this.state.orders.map(order => {
-            let str =order.orderDate;
+            // console.log("THIS IS ORDER",order);
+            // order.customerName.toUpperCase().includes(this.state.searchString.toUpperCase()) ||
+            //     order.products.productName.toUpperCase().includes(this.state.searchString.toUpperCase()) ||
+            let str = order.orderDate;
             let date = str.substring(0, str.indexOf('T'));
-            if(order.orderStatus.toUpperCase()
-            .includes(this.state.searchString.toUpperCase())){
+            if(order.products.productOrderStatus.toUpperCase().includes(this.state.searchString.toUpperCase()) ||
+   
+            order.products.productSellerName.toUpperCase().includes(this.state.searchString.toUpperCase())
+            ){
                 return(
                     <tr>
-                        <td>{order._id}</td>
+                        <td>{order.products.productSellerName}</td>
+                        
+                        <td>{order.products.productName}</td>
+                        <td>{order.customerName}</td>
                         <td>{date}</td>
                         <td>
                             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {order.orderStatus} </button>
+                                {order.products.productOrderStatus} </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <button onClick={() => this.handleStatusChange("PACKAGE_ARRIVED", order._id)} class="dropdown-item" >Package arrived</button>
-                                <button onClick={() => this.handleStatusChange("OUT_FOR_DELIVERY", order._id)} class="dropdown-item" >Out for Delivery</button>
-                                <button onClick={() => this.handleStatusChange("DELIVERED", order._id)} class="dropdown-item" >Delivered</button>
+                                <button onClick={() => this.handleStatusChange("PACKAGE_ARRIVED", order._id, order.products.productId)} class="dropdown-item" >Package arrived</button>
+                                <button onClick={() => this.handleStatusChange("OUT_FOR_DELIVERY", order._id, order.products.productId)} class="dropdown-item" >Out for Delivery</button>
+                                <button onClick={() => this.handleStatusChange("DELIVERED", order._id, order.products.productId)} class="dropdown-item" >Delivered</button>
                             </div>
                         </td>
                     </tr>
-
                 )
             }
         })
         return (
             <div>
                 <Navbar/>
-                <div className="container" id="viewSellerList">
-                    <nav class="navbar navbar-light bg-light">
+                <div className="container" >
+                    <div className="dash-one">
+                        <div className="display-4">Orders</div>
+                        <nav class="navbar navbar-light bg-light" id="viewsellersearch">
                         <form class="form-inline">
                             <input
                                 class="form-control mr-sm-2"
@@ -94,14 +107,15 @@ import swal from 'sweetalert';
                     </nav>
                     <div className="row justify-content-center align-items-center">
                         <div className="col-12">
-                            <div className="dash-one">
-                                <div className="dash-header">Orders</div>
+                            
                                 {this.state.orders.length > 0 ? (
                                     <div className="col-10">
-                                        <table className="table table-striped table-bordered">
+                                        <table className="table table-striped table-bordered lead">
                                             <thead>
                                                 <tr>
                                                     <th>Seller Name</th>
+                                                    <th>Product Name</th>
+                                                    <th>Customer Name</th>
                                                     <th>Order Date</th>
                                                     <th>Order Status</th>
                                                 </tr>

@@ -1,19 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../../models/Order');
-const Seller = require('../../models/Seller');
-const User = require('../../models/User');
 var { ProductCategory } = require('../../models/ProductCategory');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 router.get("/noOfOrdersPerDay", (req, res) => {
-    console.log("IN NOOF ORDERS PER DAY");
     Order.aggregate([
         {
-            $group: {
-                _id: "$orderDate",
-                orders: { $sum: 1 }
+            $project:{
+                orderId: "$_id",
+                date: { $dateToString: { format: "%Y-%m-%d", date: "$orderDate" } }
+            }
+        },
+        {
+            $group:
+             {
+                _id: "$date",
+                count: {
+                    $sum: 1
+                }
             }
         }])
         .then(result => {
@@ -47,7 +53,7 @@ router.get("/top5Customers", (req, res) => {
     Order.aggregate([
         {
             $group: {
-                _id: "$customerId",
+                _id: "$customerName",
                 amount: {
                     $sum: "$totalAmount"
                 }
@@ -62,7 +68,27 @@ router.get("/top5Customers", (req, res) => {
             res.end("could not get messages");
         })
 });
-
+router.get("/top10ProductsViewed",(req, res) => {
+    ProductCategory.aggregate([
+        {
+            $unwind: "$products"
+        },{
+            $project: {
+                "_id":0,
+                "productName": "$products.productName",
+                "count": "$products.productViewCount"
+            }
+        },{
+            $sort:{"count":-1}
+        }
+    ]).limit(10)
+        .then(result => {
+            res.end(JSON.stringify(result));
+        }).catch(err => {
+            res.end("could not get messages");
+        })
+        
+})
 router.get("/top10ProductsBasedOnRating", (req, res) => {
     ProductCategory.aggregate([
         {
@@ -91,7 +117,7 @@ router.get("/top5Sellers", (req, res) => {
         },
         {
             $group: {
-                _id: "$products.productSellerId",
+                _id: "$products.productSellerName",
                 amount: {
                     $sum: {
                         $multiply: ["$products.productPrice",
@@ -127,6 +153,38 @@ router.put("/sellerStatistics", (req, res) => {
                 },
                 totalAmount: {
                     $sum: { $multiply: ["$products.productPrice", "$products.productQuantity"] }
+                }
+            }
+        }
+    ]).then(result => {
+        res.end(JSON.stringify(result));
+    }).catch(err => {
+        res.end("could not get messages");
+    })
+})
+
+router.put("/monthlySellerAmount", (req,res) => {
+    var sellerId = req.body.id;
+    Order.aggregate([
+        {
+            $unwind: "$products"
+        },{
+            $match: {
+                "products.productSellerId": ObjectId(sellerId)
+            }
+        },{
+            $project:{
+                month: { "$month": "$orderDate" },
+                products: "$products"
+            }
+        },{
+            $group:{
+                _id: "$month",
+                totalAmount: {
+                    $sum: {
+                        $multiply: ["$products.productPrice",
+                            "$products.productQuantity"]
+                    }
                 }
             }
         }

@@ -171,7 +171,7 @@ async function fetchSellerOrders(msg, callback) {
         }
     ])
     .then(async orders => {
-        console.log("SELLER ORDERS =====" +JSON.stringify(orders));
+        //console.log("SELLER ORDERS =====" +JSON.stringify(orders));
         response = prepareSuccess(orders);
         return callback(null, response);
     }).catch(error => {

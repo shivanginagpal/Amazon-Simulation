@@ -1,39 +1,54 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
+import {getID} from '../SignUp/helperApis' 
 
- class Top5SoldProducts extends Component {
+
+ class MonthlySalesAmount extends Component {
      constructor(props) {
          super(props);
          this.state = {
-             products: [],
+             months: [],
              count: []
          }
      }
      componentDidMount() {
-         axios.get("/top5SoldProducts")
+         const sellerId = getID();
+         const data = {
+             id: sellerId
+         }
+
+         axios("/monthlySellerAmount",{
+             method:'put',
+             data:data
+         })
              .then((response) => {
                  console.log("THIS IS RESPONSE", response);
-                 let productsArr = [];
+                 let monthsArr = [];
                  let valArr = [];
                  response.data.forEach((item) => {
-                     productsArr.push(item._id);
-                     valArr.push(item.count)
+                     monthsArr.push(item._id);
+                     valArr.push(item.totalAmount)
                  });
                  this.setState({
-                     products: productsArr,
+                     months: monthsArr,
                      count: valArr
                  });
-                 console.log(this.state.products);
              })
      }
 
+
     render() {
+        const monthnames =["Jan","Feb","Mar","April","May","June","July","Aug","Sept","Oct","Nov","Dec"]
+        var temp=[]
+        for(var i=0;i<this.state.months.length;i++){
+            temp.push(monthnames[this.state.months[i]-1])
+        }
         const data = {
-            labels: this.state.products,
+            labels: temp,
             datasets: [
                 {
-                    label: 'Top 5 Sold Products.',
+                    label: 'Monthly Amount Earned By Sales in Dollars($).',
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: 'rgba(75,192,192,0.4)',
@@ -66,19 +81,20 @@ import axios from 'axios';
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        stepSize: 10
+                                        stepSize: 1
                                     }
                                 }]
                             }, title: {
                                 display: true,
-                                text: 'Top 5 Sold Products'
+                                text: 'Monthly Amount Earned By Sales in Dollars($)'
                             }
                         }} />
                 </div>
+
                 
             </div>
         )
     }
 }
 
-export default Top5SoldProducts;
+export default MonthlySalesAmount;
