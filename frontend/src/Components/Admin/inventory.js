@@ -104,6 +104,17 @@ class inventory extends Component {
                     window.location.reload();
                 })
                     .catch(error => console.log(error.response.data));
+            } else if(response.status === 201){
+                swal({
+                    title: "Sorry",
+                    text: "Product category already exists",
+                    icon: "error",
+                    button: "OK"
+                }).then(() => {
+                    window.location.reload();
+                })
+                    .catch(error => console.log(error.response.data));
+
             }
         }).catch((error) => {
             console.log('add project not 2xx response');
