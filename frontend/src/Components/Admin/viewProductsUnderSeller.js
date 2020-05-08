@@ -3,6 +3,7 @@ import Navbar from './adminNavbar';
 import axios from 'axios';
 import product_image from "../../images/adminproduct.jpg";
 import { Bar } from 'react-chartjs-2';
+import { isFieldEmpty } from '../SignUp/helperApis';
 import './admin.css';
 
  class viewProductsUnderSeller extends Component {
@@ -128,21 +129,23 @@ import './admin.css';
         if (this.state.productdetails != null) {
             showPageBar = true;
             products = this.state.productdetails.map(product => {
-                console.log(product);
-                console.log(product.products.productName);
-                let unknown = <img src={product_image} className="card-img-top" id="cardadmin-img-top" alt="..." />
-
+                
+            
+                let productimg = isFieldEmpty(product.products.productImage[0]) ?
+                    product_image : product.products.productImage[0];
                 return (
                     <div>
                         <div id="itemAdminRight" >
                             <div className="col">
-                                <div className="card" id="cardadminclass" >
-                                    {unknown}
+                                <div className="card" id="cardadminclass" > 
+                                    {/* {unknown} */}
+                                    <img src={productimg} className="card-img-top" id="cardadmin-img-top" alt="..." />
                                     <div className="card-block" id="cardadmin-title-text">
-                                        <h6 className="card-title" id="cardadmin-title">SellerName</h6>
-                                        <p className="card-text" id="cardadmin-text">{product.products.productName}</p>
+                                        <h6 className="card-title lead" id="cardadmin-title">{product.sellerName}</h6>
+                                        <p className="card-text lead" id="cardadmin-text">{product.products.productName}</p>
+                                        <p className="card-text lead" id="cardadmin-text">{product.products.productRating}</p>
                                         <span>
-                                            <p className="card-text" id="cardadmin-text">{product.products.productPrice}</p>
+                                            <p className="card-text lead" id="cardadmin-text">${product.products.productPrice}</p>
                                         </span>
                                     </div>
                                 </div>
@@ -175,7 +178,7 @@ import './admin.css';
                             <li className="page-item ">
                                 <div className="page-link" onClick={this.prevPage} aria-label="Previous"><span aria-hidden="true">&laquo;</span></div>
                             </li>
-                            {threedotone}
+                            {/* {threedotone}
                             {one}
                             <li className="page-item ">
                                 <div className="page-link" ><span className="active" aria-hidden="true">{this.state.currentPage}</span></div>
@@ -183,7 +186,7 @@ import './admin.css';
                             <li className="page-item ">
                                 <div className="page-link" onClick={this.nextPage}><span aria-hidden="true">{this.state.currentPage + 1}</span></div>
                             </li>
-                            {threedottwo}
+                            {threedottwo} */}
                             <li className="page-item">
                                 <div className="page-link" onClick={this.nextPage} aria-label="Next"><span aria-hidden="true">&raquo;</span></div>
                             </li>
