@@ -81,7 +81,7 @@ import {getID} from '../SignUp/helperApis'
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        stepSize: 1
+                                        stepSize: 1000
                                     }
                                 }]
                             }, title: {

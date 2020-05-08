@@ -49,7 +49,7 @@ import axios from 'axios';
                     pointHoverBackgroundColor: 'rgba(75,192,192,1)',
                     pointHoverBorderColor: 'rgba(220,220,220,1)',
                     pointHoverBorderWidth: 2,
-                    pointRadius: 1,
+                    pointRadius: 0.1,
                     pointHitRadius: 10,
                     data: this.state.count
                 }
@@ -65,7 +65,7 @@ import axios from 'axios';
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                        stepSize: 100
+                                        stepSize: 1000
                                     }
                                 }]
                             }, title: {
