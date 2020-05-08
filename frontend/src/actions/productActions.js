@@ -246,3 +246,22 @@ export const getCustomerReviews = () => dispatch => {
             })
         );
 };
+
+export const getProductsUnderSeller = (data) => dispatch => {
+    dispatch(setProductLoading());
+   
+    axios.put('/viewProductsUnderSeller', data)
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: GET_PRODUCTS,
+                payload: res.data
+            })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_PRODUCTS,
+                payload: {}
+            })
+        );
+};
