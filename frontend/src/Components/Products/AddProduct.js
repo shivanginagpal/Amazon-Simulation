@@ -155,8 +155,12 @@ class AddProduct extends Component {
             if (this.state.productStatus === 200) {
                 swal({
                   text: "Product added Sucessfully!"
-                }).then()
-              }
+                }).then(() => {
+                    window.location.replace("/sellerHome");
+                })
+                
+            }
+              
               else {
                 swal({
                   text: "Error adding product, please try again",
