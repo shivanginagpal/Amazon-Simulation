@@ -17,9 +17,8 @@ class NoOfOrdersPerDay extends Component {
             let daysArr =[];
             let valArr = [];
             response.data.forEach((item) => {
-                let date=item._id.substring(0, item._id.indexOf('T'));
-                daysArr.push(date);
-                valArr.push(item.orders)
+                daysArr.push(item._id);
+                valArr.push(item.count)
             });
             this.setState({
                 days: daysArr,
