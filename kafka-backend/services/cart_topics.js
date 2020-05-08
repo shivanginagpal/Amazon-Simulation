@@ -29,6 +29,12 @@ exports.cartService = function cartService(msg, callback) {
         case "deleteSavedItem":
             deleteSavedItem(msg, callback);
             break;
+        case "cartChangeMakeProductGift":
+            cartChangeMakeProductGift(msg, callback);
+            break;
+        case "updateGiftMessage":
+            updateGiftMessage(msg, callback);
+            break;
     }
 };
 
@@ -154,8 +160,10 @@ async function fetchCart(msg, callback) {
                             sellerName: productSellerName.shift(),
                             productQuantity: item.productQuantity,
                             productPrice: item.productPrice,
-                            totalPrice : item.productPrice*item.productQuantity,
-                            productName: p[0].products[0].productName
+                            totalPrice : item.productTotal,
+                            productName: p[0].products[0].productName,
+                            gift: item.gift,
+                            giftMessage : item.giftMessage
                         };
                         products.push(product);
                     });
@@ -250,6 +258,27 @@ async function cartChangeProductQuantity(msg, callback) {
     )
     .then(async updatedCart => {
         console.log("CHANGED UPDATED CART =====" +updatedCart);
+        response = prepareSuccess(updatedCart);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+
+async function cartChangeMakeProductGift(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    console.log("KAFKA BACKEND SAVE =========="+JSON.stringify(msg))
+    await Cart.update(
+        { "customerEmail" : msg.item.email, "products._id" : msg.item.itemId },
+        {$set : {"totalAmount" : msg.item.totalAmount, "products.$.productTotal" : msg.item.totalPrice, "products.$.gift" : msg.item.gift }}
+    )
+    .then(async updatedCart => {
+        console.log("CHANGED GIFT IN CART =====" +updatedCart);
         response = prepareSuccess(updatedCart);
         return callback(null, response);
     }).catch(error => {
@@ -354,6 +383,27 @@ async function deleteSavedItem(msg, callback) {
     .then(async cart => {
         console.log("UPDATED CART =====" +JSON.stringify(cart));
         response = prepareSuccess(cart);
+        return callback(null, response);
+    }).catch(error => {
+        console.log(error);
+        err = prepareInternalServerError(error);
+        return callback(err, null);
+    });
+}
+
+
+async function updateGiftMessage(msg, callback) {
+    let response = {};
+    let result = {};
+    let err = {};
+    console.log("KAFKA BACKEND SAVE =========="+JSON.stringify(msg))
+    await Cart.update(
+        { "customerEmail" : msg.item.email, "products._id" : msg.item.itemId },
+        {$set : {"products.$.giftMessage" : msg.item.giftMessage }}
+    )
+    .then(async updatedCart => {
+        console.log("CHANGED GIFT MESSAGE IN CART =====" +updatedCart);
+        response = prepareSuccess(updatedCart);
         return callback(null, response);
     }).catch(error => {
         console.log(error);

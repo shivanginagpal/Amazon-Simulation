@@ -34,12 +34,10 @@ export const getMyOrders = (payload) => dispatch => {
   axios.get(url)
       .then(res => 
       {
-       // alert("IN getMyOrders ACTION RESPONSE "+JSON.stringify(res.data));
         dispatch({type: GET_CUSTOMER_ORDERS, payload: res.data});
       })
       .catch(err => 
       {
-       // alert("IN getMyOrders ACTION ERROR "+JSON.stringify(err));
         dispatch({type: GET_CUSTOMER_ORDERS, payload: {}})
       });
 };
@@ -73,17 +71,14 @@ export const deleteOrderItem = (payload) => dispatch => {
 
 export const deleteOrder = (payload) => dispatch => {
   let result = {};
-  alert("PAYLOD is "+payload)
   let outerUrl = '/deleteOrder/'+payload;
    axios.put(outerUrl)
     .then(response =>
       { 
-        alert("DELTED ORDER RESPONSE SUCCES "+JSON.stringify(response))
         let url = '/getOrderById/'+payload;
         axios.get(url)
         .then(res =>
           { 
-            alert("GET ORDER RESPONSE SUCCES "+JSON.stringify(res))
             let flag = Object.keys(res.data).length!==0;
             result = {data : res.data, status : flag}
             dispatch({type: GET_ORDER, payload: result});  
@@ -93,7 +88,6 @@ export const deleteOrder = (payload) => dispatch => {
           result = {data : err, status : false}
           dispatch({type: GET_ORDER, payload: result})}
           );
-        //dispatch({type: DELETE_CART_ITEM, payload: result});  
       })
     .catch(err => {
       dispatch({type: DELETE_ORDER, payload: err})}
@@ -109,7 +103,6 @@ export const getSellerOrders = () => dispatch => {
       })
       .catch(err => 
       {
-        //alert("IN CATCH "+JSON.stringify(err))
         dispatch({type: GET_SELLER_ORDERS, payload: {}})
       });
 };
