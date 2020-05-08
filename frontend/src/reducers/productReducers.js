@@ -1,4 +1,4 @@
-import { GET_PRODUCT_CATEGORIES, GET_PRODUCTS, PRODUCT_LOADING, GET_PRODUCT, POST_PRODUCT, GET_CUSTOMER_NAME, POST_REVIEW, DELETE_PRODUCT, UPDATE_PRODUCT, UPDATE_IMAGE_PRODUCT } from '../actions/types';
+import { GET_PRODUCT_CATEGORIES, GET_PRODUCTS, PRODUCT_LOADING, GET_PRODUCT, POST_PRODUCT, GET_CUSTOMER_NAME, POST_REVIEW, DELETE_PRODUCT, UPDATE_PRODUCT, UPDATE_IMAGE_PRODUCT, SET_VIEWCOUNT } from '../actions/types';
 
 const initialState = {
     product_categories: null,
@@ -63,6 +63,11 @@ export default function (state = initialState, action) {
                 ...state
             }
         case UPDATE_IMAGE_PRODUCT:
+            return {
+                ...state
+            }
+
+        case SET_VIEWCOUNT :
             return {
                 ...state
             }

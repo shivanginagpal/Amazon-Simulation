@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/backend/config/keys.js
 /backend/node_modules
 /kafka-backend/node_modules
 /frontend/node_modules
