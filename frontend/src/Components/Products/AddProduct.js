@@ -152,7 +152,7 @@ class AddProduct extends Component {
             console.log(pair[0] + ', ' + pair[1]);
         }
       await this.props.postProduct(formdata, this.props.history).then(res => {
-            if (this.state.productStatus == 200) {
+            if (this.state.productStatus === 200) {
                 swal({
                   text: "Product added Sucessfully!"
                 }).then()

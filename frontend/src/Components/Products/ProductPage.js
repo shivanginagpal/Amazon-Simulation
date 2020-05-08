@@ -4,7 +4,7 @@ import Navbar from '../Navbar/Navbar';
 import './ProductPage.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getProduct, getCustomerName, postReviewToProduct } from '../../actions/productActions';
+import { getProduct, getCustomerName, postReviewToProduct, updateProductViews } from '../../actions/productActions';
 import { postProductToCart } from '../../actions/cartAction';
 import StarRatings from "react-star-ratings";
 import swal from 'sweetalert';
@@ -37,6 +37,7 @@ class ProductPage extends Component {
 	async componentDidMount() {
 		if (this.props.match.params.id) {
 			await this.props.getProduct(this.props.match.params.id);
+			await this.props.updateProductViews(this.props.match.params.id);
 		}
 	}
 
@@ -207,7 +208,7 @@ class ProductPage extends Component {
 			for (let i = 0; i < singleProduct.productImage.length; i++) {
 				imgSource.push(isFieldEmpty(singleProduct.productImage[i]) ?
 					"https://via.placeholder.com/150x100" :
-					backendURL + "/downloadProductImg/" + singleProduct.productImage[i]);
+					 singleProduct.productImage[i]);
 
 				smallImage.push(<div class="item-gallery" key={i}> <img src={imgSource[i]} onClick={() => { this.setState({ bigImageIndex: i }) }} /> </div>);
 			}
@@ -362,7 +363,8 @@ function mapDispatchToProps(dispatch) {
 	return {
 		getProduct: data => dispatch(getProduct(data)),
 		postProductToCart: data => dispatch(postProductToCart(data)),
-		postReviewToProduct: data => dispatch(postReviewToProduct(data))
+		postReviewToProduct: data => dispatch(postReviewToProduct(data)),
+		updateProductViews : (data) => dispatch(updateProductViews(data))
 	};
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);

@@ -18,12 +18,12 @@ export default class sellerHome extends Component {
                 <div class="col-xs-12">
                         <div class="text-right" style={{"width":'99.6%', "padding":'0 10px'}}>
                             <Link to={{ pathname: '/addProduct' }}><button class="btn btn-warning my-2 my-sm-0" >Add New Product</button></Link>
+                            <br />
+                            <SellerStatistics/>
                         </div>
                     </div>
-            
-                "Welcome to seller Home"
                 
-                <SellerStatistics/>
+                
 
                     
             </div>

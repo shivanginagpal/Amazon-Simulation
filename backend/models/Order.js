@@ -36,6 +36,14 @@ const OrderSchema = new Schema({
     customerId: {
         type: Schema.Types.ObjectId
     },
+    customerName : {
+        type: String,
+        required: false
+    },
+    customerEmail : {
+        type: String,
+        required: false
+    },
     products: [productsSchema],
     orderStatus: {
         type: String,
