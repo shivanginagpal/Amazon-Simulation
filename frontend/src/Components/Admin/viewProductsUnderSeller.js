@@ -99,7 +99,7 @@ import './admin.css';
             labels: temp,
             datasets: [
                 {
-                    label: 'Monthly Amount Earned By Sales.',
+                    label: 'Monthly Amount Earned By Sales in Dollars($).',
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: 'rgba(75,192,192,0.4)',
@@ -205,9 +205,9 @@ import './admin.css';
 
                         <div className="container">
                             <div className="row mt-4">
-                                <div className="card card-custom mx-4 mb-5" style={{ boxShadow: "2px 2px 2px #888888", "height": "18em", "width": "30em" }}>
+                                <div className="card card-custom mx-4 mb-5" style={{ boxShadow: "2px 2px 2px #888888", "height": "30em", "width": "55em" }}>
 
-                                    <div className="card-body" >
+                                    <div className="card-body" style={{ "height": "30em", "width": "55em" }}>
                                         <div>
                                             <div style={{ background: "#fafafa" }}>
                                                 <Bar ref="chart" data={data}
@@ -217,12 +217,12 @@ import './admin.css';
                                                             yAxes: [{
                                                                 ticks: {
                                                                     beginAtZero: true,
-                                                                    stepSize: 1
+                                                                    stepSize: 1000
                                                                 }
                                                             }]
                                                         }, title: {
                                                             display: true,
-                                                            text: 'Monthly Amount Earned By Sales'
+                                                            text: 'Monthly Amount Earned By Sales in Dollars($)'
                                                         }
                                                     }} />
                                             </div>

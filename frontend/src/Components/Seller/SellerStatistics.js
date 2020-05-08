@@ -69,10 +69,10 @@ import { getID } from "../SignUp/helperApis";
                     <div className="row justify-content-center align-items-center">
                         <div className="col-12">
                             <div className="dash-one">
-                                <div className="dash-header">Seller Statistics</div>
+                                
                                 {this.state.statistics.length > 0 ? (
                                     <div className="col-10">
-                                        <table className="table table-striped table-bordered">
+                                        <table className="table table-striped table-bordered lead">
                                             <thead>
                                                 <tr>
                                                     <th>Product Name</th>

@@ -23,6 +23,15 @@
     text-align: center;
 }
 
+#addproductcategory{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+#viewsellersearch{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 #cardadmin-text{
     display: -webkit-box;
     -webkit-line-clamp: 2;

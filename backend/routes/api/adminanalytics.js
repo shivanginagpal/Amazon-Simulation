@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../../models/Order');
-const Seller = require('../../models/Seller');
-const User = require('../../models/User');
 var { ProductCategory } = require('../../models/ProductCategory');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -62,7 +60,27 @@ router.get("/top5Customers", (req, res) => {
             res.end("could not get messages");
         })
 });
-
+router.get("/top10ProductsViewed",(req, res) => {
+    ProductCategory.aggregate([
+        {
+            $unwind: "$products"
+        },{
+            $project: {
+                "_id":0,
+                "productName": "$products.productName",
+                "count": "$products.productViewCount"
+            }
+        },{
+            $sort:{"count":-1}
+        }
+    ]).limit(10)
+        .then(result => {
+            res.end(JSON.stringify(result));
+        }).catch(err => {
+            res.end("could not get messages");
+        })
+        
+})
 router.get("/top10ProductsBasedOnRating", (req, res) => {
     ProductCategory.aggregate([
         {

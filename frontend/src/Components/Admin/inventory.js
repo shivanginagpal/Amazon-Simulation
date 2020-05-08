@@ -142,7 +142,7 @@ class inventory extends Component {
             <div>
                 <Navbar />
                 <div className="container">
-                    <button type="button" class="btn btn-success" onClick={() => this.showModal()}>Add Product Category</button>
+                    <button type="button" class="btn btn-success" id="addproductcategory" onClick={() => this.showModal()}>Add Product Category</button>
                     <nav class="navbar navbar-light bg-light">
                         <form class="form-inline">
                             <input
@@ -158,10 +158,10 @@ class inventory extends Component {
                     <div className="row justify-content-center align-items-center">
                         <div className="col-12">
                             <div className="dash-one">
-                                <div className="dash-header">Product Categories</div>
+                                <div className="display-4">Product Categories</div>
                                 {this.state.categories.length > 0 ? (
                                     <div className="col-10">
-                                        <table className="table table-striped table-bordered">
+                                        <table className="table table-striped table-bordered lead">
                                             <thead>
                                                 <tr>
                                                     <th>Product Category</th>

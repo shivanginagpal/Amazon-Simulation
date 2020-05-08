@@ -30,13 +30,6 @@ import axios from 'axios';
      }
 
     render() {
-        // const months=[
-        //     "January",
-        //    "Feb"]
-        // temp=[]
-        // for(i=0;i<length(this.state.products.month;i++)){ 
-        //  temp.append(months[this.state.products.month[i]-1]))
-        // }
         const data = {
             labels: this.state.products,
             datasets: [

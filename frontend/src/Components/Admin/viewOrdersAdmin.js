@@ -58,18 +58,20 @@ import swal from 'sweetalert';
         
         let orderdetails = this.state.orders.map(order => {
             // console.log("THIS IS ORDER",order);
-            let str =order.orderDate;
+            // order.customerName.toUpperCase().includes(this.state.searchString.toUpperCase()) ||
+            //     order.products.productName.toUpperCase().includes(this.state.searchString.toUpperCase()) ||
+            let str = order.orderDate;
             let date = str.substring(0, str.indexOf('T'));
             if(order.products.productOrderStatus.toUpperCase().includes(this.state.searchString.toUpperCase()) ||
-            order.customerName.toUpperCase().includes(this.state.searchString.toUpperCase()) || 
-            order.products.productName.toUpperCase().includes(this.state.searchString.toUpperCase()) ||
+   
             order.products.productSellerName.toUpperCase().includes(this.state.searchString.toUpperCase())
             ){
                 return(
                     <tr>
-                        <td>{order.customerName}</td>
-                        <td>{order.products.productName}</td>
                         <td>{order.products.productSellerName}</td>
+                        
+                        <td>{order.products.productName}</td>
+                        <td>{order.customerName}</td>
                         <td>{date}</td>
                         <td>
                             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -87,8 +89,10 @@ import swal from 'sweetalert';
         return (
             <div>
                 <Navbar/>
-                <div className="container" id="viewSellerList">
-                    <nav class="navbar navbar-light bg-light">
+                <div className="container" >
+                    <div className="dash-one">
+                        <div className="display-4">Orders</div>
+                        <nav class="navbar navbar-light bg-light" id="viewsellersearch">
                         <form class="form-inline">
                             <input
                                 class="form-control mr-sm-2"
@@ -103,16 +107,15 @@ import swal from 'sweetalert';
                     </nav>
                     <div className="row justify-content-center align-items-center">
                         <div className="col-12">
-                            <div className="dash-one">
-                                <div className="dash-header">Orders</div>
+                            
                                 {this.state.orders.length > 0 ? (
                                     <div className="col-10">
-                                        <table className="table table-striped table-bordered">
+                                        <table className="table table-striped table-bordered lead">
                                             <thead>
                                                 <tr>
-                                                    <th>Customer Name</th>
-                                                    <th>Product Name</th>
                                                     <th>Seller Name</th>
+                                                    <th>Product Name</th>
+                                                    <th>Customer Name</th>
                                                     <th>Order Date</th>
                                                     <th>Order Status</th>
                                                 </tr>

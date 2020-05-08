@@ -48,7 +48,7 @@ import {getID} from '../SignUp/helperApis'
             labels: temp,
             datasets: [
                 {
-                    label: 'Monthly Amount Earned By Sales.',
+                    label: 'Monthly Amount Earned By Sales in Dollars($).',
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: 'rgba(75,192,192,0.4)',
@@ -86,7 +86,7 @@ import {getID} from '../SignUp/helperApis'
                                 }]
                             }, title: {
                                 display: true,
-                                text: 'Monthly Amount Earned By Sales'
+                                text: 'Monthly Amount Earned By Sales in Dollars($)'
                             }
                         }} />
                 </div>

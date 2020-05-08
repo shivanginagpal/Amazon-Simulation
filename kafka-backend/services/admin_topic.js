@@ -45,7 +45,7 @@ async function orderStatusChangeAdmin(msg, callback) {
         {"_id": msg.body.id ,  "products.productId": msg.body.productId},
         {
             $set:{
-                "products.productOrderStatus":msg.body.status
+                "products.$.productOrderStatus":msg.body.status
             }
         }
         ).then(async result => {
