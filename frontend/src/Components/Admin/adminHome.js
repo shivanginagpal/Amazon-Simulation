@@ -44,7 +44,7 @@ import Top10ProductsViewed from './Top10ProductsViewed';
 
                                 <div className="card card-custom mx-4 mb-5" style={{ boxShadow: "2px 2px 2px #888888", "height": "30em", "width": "55em" }}>
                                 <div className="card-body" style={{ "height": "30em", "width": "55em" }}>
-                                        <OrderStatusAdminGraph />
+                                <Top10ProductsRating />
                                     </div>
                                 </div>
 
@@ -62,7 +62,8 @@ import Top10ProductsViewed from './Top10ProductsViewed';
 
                                 <div className="card card-custom mx-4 mb-5" style={{ boxShadow: "2px 2px 2px #888888", "height": "30em", "width": "55em" }}>
                                 <div className="card-body" style={{ "height": "30em", "width": "55em" }} >
-                                        <Top10ProductsRating />
+                                        
+                                <OrderStatusAdminGraph />
                                     </div>
                                 </div>
                                

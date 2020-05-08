@@ -18,7 +18,7 @@ router.post('/addProductCategory', (req, res) => {
             if (results.status === 200) {
                 return res.status(results.status).send(results.data);
             } else if (results.status === 401) {
-                return res.status(results.status).send(results.message);
+                return res.status(results.status).send(results.data);
             }
             else {
                 return res.status(results.status).send(results.errors);
@@ -130,7 +130,7 @@ router.get('/viewSellersList', (req,res) => {
             }
         }
     })
-})
+}) 
 
 router.put("/viewProductsUnderSeller", (req,res) => {
     console.log(req.body);
